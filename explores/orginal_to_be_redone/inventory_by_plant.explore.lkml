@@ -1,4 +1,4 @@
-include: "/views/standard/**/*.view"
+include: "/views/core_org_to_be_redone/**/*.view"
 
 explore: inventory_by_plant {
   sql_always_where: ${inventory_by_plant.client_mandt} = '{{ _user_attributes['client_id_rep'] }}'

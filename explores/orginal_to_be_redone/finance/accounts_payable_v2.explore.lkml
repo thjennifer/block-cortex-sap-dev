@@ -1,4 +1,4 @@
-include: "/views/standard/**/*.view"
+include: "/views/core_org_to_be_redone/**/*.view"
 
 explore: accounts_payable_v2 {
 
