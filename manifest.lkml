@@ -34,7 +34,12 @@ constant: SAP_LABEL {
             {% endif %}{{sap_label}}"
 }
 
-
+#### testing
+# liquid camelcase and capitalize doesn't work
+# {% assign fn = _field._name | split:'.' %} {% assign field_name = fn[1] | split:'_' %}{% assign word_cnt = field_name.size %}
+#             {% assign label_name = '' %}
+#             {% for word in field_name %} {% assign label_name = label_name | append: ' ' | append: word | camelcase %}{%endfor%}
+#             Sales Document {{label_name}}
 
 ###### old will be deprecated:
 constant: GCP_PROJECT {

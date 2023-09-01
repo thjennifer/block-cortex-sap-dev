@@ -6,7 +6,7 @@
   elements:
   - title: Account Receivable by Company
     name: Account Receivable by Company
-    model: cortex_sap_operational
+    
     explore: data_intelligence_ar
     type: looker_column
     fields: [data_intelligence_ar.Company_Name, total_receivable, data_intelligence_ar.Due_Amount]
@@ -71,7 +71,7 @@
     height: 10
   - title: Accounts Receivable
     name: Accounts Receivable
-    model: cortex_sap_operational
+    
     explore: data_intelligence_ar
     type: looker_grid
     fields: [data_intelligence_ar.Company_Code, data_intelligence_ar.Company_Name,
@@ -109,7 +109,7 @@
     height: 10
   - title: Total Receivable
     name: Total Receivable
-    model: cortex_sap_operational
+    
     explore: data_intelligence_ar
     type: single_value
     fields: [data_intelligence_ar.Sum_of_Receivables]
@@ -154,7 +154,7 @@
       type: dropdown_menu
       display: inline
       options: []
-    model: cortex_sap_operational
+    
     explore: data_intelligence_ar
     listens_to_filters: []
     field: data_intelligence_ar.Company_Name
@@ -168,7 +168,7 @@
       type: dropdown_menu
       display: inline
       options: []
-    model: cortex_sap_operational
+    
     explore: data_intelligence_ar
     listens_to_filters: []
     field: data_intelligence_ar.Sold_to_Party_Name
@@ -182,7 +182,7 @@
       type: dropdown_menu
       display: inline
       options: []
-    model: cortex_sap_operational
+    
     explore: data_intelligence_ar
     listens_to_filters: []
     field: data_intelligence_ar.Currency_Required

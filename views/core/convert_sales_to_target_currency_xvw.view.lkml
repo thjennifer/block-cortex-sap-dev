@@ -6,6 +6,12 @@
 
 view: convert_sales_to_target_currency {
 
+  dimension: key {
+    primary_key: yes
+    hidden: yes
+    sql: 1 ;;
+  }
+
   dimension: net_price_global_netpr {
     hidden: no
     type: number
@@ -24,6 +30,7 @@ view: convert_sales_to_target_currency {
     description: "Item Qty * Net Price (Global Currency)"
     sql:  ${net_price_global_netpr} * ${sales_orders_v2.cumulative_order_quantity_kwmeng};;
     value_format_name: decimal_2
+
   }
 
   measure: total_net_value_global {
@@ -33,6 +40,7 @@ view: convert_sales_to_target_currency {
     label: "Total Net Value (Global Currency)"
     sql: ${sales_order_value_line_item_global_currency} ;;
     value_format_name: "format_large_numbers_d1"
+    sql_distinct_key: ${sales_orders_v2.key};;
   }
 
 }
