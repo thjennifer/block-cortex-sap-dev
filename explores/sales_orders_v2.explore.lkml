@@ -1,13 +1,25 @@
+# base view
 include: "/views/core/sales_orders_v2_rfn.view"
+
+# other facts
+include: "/views/core/one_touch_order_rfn.view"
+include: "/views/core/currency_conversion_sdt.view"
+include: "/views/core/language_map_sdt.view"
+include: "/views/core/sales_order_schedule_line_sdt.view"
+include: "/views/core/deliveries_rfn.view"
+
+
+# included _md views for labels
 include: "/views/core/materials_md_rfn.view"
 include: "/views/core/sales_organizations_md_rfn.view"
 include: "/views/core/distribution_channels_md_rfn.view"
 include: "/views/core/divisions_md_rfn.view"
 include: "/views/core/customers_md_rfn.view"
 include: "/views/core/countries_md_rfn.view"
-include: "/views/core/currency_conversion_sdt.view"
-include: "/views/core/convert_sales_to_target_currency_xvw.view"
-include: "/views/core/language_map_sdt.view"
+
+# field-only views
+include: "/views/core/across_sales_and_currency_conversion_xvw.view"
+include: "/views/core/across_sales_and_deliveries_xvw.view"
 
 explore: sales_orders_v2 {
   label: "Sales Orders"
@@ -108,7 +120,41 @@ explore: sales_orders_v2 {
     fields: [countries_md.country_name_landx]
   }
 
-  join: convert_sales_to_target_currency {
+  join: one_touch_order {
+    view_label: "Sales Orders"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${sales_orders_v2.client_mandt} = ${one_touch_order.vbapclient_mandt} and
+            ${sales_orders_v2.sales_document_vbeln} = ${one_touch_order.vbapsales_document_vbeln} and
+            ${sales_orders_v2.item_posnr} = ${one_touch_order.vbapsales_document_item_posnr};;
+  }
+
+  join: sales_order_schedule_line_sdt {
+    view_label: "Sales Orders"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${sales_orders_v2.client_mandt} = ${sales_order_schedule_line_sdt.client_mandt} and
+            ${sales_orders_v2.sales_document_vbeln} = ${sales_order_schedule_line_sdt.sales_document_vbeln} and
+            ${sales_orders_v2.item_posnr} = ${sales_order_schedule_line_sdt.sales_document_item_posnr} ;;
+    fields: [sales_order_schedule_line_sdt.fields_for_sales_explore*]
+  }
+
+  join: deliveries {
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${sales_orders_v2.client_mandt} = ${deliveries.client_mandt} and
+            ${sales_orders_v2.sales_document_vbeln} = ${deliveries.sales_order_number_vgbel} and
+            ${sales_orders_v2.item_posnr} = ${deliveries.sales_order_item_vgpos} ;;
+    fields: [deliveries.fields_for_sales*]
+  }
+
+  join: across_sales_and_deliveries_xvw {
+    view_label: "Deliveries"
+    relationship: one_to_one
+    sql:  ;;
+  }
+
+  join: across_sales_and_currency_conversion_xvw {
     relationship: one_to_one
     sql:  ;;
   }

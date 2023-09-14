@@ -1,10 +1,10 @@
 ###################
 # dimensions and measures that reference views:
 #   sales_orders_v2
-#   convert_sales_to_target_currency
+#   currency_conversion_sdt
 ###################
 
-view: convert_sales_to_target_currency {
+view: across_sales_and_currency_conversion_xvw {
 
   dimension: key {
     primary_key: yes

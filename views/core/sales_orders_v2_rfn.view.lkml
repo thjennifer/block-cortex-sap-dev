@@ -61,6 +61,11 @@ view: +sales_orders_v2 {
     sql: ${TABLE}.CreationTime_ERZET ;;
   }
 
+  dimension: creation_timestamp {
+    hidden: yes
+    sql: timestamp(concat(${creation_date_erdat_raw},' ',${creation_time_erzet})) ;;
+  }
+
   dimension_group: requested_delivery_date_vdatu {
     hidden: no
     label: "Requested Delivery VDATU"
@@ -118,6 +123,13 @@ view: +sales_orders_v2 {
     description: "SD Document Currency at header level"
   }
 
+  dimension: is_cancelled {
+    hidden: no
+    type: yesno
+    view_label: "Sales Orders Items"
+    sql: ${rejection_reason_abgru} is not null ;;
+  }
+
   #}
 
 
@@ -152,6 +164,13 @@ view: +sales_orders_v2 {
     label: "Order Quantity of Item@{SAP_LABEL}"
   }
 
+  dimension: cumulative_confirmed_quantity_kbmeng {
+    hidden: no
+    view_label: "Sales Orders Items"
+    label: "Confirmed Quantity of Item@{SAP_LABEL}"
+    description: "Confirmed Quantity of Item in Sale Unit of Measure"
+  }
+
   dimension: currency_waerk {
     hidden: yes
     view_label: "Sales Orders Items"
@@ -182,16 +201,25 @@ view: +sales_orders_v2 {
 
   measure: count {
     hidden: no
-    label: "Count Order Items"
-    description: "Count of Orders & Items"
+    label: "Count Document Items"
+    description: "Count of Documents & Items"
     }
 
   measure: count_orders {
     hidden: no
     type: count_distinct
-    description: "Count of Sales Document VBELN when Document Category VBTYP = C"
+    label: "Count Orders"
+    description: "Discount count of Sales Document VBELN when Document Category VBTYP = C"
     sql: ${sales_document_vbeln} ;;
     filters: [document_category_vbtyp: "C"]
+  }
+
+  measure: count_sales_documents {
+    hidden: no
+    type: count_distinct
+    label: "Count Sales Documents"
+    description: "Distinct count of Sales Document VBELN"
+    sql: ${sales_document_vbeln} ;;
   }
 
   measure: total_net_value {
@@ -203,10 +231,9 @@ view: +sales_orders_v2 {
     value_format_name: "format_large_numbers_d1"
   }
 
-  measure: total_quantity {
+  measure: total_quantity_ordered {
     hidden: no
     type: sum
-    label: "Total Quantity"
     sql: ${cumulative_order_quantity_kwmeng} ;;
   }
 
@@ -215,6 +242,34 @@ view: +sales_orders_v2 {
     type: count_distinct
     description: "Total Customer Count (disctinct count of Sold to Party KUNNR)"
     sql: ${sold_to_party_kunnr} ;;
+  }
+
+  measure: count_items_cancelled {
+    hidden: no
+    type: count
+    filters: [is_cancelled: "Yes"]
+  }
+
+  measure: count_orders_with_cancellation {
+    hidden: no
+    description: "Count of Orders with at Least 1 Item Cancelled"
+    type: count_distinct
+    sql: ${sales_document_vbeln} ;;
+    filters: [is_cancelled: "Yes"]
+  }
+
+  measure: percent_items_cancelled {
+    hidden: no
+    type: number
+    sql: safe_divide(${count_items_cancelled},${count}) ;;
+    value_format_name: percent_1
+  }
+
+  measure: percent_orders_cancelled {
+    hidden: no
+    type: number
+    sql: safe_divide(${count_orders_with_cancellation}, ${count_orders});;
+    value_format_name: percent_1
   }
 
 
@@ -260,6 +315,24 @@ view: +sales_orders_v2 {
     type: max
     sql: ${net_value_of_the_sales_order_in_document_currency_netwr} ;;
   }
+
+  dimension: item_fill_rate {
+    hidden: no
+    type: number
+    view_label: "zQA"
+    sql: safe_divide(coalesce(${cumulative_confirmed_quantity_kbmeng},0),${cumulative_order_quantity_kwmeng}) ;;
+    value_format_name: percent_1
+  }
+
+  measure: avg_item_fill_rate {
+    hidden: no
+    type: average
+    view_label: "zQA"
+    sql: ${item_fill_rate} ;;
+    value_format_name: percent_1
+
+  }
+
 
 
 
