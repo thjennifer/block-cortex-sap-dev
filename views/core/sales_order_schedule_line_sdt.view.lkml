@@ -58,6 +58,7 @@ view: sales_order_schedule_line_sdt {
   dimension: confirmed_quantity_bmeng {
     hidden: no
     type: number
+    view_label: "Sales Orders Items"
     label: "Confirmed Quantity BMENG"
     sql: ${TABLE}.ConfirmedQuantity_BMENG ;;
   }
@@ -65,15 +66,17 @@ view: sales_order_schedule_line_sdt {
   dimension: fill_rate_item {
     hidden: no
     type: number
+    view_label: "Sales Orders Items"
     description: "Fill Rate for Item computed as Confirmed Quantity (BMENG) / Order Quantity (KWMENG)"
     sql: safe_divide(${sales_order_schedule_line_sdt.confirmed_quantity_bmeng}, ${sales_orders_v2.cumulative_order_quantity_kwmeng});;
     value_format_name: percent_1
   }
 
-  dimension: fill_rate_item_current_formula {
+  dimension: fill_rate_item_nullif0 {
     hidden: no
     type: number
-    description: "Fill Rate for Item computed as Confirmed Quantity (BMENG) / Order Quantity (KWMENG)"
+    view_label: "Sales Orders Items"
+    description: "Fill Rate for Item computed as Confirmed Quantity (BMENG) / Order Quantity (KWMENG) and applying NULLIF 0 function to both numerator and denominator"
     sql: nullif(${sales_order_schedule_line_sdt.confirmed_quantity_bmeng},0) / nullif(${sales_orders_v2.cumulative_order_quantity_kwmeng},0);;
     value_format_name: percent_1
   }
@@ -81,12 +84,14 @@ view: sales_order_schedule_line_sdt {
   measure: total_quantity_confirmed {
     hidden: no
     type: sum
+    view_label: "Sales Orders Items"
     sql: ${confirmed_quantity_bmeng} ;;
   }
 
-  measure: fill_rate {
+  measure: fill_rate_total_quantities {
     hidden: no
     type: number
+    view_label: "Sales Orders Items"
     description: "Fill Rate computed as Total Quantity Confirmed / Total Quantity Ordered"
     sql: safe_divide(${sales_order_schedule_line_sdt.total_quantity_confirmed},${sales_orders_v2.total_quantity_ordered}) ;;
     value_format_name: percent_1
@@ -95,17 +100,19 @@ view: sales_order_schedule_line_sdt {
   measure: avg_fill_rate_item {
     hidden: no
     type: average
+    view_label: "Sales Orders Items"
     label: "Average Fill Rate per Order Item"
-    description: "Fill Rate computed as Average of Item Fill Rate across all Order Items"
+    description: "Fill Rate computed as Average of Item Fill Rate across all Order Items (using Safe Divide)"
     sql: ${fill_rate_item} ;;
     value_format_name: percent_1
   }
 
-  measure: avg_fill_rate_item_current_formula {
+  measure: avg_fill_rate_item_nullif0 {
     hidden: no
     type: average
-    label: "Average Fill Rate per Order Item Current Formula"
-    sql: ${fill_rate_item_current_formula} ;;
+    view_label: "Sales Orders Items"
+    label: "Average Fill Rate per Order Item (using NULLIF 0)"
+    sql: ${fill_rate_item_nullif0} ;;
     value_format_name: percent_1
   }
 
@@ -117,7 +124,13 @@ view: sales_order_schedule_line_sdt {
   }
 
   set: fields_for_sales_explore {
-    fields: [confirmed_quantity_bmeng,fill_rate_item,total_quantity_confirmed,fill_rate,avg_fill_rate_item,is_diff_bmeng_kbmeng,avg_fill_rate_item_current_formula,fill_rate_item_current_formula]
+    fields: [confirmed_quantity_bmeng,
+             fill_rate_item,
+             total_quantity_confirmed,
+             fill_rate_total_quantities,
+             avg_fill_rate_item,
+             avg_fill_rate_item_nullif0
+            ]
   }
 
 
