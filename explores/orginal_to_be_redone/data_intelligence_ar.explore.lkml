@@ -1,5 +1,5 @@
-include: "/views/core_org_to_be_redone/**/data_intelligence*.view"
-include: "/views/core_org_to_be_redone/**/currency_conversion_new.view"
+include: "/views/original_to_be_redone/**/data_intelligence*.view"
+include: "/views/original_to_be_redone/**/currency_conversion_new.view"
 
 explore: data_intelligence_ar {
   sql_always_where: ${Client_ID} = "@{CLIENT}" ;;

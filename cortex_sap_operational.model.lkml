@@ -1,16 +1,7 @@
-connection: "@{CONNECTION_NAME}"
+connection: "qa-thjennifer3"
 
-include: "/components/**/*.lkml"
-include: "/views/core/**/*.view"
-include: "/explores/*.explore"
-# include: "/dashboards/**/*.dashboard"
+include: "/views/original_to_be_redone/*.view"
+include: "/explores/orginal_to_be_redone/**/*.explore"
+include: "/dashboards/original_to_be_redone/*.dashboard"
 
-
-
-
-persist_with: cortex_default_datagroup
-
-
-
-explore: currency_conversion_sdt {hidden: yes}
-explore: language_map_sdt {hidden:yes}
+include: "/components/named_value_formats"

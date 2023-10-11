@@ -86,6 +86,20 @@ view: across_sales_and_deliveries_xvw {
     value_format_name: percent_1
   }
 
+  measure: count_blocked_orders {
+    hidden: no
+    type: count_distinct
+    sql:  ${sales_orders_v2.sales_document_vbeln};;
+    filters: [deliveries.is_blocked: "Yes"]
+  }
+
+  measure: count_blocked_order_items {
+    hidden: no
+    type: count_distinct
+    sql:  concat(${sales_orders_v2.sales_document_vbeln},${sales_orders_v2.item_posnr});;
+    filters: [deliveries.is_blocked: "Yes"]
+  }
+
   # measure: avg_order_cycle_time_per_item {
   #   type: average
   #   sql: ${order_cycle_time} ;;

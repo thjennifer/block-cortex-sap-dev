@@ -212,11 +212,6 @@ view: +deliveries {
     filters: [is_delivered: "Yes",is_late: "Yes"]
   }
 
-  measure: count_blocked_orders {
-    type: count_distinct
-    sql:  ${delivery_vbeln};;
-    filters: [is_blocked: "Yes"]
-  }
 
   measure: percent_on_time_deliveries {
     hidden: no
@@ -255,7 +250,6 @@ view: +deliveries {
               count_deliveries,
               count_on_time_deliveries,
               count_late_deliveries,
-              count_blocked_orders,
               percent_on_time_deliveries,
               percent_late_deliveries,
               total_quantity_delivered,

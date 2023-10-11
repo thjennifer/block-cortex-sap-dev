@@ -1,4 +1,4 @@
-include: "/views/core_org_to_be_redone/**/*.view"
+include: "/views/original_to_be_redone/**/*.view"
 
 explore: sales_orders {
 

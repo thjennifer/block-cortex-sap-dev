@@ -214,6 +214,16 @@ view: +sales_orders_v2 {
     filters: [document_category_vbtyp: "C"]
   }
 
+  measure: count_orders_to_match_original {
+#### remove once confirm it should be count distinct
+    hidden: no
+    type: count
+    label: "Count Orders (match original)"
+    description: "Count of Sales Document VBELN when Document Category VBTYP = C"
+    # sql: ${sales_document_vbeln} ;;
+    filters: [document_category_vbtyp: "C"]
+  }
+
   measure: count_sales_documents {
     hidden: no
     type: count_distinct
@@ -259,13 +269,14 @@ view: +sales_orders_v2 {
   }
 
   measure: percent_items_cancelled {
+#### review: matches existing calculation but is incorrect calculation
     hidden: no
     type: number
-    sql: safe_divide(${count_items_cancelled},${count}) ;;
+    sql: safe_divide(${count_items_cancelled},${count_orders}) ;;
     value_format_name: percent_1
   }
 
-  measure: percent_orders_cancelled {
+  measure: percent_orders_with_cancellation {
     hidden: no
     type: number
     sql: safe_divide(${count_orders_with_cancellation}, ${count_orders});;
