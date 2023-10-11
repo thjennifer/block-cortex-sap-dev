@@ -20,11 +20,6 @@ constant: CLIENT_ID {
 }
 
 
-constant: EXCHANGE_RATE_TYPE {
-  value: "M"
-  export: override_required
-}
-
 
 #### constants for label formatting
 constant: SAP_LABEL {

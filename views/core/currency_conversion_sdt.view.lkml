@@ -20,8 +20,9 @@ view: currency_conversion_sdt {
                 ,ToCurrency_TCURR
       from `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.CurrencyConversion`
       where Client_MANDT = '@{CLIENT_ID}'
-      and ExchangeRateType_KURST = '@{EXCHANGE_RATE_TYPE}'
-      and ToCurrency_TCURR = {% parameter select_target_currency %}
+      and ExchangeRateType_KURST = {% parameter select_exchange_rate_type_kurst %}
+      --and ToCurrency_TCURR = {% parameter select_target_currency %}
+      and {% condition select_local_currency %} ToCurrency_TCURR {% endcondition %}
       and {% condition partition_date_filter %} timestamp(ConvDate) {% endcondition %}
       ;;
   }
@@ -34,6 +35,21 @@ view: currency_conversion_sdt {
 
   filter: partition_date_filter {
     type: date
+  }
+
+  filter: select_local_currency {
+    type: string
+    # default_value: "USD" default will be populated by dashboard filter using user_attribute sap_default_local_currency
+    suggest_explore: local_currency_list
+    suggest_dimension: to_currency_tcurr
+
+  }
+
+  parameter: select_exchange_rate_type_kurst {
+    type: string
+    default_value: "M"
+    suggest_explore: local_currency_list
+    suggest_dimension: exchange_rate_type_kurst
   }
 
   parameter: select_target_currency {
