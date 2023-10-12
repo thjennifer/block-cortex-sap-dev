@@ -19,7 +19,10 @@ constant: CLIENT_ID {
   export: override_required
 }
 
-
+constant: USE_DEMO_DATA {
+  value: "Yes"
+  export: override_required
+}
 
 #### constants for label formatting
 constant: SAP_LABEL {
@@ -29,6 +32,11 @@ constant: SAP_LABEL {
             {% endif %}{{sap_label}}"
 }
 
+constant: DEFAULT_DATE_FILTER {
+  value: "{% if @{USE_DEMO_DATA} =='Yes' %}{% assign date_range = '2022/01/01 to 2022/03/22' %}
+          {% else %} {% assign date_range = 'last 1 year' %}
+          {% endif %}{{date_range}}"
+}
 #### testing
 # liquid camelcase and capitalize doesn't work
 # {% assign fn = _field._name | split:'.' %} {% assign field_name = fn[1] | split:'_' %}{% assign word_cnt = field_name.size %}
