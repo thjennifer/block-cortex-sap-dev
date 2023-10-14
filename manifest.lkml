@@ -32,6 +32,10 @@ constant: SAP_LABEL {
             {% endif %}{{sap_label}}"
 }
 
+constant: DASHBOARD_LOGO {
+  value: "https://marketplace-api.looker.com/block-icons/cortex_icon.png"
+}
+
 constant: DEFAULT_DATE_FILTER {
   value: "{% if @{USE_DEMO_DATA} =='Yes' %}{% assign date_range = '2022/01/01 to 2022/03/22' %}
           {% else %} {% assign date_range = 'last 1 year' %}

@@ -176,9 +176,10 @@ view: +deliveries {
 
 #}
 
-  measure: count {
+  measure: count_delivery_line_items {
+    type: count
     hidden: no
-    label: "Count Order Items"
+    label: "Count of Delivery Line Items"
     description: "Count of Orders & Items"
   }
 
@@ -247,6 +248,7 @@ view: +deliveries {
               is_return,
               is_blocked,
               count_delivery_vbeln,
+              count_delivery_line_items,
               count_deliveries,
               count_on_time_deliveries,
               count_late_deliveries,

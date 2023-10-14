@@ -21,6 +21,9 @@ include: "/views/core/countries_md_rfn.view"
 include: "/views/core/across_sales_and_currency_conversion_xvw.view"
 include: "/views/core/across_sales_and_deliveries_xvw.view"
 
+# dashboard navigation
+include: "/views/core/navigation_sales_otc_ext.view"
+
 explore: sales_orders_v2 {
   label: "Sales Orders"
 
@@ -155,6 +158,12 @@ explore: sales_orders_v2 {
   }
 
   join: across_sales_and_currency_conversion_xvw {
+    relationship: one_to_one
+    sql:  ;;
+  }
+
+  join: navigation_sales_otc_ext {
+    view_label: "Dashboard Navigation"
     relationship: one_to_one
     sql:  ;;
   }

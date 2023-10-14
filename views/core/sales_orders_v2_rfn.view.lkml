@@ -201,7 +201,7 @@ view: +sales_orders_v2 {
 
   measure: count {
     hidden: no
-    label: "Count Document Items"
+    label: "Count of Document Items"
     description: "Count of Documents & Items"
     }
 
