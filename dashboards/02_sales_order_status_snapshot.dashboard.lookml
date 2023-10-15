@@ -48,7 +48,7 @@
     listen:
       Order Date: sales_orders_v2.creation_date_erdat_date
       Division: divisions_md.division_name_vtext
-      Region: countries_md.country_name_landx
+      Sales Region: countries_md.country_name_landx
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
@@ -80,7 +80,7 @@
     listen:
       Order Date: sales_orders_v2.creation_date_erdat_date
       Division: divisions_md.division_name_vtext
-      Region: countries_md.country_name_landx
+      Sales Region: countries_md.country_name_landx
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
@@ -111,7 +111,7 @@
 #     listen:
 #       Year: sales_orders.creation_date_erdat_date
 #       Division: divisions_md.division_name_vtext
-#       Region: countries_md.country_name_landx
+#       Sales Region: countries_md.country_name_landx
 #       Sales Org: sales_organizations_md.sales_org_name_vtext
 #       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
 #       Product: materials_md.material_text_maktx
@@ -185,7 +185,7 @@
     listen:
       Order Date: sales_orders_v2.creation_date_erdat_date
       Division: divisions_md.division_name_vtext
-      Region: countries_md.country_name_landx
+      Sales Region: countries_md.country_name_landx
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
@@ -214,7 +214,7 @@
     listen:
       Order Date: sales_orders_v2.creation_date_erdat_date
       Division: divisions_md.division_name_vtext
-      Region: countries_md.country_name_landx
+      Sales Region: countries_md.country_name_landx
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx

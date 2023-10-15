@@ -34,12 +34,12 @@
     hidden_fields: []
     y_axes: []
     listen:
-      Region: countries_md.country_name_landx
+      Order Date: sales_orders_v2.creation_date_erdat_date
+      Sales Region: countries_md.country_name_landx
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Division: divisions_md.division_name_vtext
-      Order Date: sales_orders_v2.creation_date_erdat_date
     row: 2
     col: 6
     width: 6
@@ -65,7 +65,7 @@
     y_axes: []
     listen:
       Order Date: sales_orders_v2.creation_date_erdat_date
-      Region: countries_md.country_name_landx
+      Sales Region: countries_md.country_name_landx
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
@@ -95,7 +95,7 @@
     y_axes: []
     listen:
       Order Date: sales_orders_v2.creation_date_erdat_date
-      Region: countries_md.country_name_landx
+      Sales Region: countries_md.country_name_landx
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
@@ -135,7 +135,7 @@
     y_axes: []
     listen:
       Order Date: sales_orders_v2.creation_date_erdat_date
-      Region: countries_md.country_name_landx
+      Sales Region: countries_md.country_name_landx
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
@@ -202,7 +202,7 @@
     note_text: Top 10 Products by Average Order Cycle Time
     listen:
       Order Date: sales_orders_v2.creation_date_erdat_date
-      Region: countries_md.country_name_landx
+      Sales Region: countries_md.country_name_landx
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
@@ -266,7 +266,7 @@
     defaults_version: 1
     listen:
       Order Date: sales_orders_v2.creation_date_erdat_date
-      Region: countries_md.country_name_landx
+      Sales Region: countries_md.country_name_landx
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx

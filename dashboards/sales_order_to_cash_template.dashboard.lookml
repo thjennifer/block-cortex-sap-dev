@@ -24,8 +24,8 @@
       display: inline
       options: []
 
-  - name: Region
-    title: Region
+  - name: Sales Region
+    title: Sales Region
     type: field_filter
     default_value: ''
     allow_multiple_values: true
@@ -94,18 +94,19 @@
       name: navigation
       explore: sales_orders_v2
       type: single_value
-      fields: [navigation_sales_otc_ext.navigation_tabs]
+      fields: [navigation_sales_otc_ext.navigation]
       filters:
         navigation_sales_otc_ext.focus_page: '1'
+        navigation_sales_otc_ext.navigation_style: 'bar'
       show_single_value_title: false
       show_comparison: false
       listen:
-#         Order Date: navigation_sales_otc_ext.filter1
-        Region: navigation_sales_otc_ext.filter1
-        Sales Org: navigation_sales_otc_ext.filter2
-        Distribution Channel: navigation_sales_otc_ext.filter3
-        Division: navigation_sales_otc_ext.filter4
-        Product: navigation_sales_otc_ext.filter5
+        Order Date: navigation_sales_otc_ext.filter1
+        Sales Region: navigation_sales_otc_ext.filter2
+        Sales Org: navigation_sales_otc_ext.filter3
+        Distribution Channel: navigation_sales_otc_ext.filter4
+        Division: navigation_sales_otc_ext.filter5
+        Product: navigation_sales_otc_ext.filter6
       row: 0
       col: 0
       width: 24
