@@ -24,8 +24,8 @@
       display: inline
       options: []
 
-  - name: Sales Region
-    title: Sales Region
+  - name: Country
+    title: Country
     type: field_filter
     default_value: ''
     allow_multiple_values: true
@@ -97,12 +97,12 @@
       fields: [navigation_sales_otc_ext.navigation]
       filters:
         navigation_sales_otc_ext.focus_page: '1'
-        navigation_sales_otc_ext.navigation_style: 'bar'
+        navigation_sales_otc_ext.navigation_style: 'tabs'
       show_single_value_title: false
       show_comparison: false
       listen:
         Order Date: navigation_sales_otc_ext.filter1
-        Sales Region: navigation_sales_otc_ext.filter2
+        Country: navigation_sales_otc_ext.filter2
         Sales Org: navigation_sales_otc_ext.filter3
         Distribution Channel: navigation_sales_otc_ext.filter4
         Division: navigation_sales_otc_ext.filter5

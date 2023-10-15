@@ -20,40 +20,47 @@
 
   - name: header_order_status
     type: text
-    title_text: <font color="#c1c1c1">What is my Order Status?</font>
+    title_text: <font color="#808080">What is my Order Status?</font>
     body_text: ''
     row: 2
     col: 0
     width: 24
     height: 1
 
+  - title: Total Orders
+    name: Total Orders
+    explore: sales_orders_v2
+    type: single_value
+    fields: [sales_orders_v2.count_orders]
+    listen:
+      # " Order Status": sales_orders.sales_order_status
+      Order Date: sales_orders_v2.creation_date_erdat_date
+      Division: divisions_md.division_name_vtext
+      Country: countries_md.country_name_landx
+      Sales Org: sales_organizations_md.sales_org_name_vtext
+      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
+      Product: materials_md.material_text_maktx
+    row: 3
+    col: 0
+    width: 5
+    height: 2
+
   - title: Blocked Orders
     name: Blocked Orders
     explore: sales_orders_v2
     type: single_value
     fields: [across_sales_and_deliveries_xvw.count_blocked_orders]
-    limit: 500
-    column_limit: 50
-    custom_color_enabled: true
-    show_single_value_title: true
-    show_comparison: false
-    comparison_type: value
-    comparison_reverse_colors: false
-    show_comparison_label: true
-    enable_conditional_formatting: true
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    conditional_formatting: [{type: greater than, value: 5, background_color: '',
-        font_color: "#EA4335",
-        bold: false, italic: false, strikethrough: false, fields: !!null ''}]
-    defaults_version: 1
-    hidden_fields: []
-    y_axes: []
+    # enable_conditional_formatting: true
+    # conditional_formatting_include_totals: false
+    # conditional_formatting_include_nulls: false
+    # conditional_formatting: [{type: greater than, value: 5, background_color: '',
+    #     font_color: "#EA4335",
+    #     bold: false, italic: false, strikethrough: false, fields: !!null ''}]
     listen:
-      # " Order Status": sales_orders.sales_order_status
+      # " Order Status": sales_orders_v2.sales_order_status
       Order Date: sales_orders_v2.creation_date_erdat_date
       Division: divisions_md.division_name_vtext
-      Sales Region: countries_md.country_name_landx
+      Country: countries_md.country_name_landx
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
@@ -62,36 +69,7 @@
     width: 5
     height: 2
 
-  - title: Total Orders
-    name: Total Orders
-    explore: sales_orders_v2
-    type: single_value
-    fields: [sales_orders_v2.count_orders]
-    limit: 500
-    column_limit: 50
-    custom_color_enabled: true
-    show_single_value_title: true
-    show_comparison: false
-    comparison_type: value
-    comparison_reverse_colors: false
-    show_comparison_label: true
-    enable_conditional_formatting: false
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    single_value_title: Total Orders
-    defaults_version: 1
-    listen:
-      # " Order Status": sales_orders.sales_order_status
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Sales Region: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-    row: 3
-    col: 0
-    width: 5
-    height: 2
+
 
   # - title: Sales Order Quantity and Value
   #   name: Sales Order Quantity and Value
@@ -167,7 +145,7 @@
   #     " Order Status": sales_orders.sales_order_status
   #     Division: divisions_md.division_name_vtext
   #     Currency: currency_conversion_new.tcurr
-  #     Sales Region: countries_md.country_name_landx
+  #     Country: countries_md.country_name_landx
   #     Sales Org: sales_organizations_md.sales_org_name_vtext
   #     Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
   #     Product: materials_md.material_text_maktx
@@ -236,10 +214,10 @@
   #   hidden_pivots: {}
   #   title_hidden: true
   #   listen:
-  #     " Order Status": sales_orders.sales_order_status
-  #     Year: sales_orders.creation_date_erdat_date
+  #     " Order Status": sales_orders_v2.sales_order_status
+  #     Order Date: sales_orders_v2.creation_date_erdat_date
   #     Division: divisions_md.division_name_vtext
-  #     Sales Region: countries_md.country_name_landx
+  #     Country: countries_md.country_name_landx
   #     Sales Org: sales_organizations_md.sales_org_name_vtext
   #     Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
   #     Product: materials_md.material_text_maktx

@@ -12,7 +12,7 @@ view: navigation_sales_otc_ext {
   dimension: filterBindings {
     hidden: yes
     type: string
-    sql: 'filter1|Order+Date||filter2|Sales+Region||filter3|Sales+Org||filter4|Distribution+Channel||filter5|Division||filter6|Product' ;;
+    sql: 'filter1|Order+Date||filter2|Country||filter3|Sales+Org||filter4|Distribution+Channel||filter5|Division||filter6|Product' ;;
     # sql: 'filter1|Order+Date||filter2|Country+Name' ;;
   }
 
@@ -34,7 +34,7 @@ view: navigation_sales_otc_ext {
   filter: filter2 {
     hidden: no
     type: string
-    label: "Sales Region"
+    label: "Country"
   }
 
   filter: filter3 {

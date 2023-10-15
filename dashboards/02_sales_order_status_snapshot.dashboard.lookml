@@ -18,37 +18,39 @@
 
   - name: header_healthy_orders
     type: text
-    title_text: <font color="#c1c1c1">How healthy is Order Fulfillment?</font>
+    title_text: <font color="#808080">How healthy is Order Fulfillment?</font>
     body_text: ''
     row: 2
     col: 0
     width: 24
     height: 1
 
+  - title: One Touch Order
+    name: One Touch Order
+    explore: sales_orders_v2
+    type: single_value
+    fields: [one_touch_order.percent_one_touch_orders]
+    listen:
+      Order Date: sales_orders_v2.creation_date_erdat_date
+      Division: divisions_md.division_name_vtext
+      Country: countries_md.country_name_landx
+      Sales Org: sales_organizations_md.sales_org_name_vtext
+      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
+      Product: materials_md.material_text_maktx
+    row: 3
+    col: 0
+    width: 6
+    height: 3
+
   - title: Avg Fill Rate %
     name: Avg Fill Rate %
     explore: sales_orders_v2
     type: single_value
     fields: [sales_order_schedule_line_sdt.avg_fill_rate_item_nullif0]
-    limit: 500
-    column_limit: 50
-    custom_color_enabled: true
-    show_single_value_title: true
-    show_comparison: false
-    comparison_type: value
-    comparison_reverse_colors: false
-    show_comparison_label: true
-    enable_conditional_formatting: false
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    value_format: ''
-    defaults_version: 1
-    hidden_fields: []
-    y_axes: []
     listen:
       Order Date: sales_orders_v2.creation_date_erdat_date
       Division: divisions_md.division_name_vtext
-      Sales Region: countries_md.country_name_landx
+      Country: countries_md.country_name_landx
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
@@ -62,25 +64,10 @@
     explore: sales_orders_v2
     type: single_value
     fields: [sales_orders_v2.percent_items_cancelled]
-    limit: 500
-    column_limit: 50
-    custom_color_enabled: true
-    show_single_value_title: true
-    show_comparison: false
-    comparison_type: value
-    comparison_reverse_colors: false
-    show_comparison_label: true
-    enable_conditional_formatting: false
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    value_format: 0.00"%"
-    defaults_version: 1
-    hidden_fields: []
-    y_axes: []
     listen:
       Order Date: sales_orders_v2.creation_date_erdat_date
       Division: divisions_md.division_name_vtext
-      Sales Region: countries_md.country_name_landx
+      Country: countries_md.country_name_landx
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
@@ -94,27 +81,13 @@
 #     explore: sales_orders_v2
 #     type: single_value
 #     fields: [sales_orders_v2.Return_Order_Percentage]
-#     limit: 500
-#     custom_color_enabled: true
-#     show_single_value_title: true
-#     show_comparison: false
-#     comparison_type: value
-#     comparison_reverse_colors: false
-#     show_comparison_label: true
-#     enable_conditional_formatting: false
-#     conditional_formatting_include_totals: false
-#     conditional_formatting_include_nulls: false
-#     value_format: 0.00"%"
-#     defaults_version: 1
-#     hidden_fields: []
-#     y_axes: []
-#     listen:
-#       Year: sales_orders.creation_date_erdat_date
-#       Division: divisions_md.division_name_vtext
-#       Sales Region: countries_md.country_name_landx
-#       Sales Org: sales_organizations_md.sales_org_name_vtext
-#       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-#       Product: materials_md.material_text_maktx
+    # listen:
+    #   Order Date: sales_orders_v2.creation_date_erdat_date
+    #   Division: divisions_md.division_name_vtext
+    #   Country: countries_md.country_name_landx
+    #   Sales Org: sales_organizations_md.sales_org_name_vtext
+    #   Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
+    #   Product: materials_md.material_text_maktx
 #     row: 9
 #     col: 0
 #     width: 6
@@ -185,7 +158,7 @@
     listen:
       Order Date: sales_orders_v2.creation_date_erdat_date
       Division: divisions_md.division_name_vtext
-      Sales Region: countries_md.country_name_landx
+      Country: countries_md.country_name_landx
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
@@ -194,31 +167,3 @@
     width: 17
     height: 12
 
-  - title: One Touch Order
-    name: One Touch Order
-    explore: sales_orders_v2
-    type: single_value
-    fields: [one_touch_order.percent_one_touch_orders]
-    limit: 500
-    custom_color_enabled: true
-    show_single_value_title: true
-    show_comparison: false
-    comparison_type: value
-    comparison_reverse_colors: false
-    show_comparison_label: true
-    enable_conditional_formatting: false
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    series_types: {}
-    defaults_version: 1
-    listen:
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Sales Region: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-    row: 3
-    col: 0
-    width: 6
-    height: 3
