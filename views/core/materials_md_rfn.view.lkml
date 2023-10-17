@@ -40,7 +40,7 @@ view: +materials_md {
   }
 
   dimension: client_mandt {
-    hidden: no
+    hidden: yes
     label: "Client MANDT"
   }
 

@@ -102,34 +102,34 @@ view: +deliveries {
     label: "Delivery Type LFART"
   }
 
-  dimension: is_delivered {
-    hidden: no
-    type: yesno
-    sql: ${date__proof_of_delivery___podat_raw} is not null  ;;
-  }
+  # dimension: is_delivered {
+  #   hidden: no
+  #   type: yesno
+  #   sql: ${date__proof_of_delivery___podat_raw} is not null  ;;
+  # }
 
-  dimension: is_on_time {
-    hidden: no
-    type: yesno
-    sql: ${date__proof_of_delivery___podat_raw} <= ${delivery_date_lfdat_raw} and
-         ${is_delivered};;
-  }
+  # dimension: is_on_time {
+  #   hidden: no
+  #   type: yesno
+  #   sql: ${date__proof_of_delivery___podat_raw} <= ${delivery_date_lfdat_raw} and
+  #       ${is_delivered};;
+  # }
 
-  dimension: is_late {
-    hidden: no
-    type: yesno
-    sql: ${date__proof_of_delivery___podat_raw} > ${delivery_date_lfdat_raw} and
-         ${is_delivered};;
-  }
+  # dimension: is_late {
+  #   hidden: no
+  #   type: yesno
+  #   sql: ${date__proof_of_delivery___podat_raw} > ${delivery_date_lfdat_raw} and
+  #       ${is_delivered};;
+  # }
 
-  dimension: is_return {
-    #logic in deliveries table/view:
-    #  IF(likp.VBTYP IN ('H', 'K', 'N', 'O', 'T', '6') OR lips.SHKZG IN ('B', 'S', 'X'), 'X', '')
-    # replace 'X' with Yes else No
-    hidden: no
-    type: yesno
-    sql: ${TABLE}.IS_RETURN = 'X';;
-  }
+  # dimension: is_return {
+  #   #logic in deliveries table/view:
+  #   #  IF(likp.VBTYP IN ('H', 'K', 'N', 'O', 'T', '6') OR lips.SHKZG IN ('B', 'S', 'X'), 'X', '')
+  #   # replace 'X' with Yes else No
+  #   hidden: no
+  #   type: yesno
+  #   sql: ${TABLE}.IS_RETURN = 'X';;
+  # }
 
   dimension: is_blocked {
     hidden: no
@@ -191,43 +191,43 @@ view: +deliveries {
     sql: ${delivery_vbeln} ;;
   }
 
-  measure: count_deliveries {
-    hidden: no
-    description: "Count of Completed Deliveries"
-    type: count_distinct
-    sql: ${delivery_vbeln} ;;
-    filters: [is_delivered: "Yes"]
-  }
+  # measure: count_deliveries {
+  #   hidden: no
+  #   description: "Count of Completed Deliveries"
+  #   type: count_distinct
+  #   sql: ${delivery_vbeln} ;;
+  #   filters: [is_delivered: "Yes"]
+  # }
 
-  measure: count_on_time_deliveries {
-    hidden: no
-    type: count_distinct
-    sql: ${delivery_vbeln} ;;
-    filters: [is_delivered: "Yes",is_on_time: "Yes"]
-  }
+  # measure: count_on_time_deliveries {
+  #   hidden: no
+  #   type: count_distinct
+  #   sql: ${delivery_vbeln} ;;
+  #   filters: [is_delivered: "Yes",is_on_time: "Yes"]
+  # }
 
-  measure: count_late_deliveries {
-    hidden: no
-    type: count_distinct
-    sql: ${delivery_vbeln} ;;
-    filters: [is_delivered: "Yes",is_late: "Yes"]
-  }
+  # measure: count_late_deliveries {
+  #   hidden: no
+  #   type: count_distinct
+  #   sql: ${delivery_vbeln} ;;
+  #   filters: [is_delivered: "Yes",is_late: "Yes"]
+  # }
 
 
-  measure: percent_on_time_deliveries {
-    hidden: no
-    label: "Percent On Time Deliveries"
-    type: number
-    sql: safe_divide(${count_on_time_deliveries},${count_deliveries}) ;;
-    value_format_name: percent_1
-  }
+  # measure: percent_on_time_deliveries {
+  #   hidden: no
+  #   label: "Percent On Time Deliveries"
+  #   type: number
+  #   sql: safe_divide(${count_on_time_deliveries},${count_deliveries}) ;;
+  #   value_format_name: percent_1
+  # }
 
-  measure: percent_late_deliveries {
-    hidden: no
-    type: number
-    sql: safe_divide(${count_late_deliveries},${count_deliveries}) ;;
-    value_format_name: percent_1
-  }
+  # measure: percent_late_deliveries {
+  #   hidden: no
+  #   type: number
+  #   sql: safe_divide(${count_late_deliveries},${count_deliveries}) ;;
+  #   value_format_name: percent_1
+  # }
 
   measure: total_quantity_delivered {
     hidden: no
@@ -235,31 +235,55 @@ view: +deliveries {
     sql: ${actual_quantity_delivered_in_sales_units_lfimg} ;;
   }
 
-  measure: test_min_on_time {
+  measure: min_delivery_date_lfdat {
     hidden: no
-    type: min
-    sql: ${is_on_time} ;;
+    type: date
+    sql: min(${delivery_date_lfdat_raw}) ;;
   }
 
-  set: fields_for_sales {
-    fields: [ is_delivered,
-              is_on_time,
-              is_late,
-              is_return,
-              is_blocked,
-              count_delivery_vbeln,
-              count_delivery_line_items,
-              count_deliveries,
-              count_on_time_deliveries,
-              count_late_deliveries,
-              percent_on_time_deliveries,
-              percent_late_deliveries,
-              total_quantity_delivered,
-              date__proof_of_delivery___podat_date,
-              proof_of_delivery_timestamp,
-              delivery_date_lfdat_date,
-              test_min_on_time
-              ]
+  measure: max_delivery_date_lfdat {
+    hidden: no
+    type: date
+    sql: max(${delivery_date_lfdat_raw}) ;;
   }
+
+  measure: max_proof_of_delivery_date_podat  {
+    hidden: no
+    type: date_time
+    sql: max(${date__proof_of_delivery___podat_raw}) ;;
+  }
+
+  measure: max_proof_of_delivery_timestamp  {
+    hidden: no
+    type: date_time
+    sql: max(${proof_of_delivery_timestamp}) ;;
+  }
+
+  # measure: test_min_on_time {
+  #   hidden: no
+  #   type: min
+  #   sql: ${is_on_time} ;;
+  # }
+
+  # set: fields_for_sales {
+  #   fields: [ is_delivered,
+  #             is_on_time,
+  #             is_late,
+  #             is_return,
+  #             is_blocked,
+  #             count_delivery_vbeln,
+  #             count_delivery_line_items,
+  #             count_deliveries,
+  #             count_on_time_deliveries,
+  #             count_late_deliveries,
+  #             percent_on_time_deliveries,
+  #             percent_late_deliveries,
+  #             total_quantity_delivered,
+  #             date__proof_of_delivery___podat_date,
+  #             proof_of_delivery_timestamp,
+  #             delivery_date_lfdat_date,
+  #             test_min_on_time
+  #             ]
+  # }
 
 }

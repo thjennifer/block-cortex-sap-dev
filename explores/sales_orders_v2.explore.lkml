@@ -7,7 +7,7 @@ include: "/views/core/currency_conversion_sdt.view"
 include: "/views/core/language_map_sdt.view"
 include: "/views/core/sales_order_schedule_line_sdt.view"
 include: "/views/core/deliveries_rfn.view"
-
+include: "/views/core/sales_order_item_delivery_summary_ndt.view.lkml"
 
 # included _md views for labels
 include: "/views/core/materials_md_rfn.view"
@@ -67,9 +67,7 @@ explore: sales_orders_v2 {
     sql_on: ${sales_orders_v2.material_number_matnr}=${materials_md.material_number_matnr} and
             ${sales_orders_v2.client_mandt}=${materials_md.client_mandt} and
             ${language_map_sdt.language_spras} = ${materials_md.language_spras};;
-    fields: [material_text_maktx]
-
-  }
+      }
 
   join: sales_organizations_md {
     view_label: "Sales Orders"
@@ -148,7 +146,16 @@ explore: sales_orders_v2 {
     sql_on: ${sales_orders_v2.client_mandt} = ${deliveries.client_mandt} and
             ${sales_orders_v2.sales_document_vbeln} = ${deliveries.sales_order_number_vgbel} and
             ${sales_orders_v2.item_posnr} = ${deliveries.sales_order_item_vgpos} ;;
-    fields: [deliveries.fields_for_sales*]
+    # fields: [deliveries.fields_for_sales*]
+  }
+
+  join: sales_order_item_delivery_summary_ndt {
+    view_label: "Sales Orders Delivery Summary"
+    type: inner
+    relationship: one_to_one
+    sql_on: ${sales_orders_v2.client_mandt} = ${sales_order_item_delivery_summary_ndt.client_mandt} and
+            ${sales_orders_v2.sales_document_vbeln} = ${sales_order_item_delivery_summary_ndt.sales_document_vbeln} and
+            ${sales_orders_v2.item_posnr} = ${sales_order_item_delivery_summary_ndt.item_posnr} ;;
   }
 
   join: across_sales_and_deliveries_xvw {

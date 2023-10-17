@@ -15,17 +15,17 @@ view: across_sales_and_deliveries_xvw {
   }
 
 
-  dimension: is_in_full {
-    type: yesno
-    sql: ${deliveries.is_delivered} and ${sales_orders_v2.cumulative_order_quantity_kwmeng}=${deliveries.actual_quantity_delivered_in_sales_units_lfimg} ;;
-  }
+  # dimension: is_in_full {
+  #   type: yesno
+  #   sql: ${deliveries.is_delivered} and ${sales_orders_v2.cumulative_order_quantity_kwmeng}=${deliveries.actual_quantity_delivered_in_sales_units_lfimg} ;;
+  # }
 
-  dimension: is_otif {
-    label: "Is OTIF Delivery"
-    description: "Delivery is On Time and In Full"
-    type: yesno
-    sql: ${is_in_full} and ${deliveries.is_on_time} ;;
-  }
+  # dimension: is_otif {
+  #   label: "Is OTIF Delivery"
+  #   description: "Delivery is On Time and In Full"
+  #   type: yesno
+  #   sql: ${is_in_full} and ${deliveries.is_on_time} ;;
+  # }
 
   dimension: order_cycle_time {
     hidden: no
@@ -35,37 +35,37 @@ view: across_sales_and_deliveries_xvw {
         end;;
   }
 
-  measure: count_in_full_deliveries {
-    hidden: yes
-    description: "Count of Deliveries where Quantity is Delivered in Full"
-    type: count_distinct
-    sql: ${deliveries.delivery_vbeln} ;;
-    filters: [is_in_full: "Yes"]
-  }
+  # measure: count_in_full_deliveries {
+  #   hidden: yes
+  #   description: "Count of Deliveries where Quantity is Delivered in Full"
+  #   type: count_distinct
+  #   sql: ${deliveries.delivery_vbeln} ;;
+  #   filters: [is_in_full: "Yes"]
+  # }
 
-  measure: count_otif_deliveries {
-    hidden: yes
-    label: "Count OTIF Deliveries"
-    description: "Count of Deliveries On Time and In Full"
-    type: count_distinct
-    sql: ${deliveries.delivery_vbeln} ;;
-    filters: [is_otif: "Yes"]
-  }
+  # measure: count_otif_deliveries {
+  #   hidden: yes
+  #   label: "Count OTIF Deliveries"
+  #   description: "Count of Deliveries On Time and In Full"
+  #   type: count_distinct
+  #   sql: ${deliveries.delivery_vbeln} ;;
+  #   filters: [is_otif: "Yes"]
+  # }
 
-  measure: percent_in_full_deliveries {
-    description: "Percent of Deliveries where Quantity is Delivered in Full"
-    type: number
-    sql: safe_divide(${count_in_full_deliveries},${deliveries.count_deliveries}) ;;
-    value_format_name: percent_1
-  }
+  # measure: percent_in_full_deliveries {
+  #   description: "Percent of Deliveries where Quantity is Delivered in Full"
+  #   type: number
+  #   sql: safe_divide(${count_in_full_deliveries},${deliveries.count_deliveries}) ;;
+  #   value_format_name: percent_1
+  # }
 
-  measure: percent_otif_deliveries {
-    label: "Percent OTIF Deliveries"
-    description: "Percent of Deliveries On Time and In Full"
-    type: number
-    sql: safe_divide(${count_otif_deliveries},${deliveries.count_deliveries}) ;;
-    value_format_name: percent_1
-  }
+  # measure: percent_otif_deliveries {
+  #   label: "Percent OTIF Deliveries"
+  #   description: "Percent of Deliveries On Time and In Full"
+  #   type: number
+  #   sql: safe_divide(${count_otif_deliveries},${deliveries.count_deliveries}) ;;
+  #   value_format_name: percent_1
+  # }
 
   measure: avg_distinct_order_cycle_time {
     type: average_distinct
