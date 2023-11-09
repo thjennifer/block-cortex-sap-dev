@@ -1,5 +1,5 @@
 view: sales_orders_v2 {
-  sql_table_name: `thjennifer3.CORTEX_SAP_REPORTING.SalesOrders_V2` ;;
+  sql_table_name: `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.SalesOrders_V2` ;;
 
   dimension: account_assignment_category_knttp {
     type: string

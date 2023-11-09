@@ -9,19 +9,26 @@ view: sales_order_item_delivery_summary_ndt {
     explore_source: sales_orders_v2 {
       column: client_mandt {field: sales_orders_v2.client_mandt}
       column: sales_document_vbeln {field: sales_orders_v2.sales_document_vbeln}
+      column: document_category_vbtyp { field: sales_orders_v2.document_category_vbtyp}
       column: item_posnr {field: sales_orders_v2.item_posnr}
-      column: total_quantity_ordered {}
+      column: material_number_matnr { field: sales_orders_v2.material_number_matnr}
+      column: creation_timestamp { field: sales_orders_v2.creation_timestamp }
+      column: requested_delivery_date_vdatu { field: sales_orders_v2.requested_delivery_date_vdatu_raw }
+      column: total_quantity_ordered { field: sales_orders_v2.total_quantity_ordered }
       column: total_quantity_delivered { field: deliveries.total_quantity_delivered }
       column: min_delivery_date_lfdat { field: deliveries.min_delivery_date_lfdat }
       column: max_proof_of_delivery_date_podat { field: deliveries.max_proof_of_delivery_date_podat }
+      column: max_proof_of_delivery_timestamp { field: deliveries.max_proof_of_delivery_timestamp }
+      column: min_actual_goods_movement_date_wadat_ist { field: deliveries.min_actual_goods_movement_date_wadat_ist }
+
       derived_column: is_order_in_full {
         sql: min(total_quantity_ordered = total_quantity_delivered) over (partition by  client_mandt, sales_document_vbeln)  ;;
       }
       derived_column: is_order_on_time {
-        sql: min(if(max_proof_of_delivery_date_podat is null,null, max_proof_of_delivery_date_podat <= min_delivery_date_lfdat)) over (partition by  client_mandt, sales_document_vbeln) ;;
+        sql: min(if(max_proof_of_delivery_date_podat is null,null, max_proof_of_delivery_date_podat <= requested_delivery_date_vdatu)) over (partition by  client_mandt, sales_document_vbeln) ;;
       }
       derived_column: is_order_late {
-        sql: max(if(max_proof_of_delivery_date_podat is null,null,max_proof_of_delivery_date_podat > min_delivery_date_lfdat)) over (partition by client_mandt,  sales_document_vbeln) ;;
+        sql: max(if(max_proof_of_delivery_date_podat is null,null,max_proof_of_delivery_date_podat > requested_delivery_date_vdatu)) over (partition by client_mandt,  sales_document_vbeln) ;;
       }
       derived_column: is_order_delivered {
         sql: min(max_proof_of_delivery_date_podat is not null) over (partition by client_mandt, sales_document_vbeln) ;;
@@ -46,9 +53,24 @@ view: sales_order_item_delivery_summary_ndt {
     label: "Sales Document VBELN"
     description: "Sales Order Number"
   }
+
+  dimension: document_category_vbtyp {
+    type: string
+  }
+
   dimension: item_posnr {
     label: "Item POSNR"
     description: "Item Number"
+  }
+
+  dimension: requested_delivery_date_vadtu {
+    type: date
+  }
+
+  dimension: material_number_matnr {}
+
+  dimension: creation_timestamp {
+    hidden: no
   }
 
   dimension: total_quantity_ordered {
@@ -62,11 +84,27 @@ view: sales_order_item_delivery_summary_ndt {
   }
   dimension: min_delivery_date_lfdat {
     description: "Line Item's Minimum Delivery Date LFDAT"
-    type: number
+    hidden: no
+    type: date
   }
   dimension: max_proof_of_delivery_date_podat {
+    hidden: no
     description: "Line Item's Maximum Proof of Delivery Date PODAT"
-    type: number
+    type: date
+  }
+
+  dimension: max_proof_of_delivery_timestamp {
+    hidden: no
+    description: "Line Item's Maximum Proof of Delivery Date & Time PODAT"
+    type: date_time
+    sql: timestamp(${TABLE}.max_proof_of_delivery_timestamp) ;;
+  }
+
+  dimension: min_actual_goods_movement_date_wadat_ist {
+    hidden: no
+    description: "Line Item's Maximum Goods Movement Date (WADAT IST)"
+    type: date
+    sql: ${TABLE}.min_actual_goods_movement_date_wadat_ist ;;
   }
 
   # dimension: is_item_delivered {
@@ -101,6 +139,7 @@ view: sales_order_item_delivery_summary_ndt {
     hidden: no
     description: "All items in order have been delivered on time (Proof of Delivery before or on Requested Delivery Date)"
     type: string
+    # sql: ${TABLE}.is_order_on_time ;;
     sql: case ${TABLE}.is_order_on_time
             when true then 'Yes'
             when false then 'No'
@@ -148,6 +187,15 @@ view: sales_order_item_delivery_summary_ndt {
     sql: ${TABLE}.is_order_any_item_delivered ;;
   }
 
+  dimension: item_order_cycle_time {
+    hidden: no
+    label: "Order Cycle Time (Days)"
+    sql: case when ${min_actual_goods_movement_date_wadat_ist} is not null then
+        timestamp_diff(timestamp(${max_proof_of_delivery_timestamp}),timestamp(${creation_timestamp}),DAY)
+        end;;
+  }
+
+
   measure: count_orders_delivered {
     type: count_distinct
     sql: ${sales_document_vbeln} ;;
@@ -178,11 +226,43 @@ view: sales_order_item_delivery_summary_ndt {
     filters: [is_order_delivered: "Yes",is_order_otif: "Yes"]
   }
 
+  # measure: percent_orders_delivered_on_time {
+  #   hidden: no
+  #   description: "% of orders delivered on time"
+  #   type: number
+  #   sql: safe_divide(${count_orders_delivered_on_time}, ${count_orders_delivered}) ;;
+  #   value_format_name: percent_1
+  # }
+
+  # measure: percent_orders_delivered_late {
+  #   hidden: no
+  #   description: "% of orders delivered late"
+  #   type: number
+  #   sql: safe_divide(${count_orders_delivered_late}, ${count_orders_delivered}) ;;
+  #   value_format_name: percent_1
+  # }
+
+  # measure: percent_orders_delivered_in_full {
+  #   hidden: no
+  #   description: "% of orders delivered in full (delivered quantity equals ordered quantity for all items in order)"
+  #   type: number
+  #   sql: safe_divide(${count_orders_delivered_in_full}, ${count_orders_delivered}) ;;
+  #   value_format_name: percent_1
+  # }
+
+  # measure: percent_orders_delivered_otif {
+  #   hidden: no
+  #   description: "% of orders delivered in full (delivered quantity equals ordered quantity for all items in order)"
+  #   type: number
+  #   sql: safe_divide(${count_orders_delivered_otif}, ${count_orders_delivered}) ;;
+  #   value_format_name: percent_1
+  # }
+
   measure: percent_orders_delivered_on_time {
     hidden: no
     description: "% of orders delivered on time"
     type: number
-    sql: safe_divide(${count_orders_delivered_on_time}, ${count_orders_delivered}) ;;
+    sql: safe_divide(${count_orders_delivered_on_time}, ${sales_orders_v2.count_orders}) ;;
     value_format_name: percent_1
   }
 
@@ -190,7 +270,7 @@ view: sales_order_item_delivery_summary_ndt {
     hidden: no
     description: "% of orders delivered late"
     type: number
-    sql: safe_divide(${count_orders_delivered_late}, ${count_orders_delivered}) ;;
+    sql: safe_divide(${count_orders_delivered_late}, ${sales_orders_v2.count_orders}) ;;
     value_format_name: percent_1
   }
 
@@ -198,7 +278,7 @@ view: sales_order_item_delivery_summary_ndt {
     hidden: no
     description: "% of orders delivered in full (delivered quantity equals ordered quantity for all items in order)"
     type: number
-    sql: safe_divide(${count_orders_delivered_in_full}, ${count_orders_delivered}) ;;
+    sql: safe_divide(${count_orders_delivered_in_full}, ${sales_orders_v2.count_orders}) ;;
     value_format_name: percent_1
   }
 
@@ -206,8 +286,19 @@ view: sales_order_item_delivery_summary_ndt {
     hidden: no
     description: "% of orders delivered in full (delivered quantity equals ordered quantity for all items in order)"
     type: number
-    sql: safe_divide(${count_orders_delivered_otif}, ${count_orders_delivered}) ;;
+    sql: safe_divide(${count_orders_delivered_otif}, ${sales_orders_v2.count_orders}) ;;
     value_format_name: percent_1
+  }
+
+
+  measure: avg_order_cycle_time {
+    hidden: no
+    type: average
+    label: "Item Average Cycle Time per Order (Days)"
+    description: "Item's Average Cycle Time per Order (Days between Order and Delivery). Must always include Item Number or Name with this measure."
+    sql: ${item_order_cycle_time} ;;
+    value_format_name: decimal_1
+    required_fields: [material_number_matnr]
   }
 
 }

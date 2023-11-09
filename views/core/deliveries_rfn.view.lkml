@@ -259,6 +259,12 @@ view: +deliveries {
     sql: max(${proof_of_delivery_timestamp}) ;;
   }
 
+  measure: min_actual_goods_movement_date_wadat_ist {
+    hidden: no
+    type: date_time
+    sql: min(${actual_goods_movement_date_wadat_ist_raw}) ;;
+  }
+
   # measure: test_min_on_time {
   #   hidden: no
   #   type: min

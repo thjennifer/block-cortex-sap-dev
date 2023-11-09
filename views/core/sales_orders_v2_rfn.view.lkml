@@ -36,13 +36,13 @@ view: +sales_orders_v2 {
 #### Filters & Parameters
 #{
 
-  # filter: date_filter {
-  #   hidden: no
-  #   view_label: "Filters"
-  #   type: date
-  #   # for tables partitioned by date capture start and end dates and apply as a templated filter
-  #   # in the Explore's sql_always_where statement
-  # }
+  filter: date_filter {
+    hidden: no
+    view_label: "Filters"
+    type: date
+    # for tables partitioned by date capture start and end dates and apply as a templated filter
+    # in the Explore's sql_always_where statement
+  }
 
 #}
 
@@ -127,7 +127,7 @@ view: +sales_orders_v2 {
     hidden: no
     type: yesno
     view_label: "Sales Orders Items"
-    sql: ${rejection_reason_abgru} is not null ;;
+    sql: ${rejection_reason_abgru} is not null and ${rejection_reason_abgru} <> '' ;;
   }
 
   #}
@@ -199,9 +199,9 @@ view: +sales_orders_v2 {
 
 # }
 
-  measure: count {
+  measure: count_document_line_items {
     hidden: no
-    label: "Count of Document Items"
+    label: "Count Document Line Items"
     description: "Count of Documents & Items"
     }
 
@@ -268,13 +268,13 @@ view: +sales_orders_v2 {
     filters: [is_cancelled: "Yes"]
   }
 
-  measure: percent_items_cancelled {
-#### review: matches existing calculation but is incorrect calculation
-    hidden: no
-    type: number
-    sql: safe_divide(${count_items_cancelled},${count_orders}) ;;
-    value_format_name: percent_1
-  }
+#   measure: percent_items_cancelled {
+# #### review: matches existing calculation but is incorrect calculation
+#     hidden: no
+#     type: number
+#     sql: safe_divide(${count_items_cancelled},${count_orders}) ;;
+#     value_format_name: percent_1
+#   }
 
   measure: percent_orders_with_cancellation {
     hidden: no

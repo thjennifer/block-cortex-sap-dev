@@ -1,5 +1,5 @@
 view: materials_md {
-  sql_table_name: `thjennifer3.CORTEX_SAP_REPORTING.MaterialsMD` ;;
+  sql_table_name: `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.MaterialsMD` ;;
 
   dimension: acceptance_at_origin_weora {
     type: string

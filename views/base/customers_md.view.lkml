@@ -1,5 +1,5 @@
 view: customers_md {
-  sql_table_name: `thjennifer3.CORTEX_SAP_REPORTING.CustomersMD` ;;
+  sql_table_name: `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.CustomersMD` ;;
 
   dimension: account_number_fiscal_address_fiskn {
     type: string

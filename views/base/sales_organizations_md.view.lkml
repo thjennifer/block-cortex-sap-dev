@@ -1,5 +1,5 @@
 view: sales_organizations_md {
-  sql_table_name: `thjennifer3.CORTEX_SAP_REPORTING.SalesOrganizationsMD` ;;
+  sql_table_name: `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.SalesOrganizationsMD` ;;
 
   dimension: client_mandt {
     type: string

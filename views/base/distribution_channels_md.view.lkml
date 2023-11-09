@@ -1,5 +1,5 @@
 view: distribution_channels_md {
-  sql_table_name: `thjennifer3.CORTEX_SAP_REPORTING.DistributionChannelsMD` ;;
+  sql_table_name: `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.DistributionChannelsMD` ;;
 
   dimension: client_mandt {
     type: string

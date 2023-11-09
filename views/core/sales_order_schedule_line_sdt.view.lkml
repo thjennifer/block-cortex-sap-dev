@@ -22,7 +22,7 @@ view: sales_order_schedule_line_sdt {
               SalesDocument_VBELN,
               SalesDocumentItem_POSNR,
               COALESCE(SUM(ConfirmedQuantity_BMENG ), 0) AS ConfirmedQuantity_BMENG
-          FROM `thjennifer3.CORTEX_SAP_REPORTING.SalesOrderScheduleLine`
+          FROM `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.SalesOrderScheduleLine`
           GROUP BY
               Client_MANDT,
               SalesDocument_VBELN,

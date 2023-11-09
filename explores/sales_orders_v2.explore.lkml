@@ -8,6 +8,7 @@ include: "/views/core/language_map_sdt.view"
 include: "/views/core/sales_order_schedule_line_sdt.view"
 include: "/views/core/deliveries_rfn.view"
 include: "/views/core/sales_order_item_delivery_summary_ndt.view.lkml"
+include: "/views/core/returns_sdt.view.lkml"
 
 # included _md views for labels
 include: "/views/core/materials_md_rfn.view"
@@ -20,6 +21,7 @@ include: "/views/core/countries_md_rfn.view"
 # field-only views
 include: "/views/core/across_sales_and_currency_conversion_xvw.view"
 include: "/views/core/across_sales_and_deliveries_xvw.view"
+include: "/views/core/across_sales_and_returns_xvw.view"
 
 # dashboard navigation
 include: "/views/core/navigation_sales_otc_ext.view"
@@ -28,16 +30,15 @@ explore: sales_orders_v2 {
   label: "Sales Orders"
 
   sql_always_where: ${sales_orders_v2.client_mandt}='@{CLIENT}'
-  ;;
 
-  # and
-  #     {% if sales_orders_v2.date_filter._is_filtered %}
-  #     {% condition sales_orders_v2.date_filter %} timestamp(${sales_orders_v2.creation_date_erdat_raw}) {% endcondition %}
-  #     {% else %}
-  #     --filter to last 3 years by default
-  #     ${sales_orders_v2.creation_date_erdat_raw} >= date_sub(current_date,interval 10 YEAR)
-  #     {% endif %}
-
+  and
+      {% if sales_orders_v2.date_filter._is_filtered %}
+      {% condition sales_orders_v2.date_filter %} timestamp(${sales_orders_v2.creation_date_erdat_raw}) {% endcondition %}
+      {% else %}
+      --filter to last 3 years by default
+      ${sales_orders_v2.creation_date_erdat_raw} >= date_sub(current_date,interval 3 YEAR)
+      {% endif %}
+;;
   # and {% if currency_conversion_sdt._in_query and sales_orders_v2.date_filter._is_filtered %}
   #     {% condition sales_orders_v2.date_filter %} timestamp(${currency_conversion_sdt.conv_date}) {% endcondition %}
   #     {% elsif currency_conversion_sdt._in_query %}
@@ -62,7 +63,7 @@ explore: sales_orders_v2 {
 
   join: materials_md {
     view_label: "Sales Orders Items"
-    type: left_outer
+    type: inner
     relationship: one_to_many
     sql_on: ${sales_orders_v2.material_number_matnr}=${materials_md.material_number_matnr} and
             ${sales_orders_v2.client_mandt}=${materials_md.client_mandt} and
@@ -158,6 +159,16 @@ explore: sales_orders_v2 {
             ${sales_orders_v2.item_posnr} = ${sales_order_item_delivery_summary_ndt.item_posnr} ;;
   }
 
+  join: returns_sdt {
+    view_label: "Sales Orders Items"
+    type: left_outer
+    relationship: one_to_many
+    sql_on:  ${sales_orders_v2.client_mandt} = ${returns_sdt.client_mandt} and
+            ${sales_orders_v2.sales_document_vbeln} = ${returns_sdt.reference_sales_document_vbeln} and
+            ${sales_orders_v2.item_posnr} = ${returns_sdt.reference_item_posnr} ;;
+    fields: [returns_sdt.is_return, returns_sdt.count_returns]
+  }
+
   join: across_sales_and_deliveries_xvw {
     view_label: "Deliveries"
     relationship: one_to_one
@@ -168,6 +179,11 @@ explore: sales_orders_v2 {
     relationship: one_to_one
     sql:  ;;
   }
+
+  join: across_sales_and_returns_xvw {
+    relationship: one_to_one
+    sql:  ;;
+}
 
   join: navigation_sales_otc_ext {
     view_label: "Dashboard Navigation"

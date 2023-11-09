@@ -1,5 +1,5 @@
-- dashboard: sales_order_details
-  title: Sales Order Details
+- dashboard: sales_order_status_details
+  title: Sales Order Status Details
   layout: newspaper
   preferred_viewer: dashboards-next
   crossfilter_enabled: true

@@ -94,8 +94,8 @@
     name: Products with Longest Average Order Cycle Time
     explore: sales_orders_v2
     type: looker_bar
-    fields: [materials_md.material_number_matnr,materials_md.material_text_maktx, across_sales_and_deliveries_xvw.avg_distinct_order_cycle_time]
-    sorts: [across_sales_and_deliveries_xvw.avg_distinct_order_cycle_time desc]
+    fields: [materials_md.material_number_matnr,materials_md.material_text_maktx, sales_order_item_delivery_summary_ndt.avg_order_cycle_time]
+    sorts: [sales_order_item_delivery_summary_ndt.avg_order_cycle_time desc]
     hidden_fields: [materials_md.material_number_matnr]
     x_axis_gridlines: false
     y_axis_gridlines: true

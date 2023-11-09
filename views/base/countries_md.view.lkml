@@ -1,5 +1,5 @@
 view: countries_md {
-  sql_table_name: `thjennifer3.CORTEX_SAP_REPORTING.CountriesMD` ;;
+  sql_table_name: `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.CountriesMD` ;;
 
   dimension: alternative_country_key_landa {
     type: string

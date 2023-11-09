@@ -27,13 +27,13 @@ view: across_sales_and_deliveries_xvw {
   #   sql: ${is_in_full} and ${deliveries.is_on_time} ;;
   # }
 
-  dimension: order_cycle_time {
-    hidden: no
-    label: "Order Cycle Time (Days)"
-    sql: case when ${deliveries.actual_goods_movement_date_wadat_ist_raw} is not null then
-        timestamp_diff(timestamp(${deliveries.proof_of_delivery_timestamp}),${sales_orders_v2.creation_timestamp},DAY)
-        end;;
-  }
+  # dimension: order_cycle_time {
+  #   hidden: no
+  #   label: "Order Cycle Time (Days)"
+  #   sql: case when ${deliveries.actual_goods_movement_date_wadat_ist_raw} is not null then
+  #       timestamp_diff(timestamp(${deliveries.proof_of_delivery_timestamp}),${sales_orders_v2.creation_timestamp},DAY)
+  #       end;;
+  # }
 
   # measure: count_in_full_deliveries {
   #   hidden: yes
@@ -67,18 +67,18 @@ view: across_sales_and_deliveries_xvw {
   #   value_format_name: percent_1
   # }
 
-  measure: avg_distinct_order_cycle_time {
-    type: average_distinct
-    sql_distinct_key: ${deliveries.delivery_vbeln} ;;
-    sql: ${order_cycle_time} ;;
-    value_format_name: decimal_1
-  }
+  # measure: avg_distinct_order_cycle_time {
+  #   type: average_distinct
+  #   sql_distinct_key: ${deliveries.delivery_vbeln} ;;
+  #   sql: ${order_cycle_time} ;;
+  #   value_format_name: decimal_1
+  # }
 
-  measure: avg_order_cycle_time {
-    type: average
-    sql: ${order_cycle_time} ;;
-    value_format_name: decimal_1
-  }
+  # measure: avg_order_cycle_time {
+  #   type: average
+  #   sql: ${order_cycle_time} ;;
+  #   value_format_name: decimal_1
+  # }
 
   measure: fill_rate_using_deliveries {
     type: number
@@ -99,6 +99,25 @@ view: across_sales_and_deliveries_xvw {
     sql:  concat(${sales_orders_v2.sales_document_vbeln},${sales_orders_v2.item_posnr});;
     filters: [deliveries.is_blocked: "Yes"]
   }
+
+  measure: difference_order_lines_delivery_lines {
+    type: number
+    sql: ${sales_orders_v2.count} - ${deliveries.count_delivery_line_items};;
+    value_format_name: decimal_0
+  }
+
+  measure: difference_delivery_lines_order_lines {
+    type: number
+    sql:  ${deliveries.count_delivery_line_items} - ${sales_orders_v2.count};;
+    value_format_name: decimal_0
+  }
+
+  measure: percent_difference_order_lines_delivery_lines {
+    type: number
+    sql: safe_divide(${deliveries.count_delivery_line_items},${sales_orders_v2.count});;
+    value_format_name: percent_1
+  }
+
 
   # measure: avg_order_cycle_time_per_item {
   #   type: average

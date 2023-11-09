@@ -1,5 +1,5 @@
 view: one_touch_order {
-  sql_table_name: `thjennifer3.CORTEX_SAP_REPORTING.OneTouchOrder` ;;
+  sql_table_name: `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.OneTouchOrder` ;;
 
   dimension: actual_billed_quantity_fkimg {
     type: number

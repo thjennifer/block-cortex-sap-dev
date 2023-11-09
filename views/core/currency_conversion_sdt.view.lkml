@@ -21,9 +21,15 @@ view: currency_conversion_sdt {
       from `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.CurrencyConversion`
       where Client_MANDT = '@{CLIENT_ID}'
       and ExchangeRateType_KURST = {% parameter select_exchange_rate_type_kurst %}
-      --and ToCurrency_TCURR = {% parameter select_target_currency %}
-      and {% condition select_local_currency %} ToCurrency_TCURR {% endcondition %}
-      and {% condition partition_date_filter %} timestamp(ConvDate) {% endcondition %}
+      and ToCurrency_TCURR = {% parameter select_local_currency %}
+      --and {% condition select_local_currency %} ToCurrency_TCURR {% endcondition %}
+      and
+        {% if _explore._name == 'sales_orders_v2' %}
+            {% condition sales_orders_v2.date_filter %} timestamp(ConvDate) {% endcondition %}
+        {% else %}
+
+          {% condition partition_date_filter %} timestamp(ConvDate) {% endcondition %}
+        {% endif %}
       ;;
   }
 
@@ -37,42 +43,43 @@ view: currency_conversion_sdt {
     type: date
   }
 
-  filter: select_local_currency {
+  parameter: select_local_currency {
     type: string
     # default_value: "USD" default will be populated by dashboard filter using user_attribute sap_default_local_currency
     suggest_explore: local_currency_list
     suggest_dimension: to_currency_tcurr
-
+    default_value: "USD"
   }
 
   parameter: select_exchange_rate_type_kurst {
     type: string
+    label: "Select Exchange Rate Type KURST"
     default_value: "M"
     suggest_explore: local_currency_list
     suggest_dimension: exchange_rate_type_kurst
   }
 
-  parameter: select_target_currency {
-    type: string
-    allowed_value: {
-      label: "USD"
-      value: "USD"
-    }
-    allowed_value: {
-      label: "EUR"
-      value: "EUR"
-    }
-    allowed_value: {
-      label: "CAD"
-      value: "CAD"
-    }
-    allowed_value: {
-      label: "JPY"
-      value: "JPY"
-    }
-    hidden: no
-    default_value: "USD"
-  }
+  # parameter: select_target_currency {
+  #   type: string
+  #   allowed_value: {
+  #     label: "USD"
+  #     value: "USD"
+  #   }
+  #   allowed_value: {
+  #     label: "EUR"
+  #     value: "EUR"
+  #   }
+  #   allowed_value: {
+  #     label: "CAD"
+  #     value: "CAD"
+  #   }
+  #   allowed_value: {
+  #     label: "JPY"
+  #     value: "JPY"
+  #   }
+  #   hidden: no
+  #   default_value: "USD"
+  # }
 
   dimension: client_mandt {
     label: "Client MANDT"

@@ -19,13 +19,13 @@ view: +materials_md {
                 ,MaterialNumber_MATNR
                 ,Language_SPRAS
                 ,MaterialText_MAKTX
-        from `thjennifer3.CORTEX_SAP_REPORTING.MaterialsMD`
+        from `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.MaterialsMD`
         union all
         select Client_MANDT
                 ,MaterialNumber_MATNR
                 ,'S' Language_SPRAS
                 ,'portatil para jeugos' MaterialText_MAKTX
-        from `thjennifer3.CORTEX_SAP_REPORTING.MaterialsMD`
+        from `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.MaterialsMD`
         where MaterialNumber_MATNR = 'C0000077') m
         join ${language_map_sdt.SQL_TABLE_NAME} l on m.Language_SPRAS = l.Language_SPRAS
 

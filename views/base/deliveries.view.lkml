@@ -1,5 +1,5 @@
 view: deliveries {
-  sql_table_name: `thjennifer3.CORTEX_SAP_REPORTING.Deliveries` ;;
+  sql_table_name: `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.Deliveries` ;;
 
   dimension: account_assignment_category_knttp {
     type: string

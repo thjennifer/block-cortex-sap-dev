@@ -1,5 +1,5 @@
 view: languages_t002 {
-  sql_table_name: `thjennifer3.CORTEX_SAP_REPORTING.Languages_T002` ;;
+  sql_table_name: `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.Languages_T002` ;;
 
   dimension: degree_of_translation_of_language_lahq {
     type: string

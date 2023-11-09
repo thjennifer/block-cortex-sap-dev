@@ -6,7 +6,7 @@ view: navigation_sales_otc_ext {
   dimension: dashBindings {
     hidden: yes
     type: string
-    sql: 'sales_order_fulfillment|Order Fulfillment||sales_order_status_snapshot|Order Status Snapshot||cortex_sap_operational_v2::sales_order_details|Order Details' ;;
+    sql: 'sales_order_fulfillment|Order Fulfillment||sales_order_snapshot|Order Snapshot||sales_order_status_details|Order Status Details' ;;
   }
 
   dimension: filterBindings {
