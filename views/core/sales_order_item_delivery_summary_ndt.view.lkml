@@ -12,6 +12,7 @@ view: sales_order_item_delivery_summary_ndt {
       column: document_category_vbtyp { field: sales_orders_v2.document_category_vbtyp}
       column: item_posnr {field: sales_orders_v2.item_posnr}
       column: material_number_matnr { field: sales_orders_v2.material_number_matnr}
+      column: is_item_cancelled { field: sales_orders_v2.is_item_cancelled }
       column: creation_timestamp { field: sales_orders_v2.creation_timestamp }
       column: requested_delivery_date_vdatu { field: sales_orders_v2.requested_delivery_date_vdatu_raw }
       column: total_quantity_ordered { field: sales_orders_v2.total_quantity_ordered }
@@ -35,6 +36,14 @@ view: sales_order_item_delivery_summary_ndt {
       }
       derived_column: is_order_any_item_delivered {
         sql: max(max_proof_of_delivery_date_podat is not null) over (partition by client_mandt, sales_document_vbeln) ;;
+      }
+
+      derived_column: is_order_any_item_cancelled {
+        sql: max(is_item_cancelled) over (partition by client_mandt, sales_document_vbeln);;
+      }
+
+      derived_column: is_order_cancelled {
+        sql:min(is_item_cancelled) over (partition by client_mandt, sales_document_vbeln);;
       }
       bind_all_filters: yes
     }
@@ -186,6 +195,21 @@ view: sales_order_item_delivery_summary_ndt {
     type: yesno
     sql: ${TABLE}.is_order_any_item_delivered ;;
   }
+
+  dimension: is_order_any_item_cancelled {
+    hidden: no
+    type: yesno
+    description: "At least 1 item in order has been cancelled"
+    sql: ${TABLE}.is_order_any_item_cancelled ;;
+
+  }
+
+  dimension: is_order_cancelled {
+    hidden: no
+    description: "All items in order have been cancelled"
+    type: yesno
+    sql: ${TABLE}.is_order_cancelled ;;
+    }
 
   dimension: item_order_cycle_time {
     hidden: no

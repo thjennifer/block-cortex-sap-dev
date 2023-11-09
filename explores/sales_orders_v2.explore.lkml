@@ -7,8 +7,9 @@ include: "/views/core/currency_conversion_sdt.view"
 include: "/views/core/language_map_sdt.view"
 include: "/views/core/sales_order_schedule_line_sdt.view"
 include: "/views/core/deliveries_rfn.view"
-include: "/views/core/sales_order_item_delivery_summary_ndt.view.lkml"
+include: "/views/core/sales_order_item_delivery_summary_ndt.view"
 include: "/views/core/returns_sdt.view.lkml"
+include: "/views/core/sales_order_item_billing_summary_sdt.view"
 
 # included _md views for labels
 include: "/views/core/materials_md_rfn.view"
@@ -22,6 +23,7 @@ include: "/views/core/countries_md_rfn.view"
 include: "/views/core/across_sales_and_currency_conversion_xvw.view"
 include: "/views/core/across_sales_and_deliveries_xvw.view"
 include: "/views/core/across_sales_and_returns_xvw.view"
+include: "/views/core/across_sales_and_billing_summary_xvw.view"
 
 # dashboard navigation
 include: "/views/core/navigation_sales_otc_ext.view"
@@ -169,6 +171,17 @@ explore: sales_orders_v2 {
     fields: [returns_sdt.is_return, returns_sdt.count_returns]
   }
 
+  join: sales_order_item_billing_summary_sdt {
+    view_label: "Sales Orders Billing Summary"
+    type: left_outer
+    relationship: one_to_one
+    sql_on:  ${sales_orders_v2.client_mandt} = ${sales_order_item_billing_summary_sdt.client_mandt} and
+    ${sales_orders_v2.sales_document_vbeln} = ${sales_order_item_billing_summary_sdt.sales_document_vbeln} and
+    ${sales_orders_v2.item_posnr} = ${sales_order_item_billing_summary_sdt.item_posnr} ;;
+
+
+  }
+
   join: across_sales_and_deliveries_xvw {
     view_label: "Deliveries"
     relationship: one_to_one
@@ -181,6 +194,11 @@ explore: sales_orders_v2 {
   }
 
   join: across_sales_and_returns_xvw {
+    relationship: one_to_one
+    sql:  ;;
+}
+
+  join: across_sales_and_billing_summary_xvw {
     relationship: one_to_one
     sql:  ;;
 }

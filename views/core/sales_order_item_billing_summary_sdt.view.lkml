@@ -5,16 +5,16 @@ view: sales_order_item_billing_summary_sdt {
              so.SalesDocument_VBELN,
              so.Item_POSNR,
              so.CumulativeOrderQuantity_KWMENG,
-             b.total_billing_quantity,
-             so.CumulativeOrderQuantity_KWMENG = b.total_billing_quantity as is_item_order_qty_equal_billing_qty,
-             min(so.CumulativeOrderQuantity_KWMENG = b.total_billing_quantity) over (partition by so.Client_MANDT, so.SalesDocument_VBELN) as is_order_qty_equal_billing_qty
+             b.billing_quantity,
+             so.CumulativeOrderQuantity_KWMENG = coalesce(b.billing_quantity,0) as is_item_order_and_billing_quantity_equal,
+             min(so.CumulativeOrderQuantity_KWMENG =  coalesce(b.billing_quantity,0)) over (partition by so.Client_MANDT, so.SalesDocument_VBELN) as is_order_and_billing_quantity_equal
 
       from `thjennifer3.CORTEX_SAP_REPORTING.SalesOrders_V2` so
-      inner join
+      left join
           (select  Client_MANDT
              ,SalesDocument_AUBEL
              ,SalesDocumentItem_AUPOS
-             ,sum(ActualBilledQuantity_FKIMG) as total_billing_quantity
+             ,sum(ActualBilledQuantity_FKIMG) as billing_quantity
           from `thjennifer3.CORTEX_SAP_REPORTING.Billing`
           where BillingType_FKART in ('F1','F2')
           and BillingDocumentIsCancelled_FKSTO is null
@@ -50,19 +50,27 @@ view: sales_order_item_billing_summary_sdt {
     sql: ${TABLE}.CumulativeOrderQuantity_KWMENG ;;
   }
 
-  dimension: total_billing_quantity {
+  dimension: billing_quantity {
+    hidden: no
     type: number
-    sql: ${TABLE}.total_billing_quantity ;;
+    sql: ${TABLE}.billing_quantity ;;
   }
 
-  dimension: is_item_order_qty_equal_billing_qty {
+  dimension: is_item_order_and_billing_quantity_equal {
     type: yesno
-    sql: ${TABLE}.is_item_order_qty_equal_billing_qty ;;
+    sql: ${TABLE}.is_item_order_and_billing_quantity_equal ;;
   }
 
-  dimension: is_order_qty_equal_billing_qty {
+  dimension: is_order_and_billing_quantity_equal {
+    hidden: no
     type: yesno
-    sql: ${TABLE}.is_order_qty_equal_billing_qty ;;
+    sql: ${TABLE}.is_order_and_billing_quantity_equal ;;
+  }
+
+  measure: total_quantity_billed {
+    hidden: no
+    type: sum
+    sql: ${billing_quantity} ;;
   }
 
 

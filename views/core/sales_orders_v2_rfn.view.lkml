@@ -123,7 +123,7 @@ view: +sales_orders_v2 {
     description: "SD Document Currency at header level"
   }
 
-  dimension: is_cancelled {
+  dimension: is_item_cancelled {
     hidden: no
     type: yesno
     view_label: "Sales Orders Items"
@@ -257,7 +257,7 @@ view: +sales_orders_v2 {
   measure: count_items_cancelled {
     hidden: no
     type: count
-    filters: [is_cancelled: "Yes"]
+    filters: [is_item_cancelled: "Yes"]
   }
 
   measure: count_orders_with_cancellation {
@@ -265,7 +265,7 @@ view: +sales_orders_v2 {
     description: "Count of Orders with at Least 1 Item Cancelled"
     type: count_distinct
     sql: ${sales_document_vbeln} ;;
-    filters: [is_cancelled: "Yes"]
+    filters: [is_item_cancelled: "Yes"]
   }
 
 #   measure: percent_items_cancelled {
