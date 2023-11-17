@@ -92,8 +92,9 @@ view: navigation_template {
 
   # use parameter to set focus page until bug with _explore._dashboard_url is fixed
   # update allowed values to match number of dashboards defined in extension
-  parameter: focus_page {
+  parameter: navigation_focus_page {
     hidden: no
+    description: "Used in dashboard navigation to set focus on selected dashboard page"
     type: unquoted
     allowed_value: {value:"1"}
     allowed_value: {value:"2"}
@@ -119,7 +120,7 @@ view: navigation_template {
       <!-- initialize variables -->
       {% assign counter = 1 %}
       {% assign navStyle = navigation_style._parameter_value %}
-      {% assign focus = focus_page._parameter_value | times: 1 %}
+      {% assign focus = navigation_focus_page._parameter_value | times: 1 %}
       {% assign queryString = "" %}
       {% assign modelName = _model._name %}
 
@@ -218,7 +219,7 @@ view: navigation_template {
 
 
           <!-- build links -->
-          {% if focus_page._in_query and counter == focus %}
+          {% if navigation_focus_page._in_query and counter == focus %}
               <span style="{{ currentPageLinkStyle }}">{{ dashName }}</span>
           {% elsif _explore._dashboard_url == dashUrl %}
               <span style="{{ currentPageLinkStyle }}">{{ dashName }}</span>
@@ -234,8 +235,8 @@ view: navigation_template {
       </div>
 
       <!-- NOTE: There's a bug in _explore._dashboard_url liquid implementation -->
-      <!-- until fixed use paramter focus_page or advise users to clear cache & refresh-->
-      {% if focus_page._in_query == false %}
+      <!-- until fixed use paramter navigation_focus_page or advise users to clear cache & refresh-->
+      {% if navigation_focus_page._in_query == false %}
       <div>
       <span style="font-size: 10px;">{{ _explore._dashboard_url }} - clear cache & refresh to see active page</span>
       </div>

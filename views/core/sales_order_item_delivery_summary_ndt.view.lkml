@@ -154,6 +154,8 @@ view: sales_order_item_delivery_summary_ndt {
   # }
 
   dimension: is_order_in_full {
+    view_label: "Deliveries"
+    group_label: "Status"
     hidden: no
     description: "Delivered Quantity equals Ordered Quantity for all items in order"
     type: yesno
@@ -161,6 +163,8 @@ view: sales_order_item_delivery_summary_ndt {
   }
 
   dimension: is_order_on_time {
+    view_label: "Deliveries"
+    group_label: "Status"
     label: "Is Order On Time (Yes / No)"
     hidden: no
     description: "All items in order have been delivered on time (Proof of Delivery before or on Requested Delivery Date)"
@@ -175,6 +179,8 @@ view: sales_order_item_delivery_summary_ndt {
   }
 
   dimension: is_order_otif {
+    view_label: "Deliveries"
+    group_label: "Status"
     label: "Is Order OTIF (Yes / No)"
     hidden: no
     type: string
@@ -187,6 +193,8 @@ view: sales_order_item_delivery_summary_ndt {
 
 
   dimension: is_order_late {
+    view_label: "Deliveries"
+    group_label: "Status"
     hidden: no
     label: "Is Order Late (Yes / No)"
     description: "At least 1 item in order has been delivered late (Proof of Delivery after Requested Delivery Date)"
@@ -201,6 +209,8 @@ view: sales_order_item_delivery_summary_ndt {
 
   dimension: is_order_delivered {
     hidden: no
+    view_label: "Deliveries"
+    group_label: "Status"
     description: "All items in order have been delivered with valid Proof of Delivery Date"
     type: yesno
     sql: ${TABLE}.is_order_delivered ;;
@@ -208,6 +218,8 @@ view: sales_order_item_delivery_summary_ndt {
 
   dimension: is_order_any_item_delivered {
     hidden: no
+    view_label: "Deliveries"
+    group_label: "Status"
     description: "At least 1 item in order has been delivered with valid Proof of Delivery Date"
     type: yesno
     sql: ${TABLE}.is_order_any_item_delivered ;;
@@ -215,6 +227,8 @@ view: sales_order_item_delivery_summary_ndt {
 
   dimension: is_order_any_item_cancelled {
     hidden: no
+    view_label: "Deliveries"
+    group_label: "Status"
     type: yesno
     description: "At least 1 item in order has been cancelled"
     sql: ${TABLE}.is_order_any_item_cancelled ;;
@@ -223,12 +237,15 @@ view: sales_order_item_delivery_summary_ndt {
 
   dimension: is_order_cancelled {
     hidden: no
+    view_label: "Deliveries"
+    group_label: "Status"
     description: "All items in order have been cancelled"
     type: yesno
     sql: ${TABLE}.is_order_cancelled ;;
     }
 
   dimension: item_order_cycle_time {
+    view_label: "Delivery Items"
     hidden: no
     label: "Order Cycle Time (Days)"
     sql: case when ${min_actual_goods_movement_date_wadat_ist} is not null then
@@ -239,30 +256,35 @@ view: sales_order_item_delivery_summary_ndt {
 
   measure: count_orders_delivered {
     type: count_distinct
+    view_label: "Deliveries"
     sql: ${sales_document_vbeln} ;;
     filters: [is_order_delivered: "Yes"]
   }
 
   measure: count_orders_delivered_on_time {
     type: count_distinct
+    view_label: "Deliveries"
     sql: ${sales_document_vbeln} ;;
     filters: [is_order_delivered: "Yes",is_order_on_time: "Yes"]
   }
 
   measure: count_orders_delivered_late {
     type: count_distinct
+    view_label: "Deliveries"
     sql: ${sales_document_vbeln} ;;
     filters: [is_order_delivered: "Yes",is_order_late: "Yes"]
   }
 
   measure: count_orders_delivered_in_full {
     type: count_distinct
+    view_label: "Deliveries"
     sql: ${sales_document_vbeln} ;;
     filters: [is_order_delivered: "Yes",is_order_in_full: "Yes"]
   }
 
   measure: count_orders_delivered_otif {
     type: count_distinct
+    view_label: "Deliveries"
     sql: ${sales_document_vbeln} ;;
     filters: [is_order_delivered: "Yes",is_order_otif: "Yes"]
   }
@@ -301,6 +323,7 @@ view: sales_order_item_delivery_summary_ndt {
 
   measure: percent_orders_delivered_on_time {
     hidden: no
+    view_label: "Deliveries"
     description: "% of orders delivered on time"
     type: number
     sql: safe_divide(${count_orders_delivered_on_time}, ${sales_orders_v2.count_orders}) ;;
@@ -309,6 +332,7 @@ view: sales_order_item_delivery_summary_ndt {
 
   measure: percent_orders_delivered_late {
     hidden: no
+    view_label: "Deliveries"
     description: "% of orders delivered late"
     type: number
     sql: safe_divide(${count_orders_delivered_late}, ${sales_orders_v2.count_orders}) ;;
@@ -317,6 +341,7 @@ view: sales_order_item_delivery_summary_ndt {
 
   measure: percent_orders_delivered_in_full {
     hidden: no
+    view_label: "Deliveries"
     description: "% of orders delivered in full (delivered quantity equals ordered quantity for all items in order)"
     type: number
     sql: safe_divide(${count_orders_delivered_in_full}, ${sales_orders_v2.count_orders}) ;;
@@ -325,6 +350,7 @@ view: sales_order_item_delivery_summary_ndt {
 
   measure: percent_orders_delivered_otif {
     hidden: no
+    view_label: "Deliveries"
     label: "Percent Orders Delivered OTIF"
     description: "% of orders delivered in full (delivered quantity equals ordered quantity for all items in order)"
     type: number
@@ -336,6 +362,7 @@ view: sales_order_item_delivery_summary_ndt {
   measure: avg_order_cycle_time {
     hidden: no
     type: average
+    view_label: "Delivery Items"
     label: "Item Average Cycle Time per Order (Days)"
     description: "Item's Average Cycle Time per Order (Days between Order and Delivery). Must always include Item Number or Name with this measure."
     sql: ${item_order_cycle_time} ;;
@@ -345,6 +372,7 @@ view: sales_order_item_delivery_summary_ndt {
 
   measure: sum_total_quantity_delivered {
     hidden: no
+    view_label: "Deliveries"
     label: "Total Quantity Delivered"
     type: sum
     sql: ${total_quantity_delivered} ;;

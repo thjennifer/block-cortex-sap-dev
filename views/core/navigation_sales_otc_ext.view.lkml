@@ -16,7 +16,7 @@ view: navigation_sales_otc_ext {
     # sql: 'filter1|Order+Date||filter2|Country+Name' ;;
   }
 
-  parameter: focus_page {
+  parameter: navigation_focus_page {
     hidden: no
     type: unquoted
     allowed_value: {value:"1"}

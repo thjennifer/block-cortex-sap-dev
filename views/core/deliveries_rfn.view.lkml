@@ -134,6 +134,7 @@ view: +deliveries {
   dimension: is_blocked {
     hidden: no
     type: yesno
+    group_label: "Status"
     sql: (${delivery_block_document_header_lifsk} is not null or
          ${billing_block_in_sd_document_faksk} is not null)
     ;;
@@ -142,6 +143,7 @@ view: +deliveries {
   dimension: blocked_status_with_symbol {
     hidden: no
     type: string
+    group_label: "Status"
     sql: if(${is_blocked},"Blocked","");;
     html: {% if value == "Blocked" %}{%assign sym = "⏹" %}{% assign color = "#D22B2B" %}
             {% else %}

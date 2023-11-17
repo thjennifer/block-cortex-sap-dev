@@ -38,7 +38,7 @@ view: +sales_orders_v2 {
 
   filter: date_filter {
     hidden: no
-    view_label: "🔍 Filters"
+    view_label: "🔍 Filters & 🛠 Tools"
     type: date
     # for tables partitioned by date capture start and end dates and apply as a templated filter
     # in the Explore's sql_always_where statement

@@ -6,7 +6,7 @@
   description: ''
 
   # pull navigation bar and filters from template
-  # if using focus_page parameter for active dashboard update navigation tile to use the correct filter
+  # if using navigation_focus_page parameter for active dashboard update navigation tile to use the correct filter
   extends: sales_order_to_cash_template
 
   elements:
@@ -14,7 +14,7 @@
   - title: navigation
     name: navigation
     filters:
-      navigation_sales_otc_ext.focus_page: '4'
+      navigation_sales_otc_ext.navigation_focus_page: '4'
 
   - name: Top Products by Sales
     title: Top Products by Sales

@@ -58,6 +58,7 @@ explore: sales_orders_v2 {
   }
 
   join: currency_conversion_sdt {
+    view_label: "🔍 Filters & 🛠 Tools"
     type: inner
     relationship: many_to_one
     sql_on: ${sales_orders_v2.client_mandt}=${currency_conversion_sdt.client_mandt} and
@@ -155,7 +156,7 @@ explore: sales_orders_v2 {
   }
 
   join: sales_order_item_delivery_summary_ndt {
-    view_label: "Sales Orders Delivery Summary"
+    view_label: "Sales Orders Items"
     type: inner
     relationship: one_to_one
     sql_on: ${sales_orders_v2.client_mandt} = ${sales_order_item_delivery_summary_ndt.client_mandt} and
@@ -174,7 +175,7 @@ explore: sales_orders_v2 {
   }
 
   join: sales_order_item_billing_summary_sdt {
-    view_label: "Sales Orders Billing Summary"
+    view_label: "Sales Orders Items"
     type: left_outer
     relationship: one_to_one
     sql_on:   ${sales_orders_v2.client_mandt} = ${sales_order_item_billing_summary_sdt.client_mandt} and
@@ -222,7 +223,7 @@ explore: sales_orders_v2 {
 }
 
   join: navigation_sales_otc_ext {
-    view_label: "🛠 Tools"
+    view_label: "🔍 Filters & 🛠 Tools"
     relationship: one_to_one
     sql:  ;;
   }

@@ -275,7 +275,7 @@
     type: single_value
     fields: [navigation_sales_otc_ext.navigation_bar]
     filters:
-      navigation_sales_otc_ext.focus_page: '1'
+      navigation_sales_otc_ext.navigation_focus_page: '1'
     sorts: [navigation_sales_otc_ext.navigation_bar]
     limit: 500
     column_limit: 50
