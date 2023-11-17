@@ -38,7 +38,7 @@ view: +sales_orders_v2 {
 
   filter: date_filter {
     hidden: no
-    view_label: "Filters"
+    view_label: "🔍 Filters"
     type: date
     # for tables partitioned by date capture start and end dates and apply as a templated filter
     # in the Explore's sql_always_where statement
@@ -144,7 +144,7 @@ view: +sales_orders_v2 {
   dimension: net_value_of_the_sales_order_in_document_currency_netwr {
     hidden: yes
     label: "Net Value of Sales Order@{SAP_LABEL}"
-    description: "Net Value of Sales Order in Document Currency"
+    description: "Net Value of Sales Order in Local Currency"
   }
 
 
@@ -154,7 +154,7 @@ view: +sales_orders_v2 {
     hidden: no
     view_label: "Sales Orders Items"
     label: "Net Price of Item@{SAP_LABEL}"
-    description: "Net Price of Item (Document Currency)"
+    description: "Net Price of Item (Local Currency)"
     value_format_name: decimal_2
   }
 
@@ -181,7 +181,7 @@ view: +sales_orders_v2 {
   dimension: sales_order_value_line_item_source_currency {
     view_label: "Sales Orders Items"
     label: "Net Value of Item@{SAP_LABEL}"
-    description: "Item Qty * Net Price (Document Currency)"
+    description: "Item Qty * Net Price (Local/Document Currency)"
     hidden: no
   }
 
@@ -235,8 +235,8 @@ view: +sales_orders_v2 {
   measure: total_net_value {
     hidden: no
     type: sum
-    label: "Total Net Value"
-    description: "Total Net Value (Document Currency)"
+    label: "Total Net Value (Local Currency)"
+    description: "Total Net Value (Local/Document Currency)"
     sql: ${sales_order_value_line_item_source_currency} ;;
     value_format_name: "format_large_numbers_d1"
   }

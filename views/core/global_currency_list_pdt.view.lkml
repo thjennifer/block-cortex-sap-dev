@@ -6,11 +6,11 @@
 #     1. define datagroup in datagroups.lkml file found in components folder
 #     2. replace datagroup_trigger: value below with name of datagroup
 #
-# this view is used in Explore Local Currency List to provide suggestions for Local Currency filter values and Exchange Rate Type parameter values
+# this view is used in Explore Global Currency List to provide suggestions for Local Currency filter values and Exchange Rate Type parameter values
 #
 ######################
 
-view: local_currency_list {
+view: global_currency_list_pdt {
     derived_table: {
       datagroup_trigger: monthly_on_day_1
 

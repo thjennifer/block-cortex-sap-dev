@@ -13,6 +13,7 @@ view: sales_order_item_delivery_summary_ndt {
       column: item_posnr {field: sales_orders_v2.item_posnr}
       column: material_number_matnr { field: sales_orders_v2.material_number_matnr}
       column: is_item_cancelled { field: sales_orders_v2.is_item_cancelled }
+      # column: creation_date_erdat_date {field: sales_orders_v2.creation_date_erdat_date}
       column: creation_timestamp { field: sales_orders_v2.creation_timestamp }
       column: requested_delivery_date_vdatu { field: sales_orders_v2.requested_delivery_date_vdatu_raw }
       column: total_quantity_ordered { field: sales_orders_v2.total_quantity_ordered }
@@ -45,7 +46,19 @@ view: sales_order_item_delivery_summary_ndt {
       derived_column: is_order_cancelled {
         sql:min(is_item_cancelled) over (partition by client_mandt, sales_document_vbeln);;
       }
-      bind_all_filters: yes
+      # bind_all_filters: yes causes a circular reference if fields based on NDT included as a filter (eg., order_status)
+      bind_filters: {from_field:  sales_orders_v2.creation_date_erdat_date
+                     to_field:    sales_orders_v2.creation_date_erdat_date}
+      bind_filters: {from_field:  countries_md.country_name_landx
+                     to_field:    countries_md.country_name_landx}
+      bind_filters: {from_field:  sales_organizations_md.sales_org_name_vtext
+                     to_field:    sales_organizations_md.sales_org_name_vtext}
+      bind_filters: {from_field:  distribution_channels_md.distribution_channel_name_vtext
+                     to_field:    distribution_channels_md.distribution_channel_name_vtext}
+      bind_filters: {from_field:  divisions_md.division_name_vtext
+                     to_field:    divisions_md.division_name_vtext}
+      bind_filters: {from_field:  materials_md.material_text_maktx
+                     to_field:    materials_md.material_text_maktx}
     }
 
   }
@@ -77,6 +90,10 @@ view: sales_order_item_delivery_summary_ndt {
   }
 
   dimension: material_number_matnr {}
+
+  # dimension: creation_date_erdat_date {
+  #   type: date
+  # }
 
   dimension: creation_timestamp {
     hidden: no
@@ -308,6 +325,7 @@ view: sales_order_item_delivery_summary_ndt {
 
   measure: percent_orders_delivered_otif {
     hidden: no
+    label: "Percent Orders Delivered OTIF"
     description: "% of orders delivered in full (delivered quantity equals ordered quantity for all items in order)"
     type: number
     sql: safe_divide(${count_orders_delivered_otif}, ${sales_orders_v2.count_orders}) ;;
@@ -323,6 +341,13 @@ view: sales_order_item_delivery_summary_ndt {
     sql: ${item_order_cycle_time} ;;
     value_format_name: decimal_1
     required_fields: [material_number_matnr]
+  }
+
+  measure: sum_total_quantity_delivered {
+    hidden: no
+    label: "Total Quantity Delivered"
+    type: sum
+    sql: ${total_quantity_delivered} ;;
   }
 
 }

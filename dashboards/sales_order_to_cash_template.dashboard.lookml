@@ -11,7 +11,7 @@
   - name: Order Date
     title: Order Date
     type: date_filter
-    default_value:  "{% if _user_attributes['sap_use_demo_data'] =='Yes' %}{% assign date_range = '2022/01/01 to 2022/05/01' %}
+    default_value:  "{% if _user_attributes['sap_use_demo_data'] =='Yes' %}{% assign date_range = '2022/01/01 to 2022/12/31' %}
                      {% else %} {% assign date_range = 'last 1 year' %}
                      {% endif %}{{date_range}}"
     # default_value: "2022/03/02 to 2022/03/03"
@@ -88,6 +88,20 @@
     explore: sales_orders_v2
     listens_to_filters: []
     field: materials_md.material_text_maktx
+
+  - name: Global Currency
+    title: Global Currency
+    type: field_filter
+    default_value: "{{ _user_attributes['sap_default_global_currency'] }}"
+    allow_multiple_values: false
+    required: false
+    ui_config:
+      type: dropdown_menu
+      display: inline
+      options: []
+    explore: global_currency_list_pdt
+    listens_to_filters: []
+    field: global_currency_list_pdt.to_currency_tcurr
 
   elements:
     - title: navigation

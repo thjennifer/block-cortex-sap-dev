@@ -12,12 +12,12 @@ view: across_sales_and_currency_conversion_xvw {
     sql: 1 ;;
   }
 
-  dimension: item_net_price_local_netpr {
+  dimension: item_net_price_global_netpr {
     hidden: no
     type: number
     view_label: "Sales Orders Items"
-    label: "Net Price of Item (Local Currency) NETPR"
-    description: "Net Price of Item (Local Currency)"
+    label: "Net Price of Item (Global Currency) NETPR"
+    description: "Net Price of Item (Global Currency)"
     sql: ${sales_orders_v2.net_price_netpr} * ${currency_conversion_sdt.exchange_rate_ukurs} ;;
     value_format_name: decimal_2
   }
@@ -26,9 +26,9 @@ view: across_sales_and_currency_conversion_xvw {
     hidden: no
     type: number
     view_label: "Sales Orders Items"
-    label: "Net Value of Item (Local Currency) NETWR"
-    description: "Item Qty * Net Price (Local Currency)"
-    sql:  ${item_net_price_local_netpr} * ${sales_orders_v2.cumulative_order_quantity_kwmeng};;
+    label: "Net Value of Item (Global Currency) NETWR"
+    description: "Item Qty * Net Price (Global Currency)"
+    sql:  ${item_net_price_global_netpr} * ${sales_orders_v2.cumulative_order_quantity_kwmeng};;
     value_format_name: decimal_2
 
   }
@@ -37,7 +37,7 @@ view: across_sales_and_currency_conversion_xvw {
     hidden: no
     type: sum
     view_label: "Sales Orders"
-    label: "Total Net Value (Local Currency {% parameter currency_conversion_sdt.select_local_currency %})"
+    label: "Total Net Value (Global Currency {% parameter currency_conversion_sdt.select_global_currency %})"
     sql: ${item_net_value_local_netwr} ;;
     value_format_name: "format_large_numbers_d1"
     sql_distinct_key: ${sales_orders_v2.key};;
@@ -47,7 +47,7 @@ view: across_sales_and_currency_conversion_xvw {
     hidden: no
     type: number
     view_label: "Sales Orders"
-    label: "Average Net Value per Order (Local Currency {% parameter currency_conversion_sdt.select_local_currency %})"
+    label: "Average Net Value per Order (Global Currency {% parameter currency_conversion_sdt.select_global_currency %})"
     sql: safe_divide(${total_net_value_local},${sales_orders_v2.count_orders});;
     sql_distinct_key: ${sales_orders_v2.key};;
     value_format_name: "format_large_numbers_d2"
@@ -57,7 +57,7 @@ view: across_sales_and_currency_conversion_xvw {
     hidden: no
     type: average
     view_label: "Sales Orders"
-    sql: ${item_net_price_local_netpr} ;;
+    sql: ${item_net_price_global_netpr} ;;
     sql_distinct_key: ${sales_orders_v2.key};;
   }
 

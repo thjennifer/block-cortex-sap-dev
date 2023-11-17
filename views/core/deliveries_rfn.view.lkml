@@ -139,6 +139,16 @@ view: +deliveries {
     ;;
   }
 
+  dimension: blocked_status_with_symbol {
+    hidden: no
+    type: string
+    sql: if(${is_blocked},"Blocked","");;
+    html: {% if value == "Blocked" %}{%assign sym = "⏹" %}{% assign color = "#D22B2B" %}
+            {% else %}
+             {%assign sym = "" %}{% assign color = "#080808" %}
+            {%endif%}<p style="color: {{color}}"><b> {{sym}} {{value}}</b> </p>;;
+  }
+
 #} end delivery statuses
 
 
