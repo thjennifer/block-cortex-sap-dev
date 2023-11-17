@@ -98,6 +98,8 @@ view: navigation_template {
     allowed_value: {value:"1"}
     allowed_value: {value:"2"}
     allowed_value: {value:"3"}
+    allowed_value: {value:"4"}
+    allowed_value: {value:"5"}
     default_value: "1"
   }
 

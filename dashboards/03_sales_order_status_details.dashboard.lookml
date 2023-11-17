@@ -158,7 +158,7 @@
       sales_orders_v2.base_unit_of_measure_meins, currency_conversion_sdt.from_currency_fcurr,
       currency_conversion_sdt.to_currency_tcurr, currency_conversion_sdt.exchange_rate_ukurs,
       sales_orders_v2.total_quantity_ordered, sales_order_item_delivery_summary_ndt.sum_total_quantity_delivered,
-      sales_orders_v2.total_net_value, across_sales_and_currency_conversion_xvw.total_net_value_local]
+      sales_orders_v2.total_net_value, across_sales_and_currency_conversion_xvw.total_net_value_global]
 
     sorts: [sales_orders_v2.sales_document_vbeln]
     limit: 50
@@ -191,7 +191,7 @@
       sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat, sales_orders_v2.total_quantity_ordered,
       sales_orders_v2.base_unit_of_measure_meins, sales_order_item_delivery_summary_ndt.sum_total_quantity_delivered,
       sales_orders_v2.total_net_value, currency_conversion_sdt.from_currency_fcurr,
-      across_sales_and_currency_conversion_xvw.total_net_value_local, currency_conversion_sdt.to_currency_tcurr,
+      across_sales_and_currency_conversion_xvw.total_net_value_global, currency_conversion_sdt.to_currency_tcurr,
       currency_conversion_sdt.exchange_rate_ukurs]
     truncate_header: false
     minimum_column_width: 75
@@ -210,7 +210,7 @@
       currency_conversion_sdt.to_currency_tcurr: Global Currency
       currency_conversion_sdt.exchange_rate_ukurs: Exchange Rate
       sales_orders_v2.total_net_value: Total Net Value (Local)
-      across_sales_and_currency_conversion_xvw.total_net_value_local: Total Net Value (Global)
+      across_sales_and_currency_conversion_xvw.total_net_value_global: Total Net Value (Global)
     series_column_widths:
       sales_orders_v2.total_quantity_ordered: 100
       materials_md.material_text_maktx: 150
@@ -221,7 +221,7 @@
       sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat: 100
       currency_conversion_sdt.from_currency_fcurr: 75
       currency_conversion_sdt.to_currency_tcurr: 75
-      across_sales_and_currency_conversion_xvw.total_net_value_local: 75
+      across_sales_and_currency_conversion_xvw.total_net_value_global: 75
       sales_orders_v2.total_net_value: 75
 
     series_cell_visualizations:

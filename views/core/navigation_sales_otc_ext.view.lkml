@@ -6,7 +6,7 @@ view: navigation_sales_otc_ext {
   dimension: dashBindings {
     hidden: yes
     type: string
-    sql: 'sales_order_fulfillment|Order Fulfillment||sales_order_snapshot|Order Snapshot||sales_order_status_details|Order Status Details' ;;
+    sql: 'sales_order_fulfillment|Order Fulfillment||sales_order_snapshot|Order Snapshot||sales_order_status_details|Order Status Details||sales_performance|Sales Performance' ;;
   }
 
   dimension: filterBindings {
@@ -22,41 +22,43 @@ view: navigation_sales_otc_ext {
     allowed_value: {value:"1"}
     allowed_value: {value:"2"}
     allowed_value: {value:"3"}
+    allowed_value: {value:"4"}
+    allowed_value: {value:"5"}
     default_value: "1"
   }
 
   filter: filter1 {
-    hidden: no
+    hidden: yes
     type: date
     label: "Order Date"
   }
 
   filter: filter2 {
-    hidden: no
+    hidden: yes
     type: string
     label: "Country"
   }
 
   filter: filter3 {
-    hidden: no
+    hidden: yes
     type: string
     label: "Sales Org"
   }
 
   filter: filter4 {
-    hidden: no
+    hidden: yes
     type: string
     label: "Distribution Channel"
   }
 
   filter: filter5 {
-    hidden: no
+    hidden: yes
     type: string
     label: "Division"
   }
 
   filter: filter6 {
-    hidden: no
+    hidden: yes
     type: string
     label: "Product"
   }

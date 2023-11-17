@@ -22,7 +22,7 @@ view: across_sales_and_currency_conversion_xvw {
     value_format_name: decimal_2
   }
 
-  dimension: item_net_value_local_netwr {
+  dimension: item_net_value_global_netwr {
     hidden: no
     type: number
     view_label: "Sales Orders Items"
@@ -33,22 +33,23 @@ view: across_sales_and_currency_conversion_xvw {
 
   }
 
-  measure: total_net_value_local {
+  measure: total_net_value_global {
     hidden: no
     type: sum
     view_label: "Sales Orders"
     label: "Total Net Value (Global Currency {% parameter currency_conversion_sdt.select_global_currency %})"
-    sql: ${item_net_value_local_netwr} ;;
+    sql: ${item_net_value_global_netwr} ;;
+    filters: [sales_orders_v2.document_category_vbtyp: "C"]
     value_format_name: "format_large_numbers_d1"
     sql_distinct_key: ${sales_orders_v2.key};;
   }
 
-  measure: avg_net_value_per_order_local {
+  measure: avg_net_value_per_order_global {
     hidden: no
     type: number
     view_label: "Sales Orders"
     label: "Average Net Value per Order (Global Currency {% parameter currency_conversion_sdt.select_global_currency %})"
-    sql: safe_divide(${total_net_value_local},${sales_orders_v2.count_orders});;
+    sql: safe_divide(${total_net_value_global},${sales_orders_v2.count_orders});;
     sql_distinct_key: ${sales_orders_v2.key};;
     value_format_name: "format_large_numbers_d2"
   }
@@ -61,11 +62,11 @@ view: across_sales_and_currency_conversion_xvw {
     sql_distinct_key: ${sales_orders_v2.key};;
   }
 
-  measure: percent_of_total_net_value_local {
+  measure: percent_of_total_net_value_global {
     hidden: no
     view_label: "Sales Orders"
     type: percent_of_total
-    sql: ${total_net_value_local} ;;
+    sql: ${total_net_value_global} ;;
     sql_distinct_key: ${sales_orders_v2.key};;
   }
 

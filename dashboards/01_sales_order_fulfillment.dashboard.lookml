@@ -121,7 +121,7 @@
     show_silhouette: false
     totals_color: "#808080"
     y_axes: [{label: Average Order Cycle Time, orientation: bottom, series: [{axisId: across_sales_and_deliveries_xvw.avg_distinct_order_cycle_time,
-            id: across_sales_and_deliveries_xvw.avg_distinct_order_cycle_time, name: Average
+            id: sales_order_item_delivery_summary_ndt.avg_order_cycle_time, name: Average
               of Order Cycle Time}], showLabels: false, showValues: false, unpinAxis: false,
         tickDensity: custom, tickDensityCustom: 1, type: linear}]
     x_axis_label: Product
@@ -132,7 +132,7 @@
       first_last: first
       num_rows: '10'
     series_colors:
-      across_sales_and_deliveries_xvw.avg_distinct_order_cycle_time: "#B3DEE2"
+      sales_order_item_delivery_summary_ndt.avg_order_cycle_time: "#B3DEE2"
     reference_lines: [{reference_type: line, range_start: min, range_end: max, margin_top: deviation,
       margin_value: mean, margin_bottom: deviation, label_position: left, color: "#000000",
       label: '', line_value: max}, {reference_type: line, line_value: min, range_start: max,
