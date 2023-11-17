@@ -1,4 +1,4 @@
-include: "/views/original_to_be_redone/**/*.view"
+include: "/zBlock_v1/views/**/*.view"
 
 explore: sales_orders {
 

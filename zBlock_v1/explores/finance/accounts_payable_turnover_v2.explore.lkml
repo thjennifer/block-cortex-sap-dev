@@ -1,4 +1,4 @@
-include: "/views/original_to_be_redone/**/*.view"
+include: "/zBlock_v1/views/**/*.view"
 
 explore: accounts_payable_turnover_v2 {
 

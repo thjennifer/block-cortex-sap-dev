@@ -1,4 +1,4 @@
-include: "/views/original_to_be_redone/**/*.view"
+include: "/zBlock_v1/views/**/*.view"
 
 explore: vendor_performance {
   sql_always_where: ${vendor_performance.client_mandt} = '{{ _user_attributes['client_id_rep'] }}'
