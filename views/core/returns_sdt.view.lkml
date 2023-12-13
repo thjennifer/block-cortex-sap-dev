@@ -12,11 +12,10 @@ view: returns_sdt {
         sv2.CreationTime_ERZET,
         sv2.CumulativeOrderQuantity_KWMENG,
         sv2.NetPrice_NETPR,
-        sv2.PrecedingDocCategory_VGTYP
-        --ReferenceDocument_VGBEL equals:
-        -- SalesDocument_VBELN when PrecedingDocCategory_VGTYP = C
-        -- BillingDocument when PrecedingDocCategory_VGTYP = M
-        ,
+        sv2.PrecedingDocCategory_VGTYP,
+    --ReferenceDocument_VGBEL equals:
+    -- SalesDocument_VBELN when PrecedingDocCategory_VGTYP = C
+    -- BillingDocument when PrecedingDocCategory_VGTYP = M
         sv2.ReferenceDocument_VGBEL,
         sv2.ReferenceItem_VGPOS,
         sv2.DocumentNumberOfTheReferenceDocument_VGBEL,
@@ -31,9 +30,9 @@ view: returns_sdt {
         END
           AS ReferenceItem_POSNR
       FROM
-        `thjennifer3.CORTEX_SAP_REPORTING.SalesOrders_V2` sv2
+        `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.SalesOrders_V2` sv2
       LEFT JOIN
-        `thjennifer3.CORTEX_SAP_REPORTING.Billing` b
+        `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.Billing` b
       ON
         sv2.ReferenceDocument_VGBEL = b.BillingDocument_VBELN
         AND sv2.ReferenceItem_VGPOS = b.BillingItem_POSNR
@@ -126,10 +125,10 @@ view: returns_sdt {
     sql: ${reference_sales_document_vbeln} is not null;;
   }
 
-  measure: count_returns {
-    type: count_distinct
-    sql: ${reference_sales_document_vbeln} ;;
-  }
+  # measure: count_returns {
+  #   type: count_distinct
+  #   sql: ${reference_sales_document_vbeln} ;;
+  # }
 
 
 }

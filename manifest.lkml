@@ -36,11 +36,11 @@ constant: DASHBOARD_LOGO {
   value: "https://marketplace-api.looker.com/block-icons/cortex_icon.png"
 }
 
-constant: DEFAULT_DATE_FILTER {
-  value: "{% if @{USE_DEMO_DATA} =='Yes' %}{% assign date_range = '2022/01/01 to 2022/03/22' %}
-          {% else %} {% assign date_range = 'last 1 year' %}
-          {% endif %}{{date_range}}"
-}
+# constant: DEFAULT_DATE_FILTER {
+#   value: "{% if @{USE_DEMO_DATA} =='Yes' %}{% assign date_range = '2022/01/01 to 2022/03/22' %}
+#           {% else %} {% assign date_range = 'last 1 year' %}
+#           {% endif %}{{date_range}}"
+# }
 #### testing
 # liquid camelcase and capitalize doesn't work
 # {% assign fn = _field._name | split:'.' %} {% assign field_name = fn[1] | split:'_' %}{% assign word_cnt = field_name.size %}

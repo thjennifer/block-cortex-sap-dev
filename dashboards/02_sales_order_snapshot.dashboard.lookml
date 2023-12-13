@@ -46,7 +46,7 @@
     name: Avg Fill Rate %
     explore: sales_orders_v2
     type: single_value
-    fields: [sales_order_schedule_line_sdt.avg_fill_rate_item_nullif0]
+    fields: [sales_order_schedule_line_sdt.avg_fill_rate_item]
     listen:
       Order Date: sales_orders_v2.creation_date_erdat_date
       Division: divisions_md.division_name_vtext
@@ -97,12 +97,12 @@
     name: Order vs Delivery Efficiency
     explore: sales_orders_v2
     type: looker_line
-    fields: [materials_md.material_number_matnr, materials_md.material_text_maktx, across_sales_and_deliveries_xvw.difference_order_lines_delivery_lines,
-      sales_orders_v2.count, deliveries.count_delivery_line_items, across_sales_and_deliveries_xvw.difference_delivery_lines_order_lines,
-      across_sales_and_deliveries_xvw.percent_difference_order_lines_delivery_lines]
-    filters:
-      sales_orders_v2.count: ">=100"
-    sorts: [across_sales_and_deliveries_xvw.difference_order_lines_delivery_lines desc]
+    fields: [materials_md.material_number_matnr, materials_md.material_text_maktx, across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty,
+      sales_orders_v2.total_quantity_ordered, deliveries.total_quantity_delivered, across_sales_and_deliveries_xvw.difference_delivery_qty_order_qty,
+      across_sales_and_deliveries_xvw.percent_difference_order_qty_delivery_qty]
+    # filters:
+    #   sales_orders_v2.count: ">=100"
+    sorts: [across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty desc]
     limit: 500
     column_limit: 50
     x_axis_gridlines: false
@@ -123,12 +123,12 @@
     y_axis_combined: true
     show_null_points: true
     interpolation: step
-    y_axes: [{label: '', orientation: left, series: [{axisId: sales_orders_v2.count,
-          id: sales_orders_v2.count, name: Total Sales Order Line Item}, {axisId: deliveries.count_delivery_line_items,
-          id: deliveries.count_delivery_line_items, name: Total Delivery Line Item},
-        {axisId: across_sales_and_deliveries_xvw.difference_order_lines_delivery_lines,
-          id: across_sales_and_deliveries_xvw.difference_order_lines_delivery_lines,
-          name: Difference Order Lines Delivery Lines}], showLabels: true, showValues: true,
+    y_axes: [{label: '', orientation: left, series: [{axisId: sales_orders_v2.total_quantity_ordered,
+          id: sales_orders_v2.total_quantity_ordered, name: Total Order Quantity}, {axisId: deliveries.total_quantity_delivered,
+          id: deliveries.total_quantity_delivered, name: Total Quantity Delivered},
+        {axisId: across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty,
+          id: across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty,
+          name: Difference Order Quantity Delivery Quantity}], showLabels: true, showValues: true,
       unpinAxis: false, tickDensity: default, type: linear}]
     x_axis_label: Product
     x_axis_zoom: true
@@ -139,16 +139,15 @@
       num_rows: '10'
     hidden_series: []
     series_types:
-      sales_orders_v2.count: column
-      deliveries.count_delivery_line_items: column
+      sales_orders_v2.total_quantity_ordered: column
+      deliveries.total_quantity_delivered: column
     series_colors:
-      sales_orders_v2.count: "#12B5CB"
-      deliveries.count: "#000"
-      deliveries.count_delivery_line_items: "#A6CFD5"
-      across_sales_and_deliveries_xvw.difference_order_lines_delivery_lines: "#596157"
+      sales_orders_v2.total_quantity_ordered: "#12B5CB"
+      deliveries.total_quantity_delivered: "#A6CFD5"
+      across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty: "#596157"
     series_labels:
-      sales_orders_v2.count: Total Sales Order Line Item
-      deliveries.count_delivery_line_items: Total Delivery Line Item
+      sales_orders_v2.total_quantity_ordered: Total Quantity Ordered
+      deliveries.total_quantity_delivered: Total Quantity Delivered
     label_color: []
     reference_lines: []
     x_axis_label_rotation: 0
@@ -158,12 +157,12 @@
         series: [{
           name: 'Difference'
         }, {
-          name: 'Total Sales Order Line Item',
+          name: 'Total Quantity Ordered',
           dataLabels: {
             enabled: false,
           }
         }, {
-          name: 'Total Delivery Line Item',
+          name: 'Total Quantity Delivered',
           dataLabels: {
             enabled: false,
           }
@@ -178,9 +177,9 @@
     defaults_version: 1
     note_state: collapsed
     note_display: above
-    note_text: Top 10 Products with Largest Difference between Orders and Deliveries
-    hidden_fields: [materials_md.material_number_matnr, across_sales_and_deliveries_xvw.difference_delivery_lines_order_lines,
-      across_sales_and_deliveries_xvw.percent_difference_order_lines_delivery_lines]
+    note_text: Top 10 Products with Largest Difference between Quantity Ordered and Delivered
+    hidden_fields: [materials_md.material_number_matnr, across_sales_and_deliveries_xvw.difference_delivery_qty_order_qty,
+      across_sales_and_deliveries_xvw.percent_difference_order_qty_delivery_qty]
     row: 2
     col: 5
     width: 19

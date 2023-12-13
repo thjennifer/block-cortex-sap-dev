@@ -23,7 +23,7 @@ view: sales_order_item_delivery_summary_ndt {
       column: max_proof_of_delivery_timestamp { field: deliveries.max_proof_of_delivery_timestamp }
       column: min_actual_goods_movement_date_wadat_ist { field: deliveries.min_actual_goods_movement_date_wadat_ist }
 
-      derived_column: is_order_in_full {
+      derived_column: is_order_delivered_in_full {
         sql: min(total_quantity_ordered = total_quantity_delivered) over (partition by  client_mandt, sales_document_vbeln)  ;;
       }
       derived_column: is_order_on_time {
@@ -153,13 +153,13 @@ view: sales_order_item_delivery_summary_ndt {
   #   sql: ${max_proof_of_delivery_date_podat} > ${min_delivery_date_lfdat} ;;
   # }
 
-  dimension: is_order_in_full {
+  dimension: is_order_delivered_in_full {
     view_label: "Deliveries"
     group_label: "Status"
     hidden: no
     description: "Delivered Quantity equals Ordered Quantity for all items in order"
     type: yesno
-    sql: ${TABLE}.is_order_in_full ;;
+    sql: ${TABLE}.is_order_delivered_in_full ;;
   }
 
   dimension: is_order_on_time {
@@ -185,7 +185,7 @@ view: sales_order_item_delivery_summary_ndt {
     hidden: no
     type: string
     sql: case when ${TABLE}.is_order_on_time is null then null
-              when ${TABLE}.is_order_in_full = true and ${TABLE}.is_order_on_time = true then 'Yes'
+              when ${TABLE}.is_order_delivered_in_full = true and ${TABLE}.is_order_on_time = true then 'Yes'
             else 'No'
         end
         ;;
@@ -279,7 +279,7 @@ view: sales_order_item_delivery_summary_ndt {
     type: count_distinct
     view_label: "Deliveries"
     sql: ${sales_document_vbeln} ;;
-    filters: [is_order_delivered: "Yes",is_order_in_full: "Yes"]
+    filters: [is_order_delivered: "Yes",is_order_delivered_in_full: "Yes"]
   }
 
   measure: count_orders_delivered_otif {
@@ -371,7 +371,7 @@ view: sales_order_item_delivery_summary_ndt {
   }
 
   measure: sum_total_quantity_delivered {
-    hidden: no
+    hidden: yes
     view_label: "Deliveries"
     label: "Total Quantity Delivered"
     type: sum

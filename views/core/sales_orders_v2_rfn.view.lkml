@@ -153,7 +153,7 @@ view: +sales_orders_v2 {
   dimension: net_price_netpr {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "Net Price of Item@{SAP_LABEL}"
+    label: "Price of Item@{SAP_LABEL}"
     description: "Net Price of Item (Local Currency)"
     value_format_name: decimal_2
   }
@@ -180,7 +180,7 @@ view: +sales_orders_v2 {
 
   dimension: sales_order_value_line_item_source_currency {
     view_label: "Sales Orders Items"
-    label: "Net Value of Item@{SAP_LABEL}"
+    label: "Sales Amount"
     description: "Item Qty * Net Price (Local/Document Currency)"
     hidden: no
   }
@@ -209,18 +209,8 @@ view: +sales_orders_v2 {
     hidden: no
     type: count_distinct
     label: "Count Orders"
-    description: "Discount count of Sales Document VBELN when Document Category VBTYP = C"
+    description: "Distinct count of Sales Document VBELN when Document Category VBTYP = C"
     sql: ${sales_document_vbeln} ;;
-    filters: [document_category_vbtyp: "C"]
-  }
-
-  measure: count_orders_to_match_original {
-#### remove once confirm it should be count distinct
-    hidden: no
-    type: count
-    label: "Count Orders (match original)"
-    description: "Count of Sales Document VBELN when Document Category VBTYP = C"
-    # sql: ${sales_document_vbeln} ;;
     filters: [document_category_vbtyp: "C"]
   }
 
@@ -235,8 +225,8 @@ view: +sales_orders_v2 {
   measure: total_net_value {
     hidden: no
     type: sum
-    label: "Total Net Value (Local Currency)"
-    description: "Total Net Value (Local/Document Currency)"
+    label: "Total Sales (Local Currency)"
+    description: "Total Sales (Local/Document Currency)"
     sql: ${sales_order_value_line_item_source_currency} ;;
     value_format_name: "format_large_numbers_d1"
   }
@@ -265,16 +255,9 @@ view: +sales_orders_v2 {
     description: "Count of Orders with at Least 1 Item Cancelled"
     type: count_distinct
     sql: ${sales_document_vbeln} ;;
-    filters: [is_item_cancelled: "Yes"]
+    filters: [is_item_cancelled: "Yes", document_category_vbtyp: "C"]
   }
 
-#   measure: percent_items_cancelled {
-# #### review: matches existing calculation but is incorrect calculation
-#     hidden: no
-#     type: number
-#     sql: safe_divide(${count_items_cancelled},${count_orders}) ;;
-#     value_format_name: percent_1
-#   }
 
   measure: percent_orders_with_cancellation {
     hidden: no
@@ -287,62 +270,62 @@ view: +sales_orders_v2 {
 #### QA testing stuff
 # {
 
-  dimension: check_sales_order_value_line_item_source_currency {
-    hidden: no
-    view_label: "zQA"
-    type: number
-    sql: ${cumulative_order_quantity_kwmeng} * ${net_price_netpr} ;;
-  }
+  # dimension: check_sales_order_value_line_item_source_currency {
+  #   hidden: no
+  #   view_label: "zQA"
+  #   type: number
+  #   sql: ${cumulative_order_quantity_kwmeng} * ${net_price_netpr} ;;
+  # }
 
-  dimension: is_different_item_value_local_currency {
-    hidden: no
-    view_label: "zQA"
-    type: yesno
-    sql: ${check_sales_order_value_line_item_source_currency}<>${sales_order_value_line_item_source_currency} ;;
-  }
+  # dimension: is_different_item_value_local_currency {
+  #   hidden: no
+  #   view_label: "zQA"
+  #   type: yesno
+  #   sql: ${check_sales_order_value_line_item_source_currency}<>${sales_order_value_line_item_source_currency} ;;
+  # }
 
-  dimension: is_hdr_and_item_currency_different {
-    hidden: no
-    view_label: "zQA"
-    type: yesno
-    sql: ${currency_waerk}<>${currency_hdr_waerk} ;;
-  }
+  # dimension: is_hdr_and_item_currency_different {
+  #   hidden: no
+  #   view_label: "zQA"
+  #   type: yesno
+  #   sql: ${currency_waerk}<>${currency_hdr_waerk} ;;
+  # }
 
-  dimension: is_item_netwr_different {
-    hidden: no
-    view_label: "zQA"
-    type: yesno
-    sql: ${net_price_netwr}<>${sales_order_value_line_item_source_currency} ;;
-  }
+  # dimension: is_item_netwr_different {
+  #   hidden: no
+  #   view_label: "zQA"
+  #   type: yesno
+  #   sql: ${net_price_netwr}<>${sales_order_value_line_item_source_currency} ;;
+  # }
 
-  dimension: net_price_netwr {
-    hidden: no
-    view_label: "zQA"
-  }
+  # dimension: net_price_netwr {
+  #   hidden: no
+  #   view_label: "zQA"
+  # }
 
-  measure: total_sales_order2 {
-    hidden: no
-    view_label: "zQA"
-    type: max
-    sql: ${net_value_of_the_sales_order_in_document_currency_netwr} ;;
-  }
+  # measure: total_sales_order2 {
+  #   hidden: no
+  #   view_label: "zQA"
+  #   type: max
+  #   sql: ${net_value_of_the_sales_order_in_document_currency_netwr} ;;
+  # }
 
-  dimension: item_fill_rate {
-    hidden: no
-    type: number
-    view_label: "zQA"
-    sql: safe_divide(coalesce(${cumulative_confirmed_quantity_kbmeng},0),${cumulative_order_quantity_kwmeng}) ;;
-    value_format_name: percent_1
-  }
+  # dimension: item_fill_rate {
+  #   hidden: no
+  #   type: number
+  #   view_label: "zQA"
+  #   sql: safe_divide(coalesce(${cumulative_confirmed_quantity_kbmeng},0),${cumulative_order_quantity_kwmeng}) ;;
+  #   value_format_name: percent_1
+  # }
 
-  measure: avg_item_fill_rate {
-    hidden: no
-    type: average
-    view_label: "zQA"
-    sql: ${item_fill_rate} ;;
-    value_format_name: percent_1
+  # measure: avg_item_fill_rate {
+  #   hidden: no
+  #   type: average
+  #   view_label: "zQA"
+  #   sql: ${item_fill_rate} ;;
+  #   value_format_name: percent_1
 
-  }
+  # }
 
 
 

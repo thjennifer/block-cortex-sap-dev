@@ -17,7 +17,7 @@ view: +divisions_md {
 
   dimension: division_spart {
     hidden: yes
-    label: "Material Number MATNR"
+    label: "Division SPART"
   }
 
   #rename language_key_spras to language_spras
@@ -28,6 +28,7 @@ view: +divisions_md {
   }
 
   dimension: division_name_vtext {
+    hidden: no
     label: "Division Name VTEXT"
   }
 

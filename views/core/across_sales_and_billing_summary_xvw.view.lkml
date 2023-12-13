@@ -12,8 +12,8 @@ view: across_sales_and_billing_summary_xvw {
   dimension: is_order_closed {
     group_label: "Order Status"
     type: yesno
-    sql: ${sales_order_item_delivery_summary_ndt.is_order_in_full} = true AND
-         ${sales_order_item_billing_summary_sdt.is_order_and_billing_quantity_equal} = true ;;
+    sql: ${sales_order_item_delivery_summary_ndt.is_order_delivered_in_full} = true AND
+         ${sales_order_item_billing_summary_sdt.is_order_billed_in_full} = true ;;
   }
 
   dimension: order_status {

@@ -6,13 +6,13 @@
 
 view: across_sales_and_deliveries_xvw {
 
-  dimension: key {
-    primary_key: yes
-    hidden: yes
-    # sql: concat(${sales_orders_v2.client_mandt},${sales_orders_v2.sales_document_vbeln},${sales_orders_v2.item_posnr},${deliveries.delivery_vbeln}) ;;
-    sql: concat(${deliveries.client_mandt},${deliveries.sales_order_number_vgbel},${deliveries.delivery_item_posnr},${deliveries.delivery_vbeln}) ;;
+  # dimension: key {
+  #   primary_key: yes
+  #   hidden: yes
+  #   # sql: concat(${sales_orders_v2.client_mandt},${sales_orders_v2.sales_document_vbeln},${sales_orders_v2.item_posnr},${deliveries.delivery_vbeln}) ;;
+  #   sql: concat(${deliveries.client_mandt},${deliveries.sales_order_number_vgbel},${deliveries.delivery_item_posnr},${deliveries.delivery_vbeln}) ;;
 
-  }
+  # }
 
 
   # dimension: is_in_full {
@@ -100,21 +100,21 @@ view: across_sales_and_deliveries_xvw {
     filters: [deliveries.is_blocked: "Yes"]
   }
 
-  measure: difference_order_lines_delivery_lines {
+  measure: difference_order_qty_delivery_qty {
     type: number
-    sql: ${sales_orders_v2.count} - ${deliveries.count_delivery_line_items};;
+    sql: ${sales_orders_v2.total_quantity_ordered} - ${deliveries.total_quantity_delivered};;
     value_format_name: decimal_0
   }
 
-  measure: difference_delivery_lines_order_lines {
+  measure: difference_delivery_qty_order_qty {
     type: number
-    sql:  ${deliveries.count_delivery_line_items} - ${sales_orders_v2.count};;
+    sql:  ${deliveries.total_quantity_delivered} - ${sales_orders_v2.total_quantity_ordered};;
     value_format_name: decimal_0
   }
 
-  measure: percent_difference_order_lines_delivery_lines {
+  measure: percent_difference_order_qty_delivery_qty {
     type: number
-    sql: safe_divide(${deliveries.count_delivery_line_items},${sales_orders_v2.count});;
+    sql: 1 - safe_divide(${deliveries.total_quantity_delivered},${sales_orders_v2.total_quantity_ordered});;
     value_format_name: percent_1
   }
 

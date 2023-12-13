@@ -7,7 +7,7 @@ view: sales_order_item_billing_summary_sdt {
              so.CumulativeOrderQuantity_KWMENG,
              b.billing_quantity,
              so.CumulativeOrderQuantity_KWMENG = coalesce(b.billing_quantity,0) as is_item_order_and_billing_quantity_equal,
-             min(so.CumulativeOrderQuantity_KWMENG =  coalesce(b.billing_quantity,0)) over (partition by so.Client_MANDT, so.SalesDocument_VBELN) as is_order_and_billing_quantity_equal
+             min(so.CumulativeOrderQuantity_KWMENG =  coalesce(b.billing_quantity,0)) over (partition by so.Client_MANDT, so.SalesDocument_VBELN) as is_order_billed_in_full
 
       from `thjennifer3.CORTEX_SAP_REPORTING.SalesOrders_V2` so
       left join
@@ -61,10 +61,10 @@ view: sales_order_item_billing_summary_sdt {
     sql: ${TABLE}.is_item_order_and_billing_quantity_equal ;;
   }
 
-  dimension: is_order_and_billing_quantity_equal {
+  dimension: is_order_billed_in_full {
     hidden: no
     type: yesno
-    sql: ${TABLE}.is_order_and_billing_quantity_equal ;;
+    sql: ${TABLE}.is_order_billed_in_full ;;
   }
 
   measure: total_quantity_billed {

@@ -2,7 +2,7 @@ include: "/views/base/one_touch_order.view"
 
 ######################
 # includes a measure that references another view:
-#   percent_one_touch_orders references sales_orders_v2.count_sales_documents
+#   percent_one_touch_orders references sales_orders_v2.count_orders and sales_orders_v2.document_category_vbtyp
 #
 # always join this view in an Explore with sales_orders_v2
 # or use fields: parameter to exclude percent_one_touch_orders from explore
@@ -27,12 +27,13 @@ view: +one_touch_order {
     hidden: no
     type: count_distinct
     sql: ${vbapsales_document_vbeln} ;;
+    filters: [sales_orders_v2.document_category_vbtyp: "C"]
   }
 
   measure: percent_one_touch_orders {
     hidden: no
     type: number
-    sql: safe_divide(${count_one_touch_orders},${sales_orders_v2.count_sales_documents}) ;;
+    sql: safe_divide(${count_one_touch_orders},${sales_orders_v2.count_orders}) ;;
     value_format_name: percent_1
   }
 
