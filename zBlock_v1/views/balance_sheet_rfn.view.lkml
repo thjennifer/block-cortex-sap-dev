@@ -29,7 +29,7 @@
 #########################################################
 
 
-include: "/views/balance_sheet_base.view"
+include: "/zBlock_v1/views/balance_sheet_base.view"
 
 view: +balance_sheet {
 

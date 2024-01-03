@@ -1,5 +1,5 @@
-include: "/views/balance_sheet_rfn.view"
-include: "/views/language_map_sdt.view"
+include: "/zBlock_v1/views/balance_sheet_rfn.view"
+include: "/zBlock_v1/views/language_map_sdt.view"
 
 explore: balance_sheet {
   always_join: [language_map_sdt]

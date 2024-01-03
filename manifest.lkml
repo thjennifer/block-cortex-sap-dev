@@ -1,5 +1,5 @@
 constant: CONNECTION_NAME {
-  value: "cortex"
+  value: "qa-thjennifer3"
   export: override_required
 }
 

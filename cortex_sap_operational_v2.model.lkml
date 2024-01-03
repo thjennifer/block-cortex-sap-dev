@@ -4,6 +4,7 @@ include: "/components/**/*.lkml"
 include: "/views/core/**/*.view"
 include: "/explores/*.explore"
 include: "/dashboards/*.dashboard"
+include: "/dashboards/balance_sheet/*.dashboard"
 
 
 
