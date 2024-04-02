@@ -1,5 +1,5 @@
 {
-  "label": "Cortex Data Foundation for SAP - Operational Dashboards",
+  "label": "Google Cloud Cortex Framework for SAP - Operational Dashboards",
   "category_label": "Models",
   "branding": {
     "image_uri": "https://marketplace-api.looker.com/block-icons/cortex_icon.png",
@@ -11,21 +11,24 @@
       "label": "Connection Name",
       "value_constraint": "connection"
     },
-    "GCP_PROJECT": {
-      "label": "GCP Project Name"
+    "GCP_PROJECT_ID": {
+      "label": "GCP Project ID"
     },
     "REPORTING_DATASET": {
       "label": "Reporting Dataset Name"
     },
-     "CLIENT": {
+     "CLIENT_ID": {
       "label": "SAP Client ID"
-    }  
+    },
+     "SIGN_CHANGE": {
+     "label": "SAP Sign Change for Income Statement Reports (Yes or No)"
+    },
   },
       "models": [
         {
-            "name": "cortex_sap_operational",
+            "name": "cortex_sap_operational_v2",
             "connection_constant": "CONNECTION_NAME"
         }
     ]
-  
+
 }

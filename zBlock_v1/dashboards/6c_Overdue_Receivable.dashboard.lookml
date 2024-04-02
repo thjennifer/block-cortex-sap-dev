@@ -69,7 +69,7 @@
   - name: ''
     type: text
     title_text: ''
-    subtitle_text: ' <a href="/dashboards/cortex_sap_operational::accounts_receivable?">Home</a>'
+    subtitle_text: ' <a href="/dashboards/cortex_sap_operational_v1::accounts_receivable?">Home</a>'
     body_text: ''
     row: 21
     col: 0

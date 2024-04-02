@@ -6,6 +6,8 @@
 #  with `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.SalesOrderPartnerFunction`
 ######################
 
+include: "/views/core/partner_function_tmp.view"
+
 view: sales_order_partner_function_sdt {
 
   fields_hidden_by_default: yes
