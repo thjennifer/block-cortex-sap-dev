@@ -1,5 +1,5 @@
-view: balance_sheet {
-  sql_table_name: `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.BalanceSheet` ;;
+view: profit_and_loss {
+  sql_table_name: `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.ProfitAndLoss` ;;
 
   dimension: amount_in_local_currency {
     type: number
@@ -33,6 +33,10 @@ view: balance_sheet {
     type: string
     sql: ${TABLE}.CompanyText ;;
   }
+  dimension: cost_center {
+    type: string
+    sql: ${TABLE}.CostCenter ;;
+  }
   dimension: cumulative_amount_in_local_currency {
     type: number
     sql: ${TABLE}.CumulativeAmountInLocalCurrency ;;
@@ -61,13 +65,37 @@ view: balance_sheet {
     type: string
     sql: ${TABLE}.FiscalYear ;;
   }
-  dimension: hierarchy_name {
+  dimension: glfinancial_item {
     type: string
-    sql: ${TABLE}.HierarchyName ;;
+    sql: ${TABLE}.GLFinancialItem ;;
   }
-  dimension: is_leaf_node {
+  dimension: glhierarchy {
+    type: string
+    sql: ${TABLE}.GLHierarchy ;;
+  }
+  dimension: glis_leaf_node {
     type: yesno
-    sql: ${TABLE}.IsLeafNode ;;
+    sql: ${TABLE}.GLIsLeafNode ;;
+  }
+  dimension: gllevel {
+    type: string
+    sql: ${TABLE}.GLLevel ;;
+  }
+  dimension: glnode {
+    type: string
+    sql: ${TABLE}.GLNode ;;
+  }
+  dimension: glnode_text {
+    type: string
+    sql: ${TABLE}.GLNodeText ;;
+  }
+  dimension: glparent {
+    type: string
+    sql: ${TABLE}.GLParent ;;
+  }
+  dimension: glparent_text {
+    type: string
+    sql: ${TABLE}.GLParentText ;;
   }
   dimension: language_key_spras {
     type: string
@@ -77,29 +105,13 @@ view: balance_sheet {
     type: string
     sql: ${TABLE}.LedgerInGeneralLedgerAccounting ;;
   }
-  dimension: level {
-    type: string
-    sql: ${TABLE}.Level ;;
-  }
   dimension: max_exchange_rate {
     type: number
     sql: ${TABLE}.MaxExchangeRate ;;
   }
-  dimension: node {
+  dimension: profit_center {
     type: string
-    sql: ${TABLE}.Node ;;
-  }
-  dimension: node_text {
-    type: string
-    sql: ${TABLE}.NodeText ;;
-  }
-  dimension: parent {
-    type: string
-    sql: ${TABLE}.Parent ;;
-  }
-  dimension: parent_text {
-    type: string
-    sql: ${TABLE}.ParentText ;;
+    sql: ${TABLE}.ProfitCenter ;;
   }
   dimension: target_currency_tcurr {
     type: string
@@ -107,6 +119,5 @@ view: balance_sheet {
   }
   measure: count {
     type: count
-    drill_fields: [hierarchy_name]
   }
 }
