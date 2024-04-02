@@ -22,7 +22,7 @@
     },
      "SIGN_CHANGE": {
      "label": "SAP Sign Change for Income Statement Reports (Yes or No)"
-    },
+    }
   },
       "models": [
         {
