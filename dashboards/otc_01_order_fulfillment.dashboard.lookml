@@ -1,5 +1,5 @@
-- dashboard: sales_order_fulfillment
-  title: Sales Order Fulfillment
+- dashboard: otc_order_fulfillment
+  title: Order Fulfillment
   layout: newspaper
   preferred_viewer: dashboards-next
   description: ''
@@ -7,13 +7,13 @@
 
   # pull navigation bar and filters from template
   # if using navigation_focus_page parameter for active dashboard update navigation tile to use the correct filter
-  extends: sales_order_to_cash_template
+  extends: otc_template
   elements:
 
   - title: navigation
     name: navigation
     filters:
-      navigation_sales_otc_ext.navigation_focus_page: '1'
+      navigation_otc_ext.navigation_focus_page: '1'
 
   - title: In Full %
     name: In Full %
@@ -166,7 +166,7 @@
             sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full, sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif]
     # fields: [sales_orders_v2.creation_date_erdat_month, deliveries.percent_on_time_deliveries,
       # across_sales_and_deliveries_xvw.percent_in_full_deliveries, across_sales_and_deliveries_xvw.percent_otif_deliveries]
-    fill_fields: [sales_orders_v2.creation_date_erdat_month]
+    # fill_fields: [sales_orders_v2.creation_date_erdat_month]
     sorts: [sales_orders_v2.creation_date_erdat_month]
     limit: 500
     column_limit: 50

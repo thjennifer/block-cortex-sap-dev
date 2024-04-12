@@ -1,5 +1,5 @@
-- dashboard: sales_order_status_details
-  title: Sales Order Status Details
+- dashboard: otc_order_details
+  title: Order Status Details
   layout: newspaper
   preferred_viewer: dashboards-next
   crossfilter_enabled: true
@@ -8,14 +8,14 @@
 
   # pull navigation bar and filters from template
   # if using navigation_focus_page parameter for active dashboard update navigation tile to use the correct filter
-  extends: sales_order_to_cash_template
+  extends: otc_template
 
   elements:
 
   - title: navigation
     name: navigation
     filters:
-      navigation_sales_otc_ext.navigation_focus_page: '3'
+      navigation_otc_ext.navigation_focus_page: '3'
 
 
   # - name: header_order_status

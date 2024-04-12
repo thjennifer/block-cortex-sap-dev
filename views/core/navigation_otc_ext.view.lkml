@@ -1,15 +1,15 @@
 include: "/views/base/navigation_template.view"
 
-view: navigation_sales_otc_ext {
+view: navigation_otc_ext {
   extends: [navigation_template]
 
-  dimension: dashBindings {
+  dimension: dash_bindings {
     hidden: yes
     type: string
-    sql: 'sales_order_fulfillment|Order Fulfillment||sales_order_snapshot|Order Snapshot||sales_order_status_details|Order Status Details||sales_performance|Sales Performance' ;;
+    sql: 'otc_order_fulfillment|Order Fulfillment||otc_order_snapshot|Order Snapshot||otc_order_details|Order Status Details||otc_sales_performance|Sales Performance||otc_billing_and_pricing|Billing and Pricing' ;;
   }
 
-  dimension: filterBindings {
+  dimension: filter_bindings {
     hidden: yes
     type: string
     sql: 'filter1|Order+Date||filter2|Country||filter3|Sales+Org||filter4|Distribution+Channel||filter5|Division||filter6|Product' ;;

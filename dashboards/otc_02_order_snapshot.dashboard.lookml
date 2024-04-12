@@ -1,5 +1,5 @@
-- dashboard: sales_order_snapshot
-  title: Sales Order Snapshot
+- dashboard: otc_order_snapshot
+  title: Order Snapshot
   layout: newspaper
   preferred_viewer: dashboards-next
   description: ''
@@ -7,14 +7,14 @@
 
   # pull navigation bar and filters from template
   # if using navigation_focus_page parameter for active dashboard update navigation tile to use the correct filter
-  extends: sales_order_to_cash_template
+  extends: otc_template
 
   elements:
 
   - title: navigation
     name: navigation
     filters:
-      navigation_sales_otc_ext.navigation_focus_page: '2'
+      navigation_otc_ext.navigation_focus_page: '2'
 
   # - name: header_healthy_orders
   #   type: text

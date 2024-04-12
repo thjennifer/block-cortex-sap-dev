@@ -6,7 +6,7 @@ include: "/explores/*.explore"
 include: "/dashboards/*.dashboard"
 include: "/dashboards/finance/*.dashboard"
 
-
+label: "Cortex SAP Operational v2"
 
 
 persist_with: cortex_default_datagroup
@@ -18,3 +18,7 @@ persist_with: cortex_default_datagroup
 # explore: billing {
 #   hidden: yes
 # }
+
+
+include: "/views/core/sales_order_header_status_rfn.view"
+explore: sales_order_header_status {}

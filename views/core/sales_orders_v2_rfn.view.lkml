@@ -240,7 +240,7 @@ view: +sales_orders_v2 {
   measure: count_customers {
     hidden: no
     type: count_distinct
-    description: "Total Customer Count (disctinct count of Sold to Party KUNNR)"
+    description: "Total Customer Count (distinct count of Sold to Party KUNNR)"
     sql: ${sold_to_party_kunnr} ;;
   }
 

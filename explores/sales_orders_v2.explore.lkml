@@ -12,6 +12,7 @@ include: "/views/core/returns_sdt.view.lkml"
 include: "/views/core/sales_order_item_billing_summary_sdt.view"
 include: "/views/core/sales_order_partner_function_sdt.view"
 include: "/views/core/sales_order_item_partner_function_sdt.view"
+include: "/views/core/sales_order_pricing_sdt.view"
 
 # included _md views for labels
 include: "/views/core/materials_md_rfn.view"
@@ -28,7 +29,7 @@ include: "/views/core/across_sales_and_returns_xvw.view"
 include: "/views/core/across_sales_and_billing_summary_xvw.view"
 
 # dashboard navigation
-include: "/views/core/navigation_sales_otc_ext.view"
+include: "/views/core/navigation_otc_ext.view"
 
 explore: sales_orders_v2 {
   label: "Sales Orders"
@@ -200,6 +201,14 @@ explore: sales_orders_v2 {
             ${sales_orders_v2.item_posnr} = ${sales_order_item_partner_function_sdt.item_posnr};;
   }
 
+  join: sales_order_pricing_sdt {
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${sales_orders_v2.client_mandt}=${sales_order_pricing_sdt.client_mandt} AND
+            ${sales_orders_v2.condition_number_knumv}=${sales_order_pricing_sdt.number_of_the_document_condition_knumv} AND
+            ${sales_orders_v2.item_posnr} = ${sales_order_pricing_sdt.condition_item_number_kposn};;
+  }
+
 
   join: across_sales_and_deliveries_xvw {
     view_label: "Deliveries"
@@ -215,14 +224,14 @@ explore: sales_orders_v2 {
   join: across_sales_and_returns_xvw {
     relationship: one_to_one
     sql:  ;;
-}
+  }
 
   join: across_sales_and_billing_summary_xvw {
     relationship: one_to_one
     sql:  ;;
-}
+  }
 
-  join: navigation_sales_otc_ext {
+  join: navigation_otc_ext {
     view_label: "🔍 Filters & 🛠 Tools"
     relationship: one_to_one
     sql:  ;;

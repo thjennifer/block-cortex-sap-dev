@@ -85,8 +85,15 @@ view: sales_order_item_delivery_summary_ndt {
     description: "Item Number"
   }
 
-  dimension: requested_delivery_date_vadtu {
+  dimension: requested_delivery_date_vdatu {
+    label: "Requested Delivery Date (VADTU)"
     type: date
+  }
+
+  dimension: requested_delivery_date_as_string {
+    hidden: yes
+    label: "Requested Delivery Date"
+    sql: STRING(${requested_delivery_date_vdatu}) ;;
   }
 
   dimension: material_number_matnr {}
@@ -113,10 +120,18 @@ view: sales_order_item_delivery_summary_ndt {
     hidden: no
     type: date
   }
+
   dimension: max_proof_of_delivery_date_podat {
     hidden: no
+    label: "Max Proof of Delivery Date (PODAT)"
     description: "Line Item's Maximum Proof of Delivery Date PODAT"
     type: date
+  }
+
+  dimension: max_proof_of_delivery_date_as_string {
+    hidden: yes
+    label: "Max Proof of Delivery Date"
+    sql: STRING(${max_proof_of_delivery_date_podat}) ;;
   }
 
   dimension: max_proof_of_delivery_timestamp {
@@ -196,7 +211,7 @@ view: sales_order_item_delivery_summary_ndt {
     view_label: "Deliveries"
     group_label: "Status"
     hidden: no
-    label: "Is Order Late (Yes / No)"
+    label: "Is Order Late"
     description: "At least 1 item in order has been delivered late (Proof of Delivery after Requested Delivery Date)"
     type: string
     sql: case ${TABLE}.is_order_late
@@ -253,6 +268,10 @@ view: sales_order_item_delivery_summary_ndt {
         end;;
   }
 
+  dimension: days_late {
+    type: number
+    sql: date_diff(${max_proof_of_delivery_date_podat},${requested_delivery_date_vdatu},DAY) ;;
+  }
 
   measure: count_orders_delivered {
     type: count_distinct
@@ -337,6 +356,19 @@ view: sales_order_item_delivery_summary_ndt {
     type: number
     sql: safe_divide(${count_orders_delivered_late}, ${sales_orders_v2.count_orders}) ;;
     value_format_name: percent_1
+    # drill_fields: [material_number_matnr, materials_md.material_text_maktx , percent_orders_delivered_late]
+    link: {
+      label: "Show Top 10 products with highest Late Delivery Rate"
+      url: "{{ dummy_set_product_with_late._link }}&limit=10"
+    }
+
+    link: {
+      label: "Show Late Orders"
+      # url: "{{ dummy_set_details._link }}&f[Is+Order+Late]=\"Yes\""
+      # url: "{{ dummy_set_details._link}}&f[sales_order_item_delivery_summary_ndt.test_dimension]=odd"
+      url: "{{ dummy_set_details._link}}&f[sales_order_item_delivery_summary_ndt.is_order_late]=Yes"
+      # url: "{{ link }}&f[view_name.status]=active&f[view_name.count]=%3E1"
+    }
   }
 
   measure: percent_orders_delivered_in_full {
@@ -377,5 +409,37 @@ view: sales_order_item_delivery_summary_ndt {
     type: sum
     sql: ${total_quantity_delivered} ;;
   }
+
+  measure: max_days_late {
+    type: max
+    sql: ${days_late} ;;
+  }
+
+  set: set_details_deliveries {
+    fields: [sales_document_vbeln,  sales_order_partner_function_sdt.customer_names_ship_to, set_product*, is_order_late, requested_delivery_date_as_string, max_proof_of_delivery_date_as_string, max_days_late, sum_total_quantity_delivered]
+  }
+
+  set: set_product {
+    fields: [material_number_matnr, materials_md.material_text_maktx]
+  }
+
+  measure: dummy_set_details {
+    hidden:yes
+    drill_fields: [set_details_deliveries*]
+    sql: 1=1 ;;
+  }
+
+  measure: dummy_set_product {
+    hidden:yes
+    drill_fields: [set_product*]
+    sql: 1=1 ;;
+  }
+
+  measure: dummy_set_product_with_late {
+    hidden:yes
+    drill_fields: [set_product*,percent_orders_delivered_late]
+    sql: 1=1 ;;
+  }
+
 
 }

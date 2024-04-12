@@ -1,5 +1,5 @@
-- dashboard: sales_order_status_details_donut
-  title: Sales Order Status Details
+- dashboard: otc_order_details_semicircle
+  title: Order Status Details
   layout: newspaper
   preferred_viewer: dashboards-next
   crossfilter_enabled: true
@@ -8,14 +8,14 @@
 
   # pull navigation bar and filters from template
   # if using navigation_focus_page parameter for active dashboard update navigation tile to use the correct filter
-  extends: sales_order_to_cash_template
+  extends: otc_template
 
   elements:
 
   - title: navigation
     name: navigation
     filters:
-      navigation_sales_otc_ext.navigation_focus_page: '3'
+      navigation_otc_ext.navigation_focus_page: '3'
 
 
   # - name: header_order_status
@@ -43,7 +43,7 @@
     row: 2
     col: 0
     width: 5
-    height: 3
+    height: 4
 
   - title: Blocked Orders
     name: Blocked Orders
@@ -64,10 +64,10 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
-    row: 4
-    col: 0
+    row: 2
+    col: 5
     width: 5
-    height: 3
+    height: 4
 
   # - title: Order Status
   #   name: Order Status Bar
@@ -146,73 +146,8 @@
   #   width: 14
   #   height: 4
 
-  - title: Order Status
-    name: Order Status donut
-    explore: sales_orders_v2
-    type: looker_pie
-    fields: [across_sales_and_billing_summary_xvw.order_status, sales_orders_v2.count_orders]
-    filters:
-      across_sales_and_billing_summary_xvw.order_status: "-NULL"
-    sorts: [across_sales_and_billing_summary_xvw.order_status desc]
-    value_labels: labels
-    label_type: labVal
-    inner_radius: 60
-    start_angle:
-    end_angle:
-    series_colors:
-      Open: "#98B6B1"
-      Closed: "#BFBDC1"
-      Cancelled: "#EB9486"
-    advanced_vis_config: |-
-      {
-        plotOptions: {
-          pie: {
-            dataLabels: {
-              format: '<b>{key}</b><span style="font-weight: normal"> - <br>{percentage:.1f}%<br>{point.rendered}</span>',
-            }
-          }
-        },
-        title: {
-          text: 'Order<br>Status',
-          verticalAlign: 'middle',
-        }
-      }
-    show_value_labels: false
-    font_size: 12
-    hidden_pivots: {}
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_view_names: false
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    legend_position: center
-    point_style: none
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    title_hidden: true
-    listen:
-      # " Order Status": sales_orders_v2.sales_order_status
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-    row: 2
-    col: 5
-    width: 10
-    height: 6
-
-  # - name: Order Status
-  #   title: Order Status semi-circle
+  # - title: Order Status
+  #   name: Order Status donut
   #   explore: sales_orders_v2
   #   type: looker_pie
   #   fields: [across_sales_and_billing_summary_xvw.order_status, sales_orders_v2.count_orders]
@@ -222,8 +157,8 @@
   #   value_labels: labels
   #   label_type: labVal
   #   inner_radius: 60
-  #   start_angle: -90
-  #   end_angle: 90
+  #   start_angle:
+  #   end_angle:
   #   series_colors:
   #     Open: "#D1FAFF"
   #     Closed: "#98B6B1"
@@ -233,12 +168,12 @@
   #       plotOptions: {
   #         pie: {
   #           dataLabels: {
-  #             format: '<b>{key}</b><span style="font-weight: normal"><br>{point.rendered}<br>{percentage:.1f}%</span>',
+  #             format: '<b>{key}</b><span style="font-weight: normal"> - <br>{percentage:.1f}%<br>{point.rendered}</span>',
   #           }
   #         }
   #       },
   #       title: {
-  #         text: 'Status',
+  #         text: 'Order<br>Status',
   #         verticalAlign: 'middle',
   #       }
   #     }
@@ -254,18 +189,14 @@
   #   y_axis_tick_density_custom: 5
   #   show_x_axis_label: true
   #   show_x_axis_ticks: true
-  #   y_axis_scale_mode: linear
-  #   x_axis_reversed: false
-  #   y_axis_reversed: false
-  #   plot_size_by_field: false
-  #   trellis: ''
-  #   stacking: ''
-  #   limit_displayed_rows: false
   #   legend_position: center
   #   point_style: none
   #   label_density: 25
   #   x_axis_scale: auto
   #   y_axis_combined: true
+  #   ordering: none
+  #   show_null_labels: false
+  #   show_totals_labels: false
   #   title_hidden: true
   #   listen:
   #     # " Order Status": sales_orders_v2.sales_order_status
@@ -279,6 +210,75 @@
   #   col: 10
   #   width: 10
   #   height: 5
+
+  - name: Order Status
+    title: Order Status semi-circle
+    explore: sales_orders_v2
+    type: looker_pie
+    fields: [across_sales_and_billing_summary_xvw.order_status, sales_orders_v2.count_orders]
+    filters:
+      across_sales_and_billing_summary_xvw.order_status: "-NULL"
+    sorts: [across_sales_and_billing_summary_xvw.order_status desc]
+    value_labels: labels
+    label_type: labVal
+    inner_radius: 60
+    start_angle: -90
+    end_angle: 90
+    series_colors:
+      Open: "#98B6B1"
+      Closed: "#BFBDC1"
+      Cancelled: "#EB9486"
+    advanced_vis_config: |-
+      {
+        plotOptions: {
+          pie: {
+            dataLabels: {
+              format: '<b>{key}</b><span style="font-weight: normal"><br>{point.rendered}<br>{percentage:.1f}%</span>',
+            }
+          }
+        },
+        title: {
+          text: 'Status',
+          verticalAlign: 'middle',
+        }
+      }
+    show_value_labels: false
+    font_size: 12
+    hidden_pivots: {}
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    title_hidden: true
+    listen:
+      # " Order Status": sales_orders_v2.sales_order_status
+      Order Date: sales_orders_v2.creation_date_erdat_date
+      Division: divisions_md.division_name_vtext
+      Country: countries_md.country_name_landx
+      Sales Org: sales_organizations_md.sales_org_name_vtext
+      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
+      Product: materials_md.material_text_maktx
+    row: 2
+    col: 10
+    width: 10
+    height: 5
 
 
 

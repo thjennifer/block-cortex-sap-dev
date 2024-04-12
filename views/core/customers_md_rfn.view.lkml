@@ -23,6 +23,7 @@ view: +customers_md {
     hidden: no
     label: "{% if _explore._name == 'sales_orders_v2' %}Sold to Party Name{%else%}Customer Name{%endif%}"
     description: "Customer Name (name1)"
+    sql: COALESCE(${TABLE}.name1_name1,CONCAT("Customer - ",${customer_number_kunnr})) ;;
   }
 
   dimension: country_key_land1 {

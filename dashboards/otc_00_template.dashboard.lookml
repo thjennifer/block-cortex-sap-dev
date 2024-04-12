@@ -4,7 +4,7 @@
 #
 ######################
 
-- dashboard: sales_order_to_cash_template
+- dashboard: otc_template
   extension: required
 
   filters:
@@ -108,19 +108,19 @@
       name: navigation
       explore: sales_orders_v2
       type: single_value
-      fields: [navigation_sales_otc_ext.navigation]
+      fields: [navigation_otc_ext.navigation]
       filters:
-        navigation_sales_otc_ext.navigation_focus_page: '1'
-        navigation_sales_otc_ext.navigation_style: 'tabs'
+        navigation_otc_ext.navigation_focus_page: '1'
+        navigation_otc_ext.navigation_style: 'tabs'
       show_single_value_title: false
       show_comparison: false
       listen:
-        Order Date: navigation_sales_otc_ext.filter1
-        Country: navigation_sales_otc_ext.filter2
-        Sales Org: navigation_sales_otc_ext.filter3
-        Distribution Channel: navigation_sales_otc_ext.filter4
-        Division: navigation_sales_otc_ext.filter5
-        Product: navigation_sales_otc_ext.filter6
+        Order Date: navigation_otc_ext.filter1
+        Country: navigation_otc_ext.filter2
+        Sales Org: navigation_otc_ext.filter3
+        Distribution Channel: navigation_otc_ext.filter4
+        Division: navigation_otc_ext.filter5
+        Product: navigation_otc_ext.filter6
       row: 0
       col: 0
       width: 24

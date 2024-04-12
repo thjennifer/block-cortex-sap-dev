@@ -273,10 +273,10 @@
     name: navigation
     explore: sales_orders_v2
     type: single_value
-    fields: [navigation_sales_otc_ext.navigation_bar]
+    fields: [navigation_otc_ext.navigation_bar]
     filters:
-      navigation_sales_otc_ext.navigation_focus_page: '1'
-    sorts: [navigation_sales_otc_ext.navigation_bar]
+      navigation_otc_ext.navigation_focus_page: '1'
+    sorts: [navigation_otc_ext.navigation_bar]
     limit: 500
     column_limit: 50
     custom_color_enabled: true
@@ -317,8 +317,8 @@
     totals_color: "#808080"
     defaults_version: 1
     listen:
-      # Order Date: navigation_sales_otc_ext.filter1
-      Region: navigation_sales_otc_ext.filter1
+      # Order Date: navigation_otc_ext.filter1
+      Region: navigation_otc_ext.filter1
     row: 0
     col: 0
     width: 24
