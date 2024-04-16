@@ -202,6 +202,7 @@ explore: sales_orders_v2 {
   }
 
   join: sales_order_pricing_sdt {
+    view_label: "Sales Orders Items"
     type: left_outer
     relationship: one_to_many
     sql_on: ${sales_orders_v2.client_mandt}=${sales_order_pricing_sdt.client_mandt} AND

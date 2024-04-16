@@ -55,7 +55,11 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Global Currency: currency_conversion_sdt.select_global_currency
-
+    note_state: expanded
+    note_display: below
+    note_text: |-
+      <font size="-2">Limited to 10 Products. To change this row limit, select "Explore from Here" option and adjust the row limit.
+      </font>
     row: 2
     col: 0
     width: 10
@@ -67,8 +71,8 @@
     type: looker_bar
     fields: [materials_md.material_number_matnr, materials_md.material_text_maktx, across_sales_and_currency_conversion_xvw.avg_net_value_per_order_global]
     sorts: [across_sales_and_currency_conversion_xvw.avg_net_value_per_order_global desc]
-    filters:
-      sales_orders_v2.count_orders: ">=10"
+    # filters:
+    #   sales_orders_v2.count_orders: ">=10"
     limit: 10
     x_axis_gridlines: false
     y_axis_gridlines: true
@@ -101,7 +105,11 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Global Currency: currency_conversion_sdt.select_global_currency
-
+    note_state: expanded
+    note_display: below
+    note_text: |-
+      <font size="-2">Limited to 10 Products. To change this row limit, select "Explore from Here" option and adjust the row limit.
+      </font>
     row: 2
     col: 11
     width: 10

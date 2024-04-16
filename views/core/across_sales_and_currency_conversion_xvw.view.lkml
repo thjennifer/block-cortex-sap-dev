@@ -37,7 +37,7 @@ view: across_sales_and_currency_conversion_xvw {
     hidden: no
     type: sum
     view_label: "Sales Orders"
-    label: "Total Sales (Global Currency {% parameter currency_conversion_sdt.select_global_currency %})"
+    label: "@{derive_currency_label}Total Sales ({{currency}})"
     sql: ${item_net_value_global_netwr} ;;
     filters: [sales_orders_v2.document_category_vbtyp: "C"]
     value_format_name: "format_large_numbers_d1"
@@ -48,19 +48,19 @@ view: across_sales_and_currency_conversion_xvw {
     hidden: no
     type: number
     view_label: "Sales Orders"
-    label: "Average Sales per Order (Global Currency {% parameter currency_conversion_sdt.select_global_currency %})"
+    label: "@{derive_currency_label}Average Sales per Order ({{currency}})"
     sql: safe_divide(${total_net_value_global},${sales_orders_v2.count_orders});;
     sql_distinct_key: ${sales_orders_v2.key};;
     value_format_name: "format_large_numbers_d1"
   }
 
-  measure: test_avg {
-    hidden: no
-    type: average_distinct
-    view_label: "Sales Orders"
-    sql: ${item_net_price_global_netpr} ;;
-    sql_distinct_key: ${sales_orders_v2.key};;
-  }
+  # measure: test_avg {
+  #   hidden: no
+  #   type: average_distinct
+  #   view_label: "Sales Orders"
+  #   sql: ${item_net_price_global_netpr} ;;
+  #   sql_distinct_key: ${sales_orders_v2.key};;
+  # }
 
   measure: percent_of_total_net_value_global {
     hidden: no

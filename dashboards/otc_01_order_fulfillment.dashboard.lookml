@@ -3,11 +3,11 @@
   layout: newspaper
   preferred_viewer: dashboards-next
   description: ''
-  preferred_slug: TRgR2T4CDYOUt3RJD9wqij
 
   # pull navigation bar and filters from template
   # if using navigation_focus_page parameter for active dashboard update navigation tile to use the correct filter
   extends: otc_template
+
   elements:
 
   - title: navigation
@@ -20,7 +20,6 @@
     explore: sales_orders_v2
     type: single_value
     fields: [sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full]
-    # fields: [across_sales_and_deliveries_xvw.percent_in_full_deliveries]
     listen:
       Order Date: sales_orders_v2.creation_date_erdat_date
       Country: countries_md.country_name_landx
@@ -28,6 +27,9 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Division: divisions_md.division_name_vtext
+    note_state: collapsed
+    note_display: hover
+    note_text: "The percentage of sales orders fulfilled completely (for all line items)."
     row: 2
     col: 6
     width: 6
@@ -38,7 +40,6 @@
     explore: sales_orders_v2
     type: single_value
     fields: [sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time]
-    # fields: [deliveries.percent_on_time_deliveries]
     listen:
       Order Date: sales_orders_v2.creation_date_erdat_date
       Country: countries_md.country_name_landx
@@ -46,6 +47,9 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Division: divisions_md.division_name_vtext
+    note_state: collapsed
+    note_display: hover
+    note_text: "The percentage of sales orders fulfilled by the promised delivery date."
     row: 2
     col: 0
     width: 6
@@ -64,6 +68,9 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Division: divisions_md.division_name_vtext
+    note_state: collapsed
+    note_display: hover
+    note_text: "The percentage of sales orders fulfilled completely (for all line items) by the promised delivery date."
     row: 2
     col: 12
     width: 6
@@ -85,12 +92,15 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Division: divisions_md.division_name_vtext
+    note_state: collapsed
+    note_display: hover
+    note_text: "The percentage of sales orders not fully delivered by the promised delivery date."
     row: 2
     col: 18
     width: 6
     height: 3
 
-  - title: Products with Longest Average Order Cycle Time
+  - title: Products with Longest Average Order Cycle Time (Days)
     name: Products with Longest Average Order Cycle Time
     explore: sales_orders_v2
     type: looker_bar
@@ -153,6 +163,9 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Division: divisions_md.division_name_vtext
+    note_state: collapsed
+    note_display: hover
+    note_text: "Order cycle time is average number of days between order placement and order delivery. "
     row: 5
     col: 12
     width: 12
@@ -164,9 +177,6 @@
     type: looker_line
     fields: [sales_orders_v2.creation_date_erdat_month,sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time,
             sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full, sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif]
-    # fields: [sales_orders_v2.creation_date_erdat_month, deliveries.percent_on_time_deliveries,
-      # across_sales_and_deliveries_xvw.percent_in_full_deliveries, across_sales_and_deliveries_xvw.percent_otif_deliveries]
-    # fill_fields: [sales_orders_v2.creation_date_erdat_month]
     sorts: [sales_orders_v2.creation_date_erdat_month]
     limit: 500
     column_limit: 50
@@ -191,18 +201,6 @@
       sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time: On Time %
       sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full: In Full %
       sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif: OTIF %
-    # series_types:
-    #   deliveries.percent_on_time_deliveries: column
-    #   across_sales_and_deliveries_xvw.percent_in_full_deliveries: column
-    #   across_sales_and_deliveries_xvw.percent_otif_deliveries: column
-    # series_colors:
-    #   deliveries.percent_on_time_deliveries: "#F39B6D"
-    #   across_sales_and_deliveries_xvw.percent_in_full_deliveries: "#6494AA"
-    #   across_sales_and_deliveries_xvw.percent_otif_deliveries: "#89BD9E"
-    # series_labels:
-    #   deliveries.percent_on_time_deliveries: On Time %
-    #   across_sales_and_deliveries_xvw.percent_in_full_deliveries: In Full %
-    #   across_sales_and_deliveries_xvw.percent_otif_deliveries: OTIF %
     x_axis_datetime_label: "%B %y"
     defaults_version: 1
     listen:

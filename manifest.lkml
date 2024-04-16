@@ -34,21 +34,44 @@ constant: SIGN_CHANGE {
 # Additional Constants used for formatting and other logic
 #{
 
-# to show negative values in red, at this constant to the html: parameter
-# For example:
-#         measure: profit {
-#            type: number
-#            sql: ${total_sales} - ${total_cost} ;;
-#            html: @{negative_format} ;;
-#         }
+# Constant negative_format
+# shows negative values in red, at this constant to the html: parameter
+# example use:
+#   measure: profit {
+#     type: number
+#     sql: ${total_sales} - ${total_cost} ;;
+#     html: @{negative_format} ;;
+#     }
 
 constant: negative_format {
   value: "{% if value < 0 %}<p style='color:red;'>{{rendered_value}}</p>{% else %} {{rendered_value}} {% endif %}"
 }
 
+# Constant sign_change_multiplier
+# derives multiplier of 1 or -1 based on value entered for SIGN_CHANGE constant
+# example use:
+#   dimension: amount_in_local_currency {
+#     hidden: yes
+#     sql: @{sign_change_multiplier}
+#         ${TABLE}.AmountInLocalCurrency * {{multiplier}} ;;
+#     }
+#
 constant: sign_change_multiplier {
   value: "{% assign choice = '@{SIGN_CHANGE}' | downcase %}
   {% if choice == 'yes' %}{% assign multiplier = -1 %}{% else %}{% assign multiplier = 1 %}{% endif %}"
+}
+
+# Constant derive_currency_label
+# captures and formats selected Global Currency for use in 'labels' property
+# example use:
+#   measure: total_net_value_global {
+#     type: sum
+#     label: "@{derive_currency_label}Total Sales ({{currency}})"
+#     sql: ${item_net_value_global_netwr} ;;
+#     }
+#
+constant: derive_currency_label {
+  value: "{% assign currency = currency_conversion_sdt.select_global_currency._parameter_value | remove: \"'\" %}"
 }
 
 

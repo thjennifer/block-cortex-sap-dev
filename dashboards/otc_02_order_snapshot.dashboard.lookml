@@ -3,7 +3,6 @@
   layout: newspaper
   preferred_viewer: dashboards-next
   description: ''
-  preferred_slug: m3w6s8s4yTif2jgtNxMd1u
 
   # pull navigation bar and filters from template
   # if using navigation_focus_page parameter for active dashboard update navigation tile to use the correct filter
@@ -15,15 +14,6 @@
     name: navigation
     filters:
       navigation_otc_ext.navigation_focus_page: '2'
-
-  # - name: header_healthy_orders
-  #   type: text
-  #   title_text: <font color="#808080">How healthy is Order Fulfillment?</font>
-  #   body_text: ''
-  #   row: 2
-  #   col: 0
-  #   width: 24
-  #   height: 1
 
   - title: One Touch Orders
     name: One Touch Orders
@@ -37,13 +27,16 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
+    note_state: collapsed
+    note_display: hover
+    note_text: "The percentage of sales orders processed without manual touches or interventions during order entry, scheduling, shipping and invoicing."
     row: 2
     col: 0
     width: 4
     height: 3
 
-  - title: Avg Fill Rate %
-    name: Avg Fill Rate %
+  - title: Fill Rate %
+    name: Fill Rate %
     explore: sales_orders_v2
     type: single_value
     fields: [sales_order_schedule_line_sdt.avg_fill_rate_item]
@@ -54,6 +47,9 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
+    note_state: collapsed
+    note_display: hover
+    note_text: "The percentage of sales orders that can be fulfilled immediately by available inventory."
     row: 5
     col: 0
     width: 4
@@ -71,6 +67,9 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
+    note_state: collapsed
+    note_display: hover
+    note_text: "The percentage of sales orders with a product cancellation."
     row: 11
     col: 0
     width: 4
@@ -88,6 +87,9 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
+    note_state: collapsed
+    note_display: hover
+    note_text: "The percentage of sales orders with a product return."
     row: 9
     col: 0
     width: 4
@@ -100,8 +102,6 @@
     fields: [materials_md.material_number_matnr, materials_md.material_text_maktx, across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty,
       sales_orders_v2.total_quantity_ordered, deliveries.total_quantity_delivered, across_sales_and_deliveries_xvw.difference_delivery_qty_order_qty,
       across_sales_and_deliveries_xvw.percent_difference_order_qty_delivery_qty]
-    # filters:
-    #   sales_orders_v2.count: ">=100"
     sorts: [across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty desc]
     limit: 500
     column_limit: 50

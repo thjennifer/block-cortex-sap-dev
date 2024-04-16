@@ -1,3 +1,24 @@
+#########################################################{
+# PURPOSE
+# provides Sales Order Line Items (both Header and Line Items)
+#
+# SOURCE
+# Refines View sales_orders_v2 (defined in file /views/base/sales_orders_v2.view)
+#
+# REFERENCED BY
+# Explore sales_orders_v2
+#
+# DERIVED DIMENSIONS
+# creation_timestamp
+#
+# KEYS TO USING
+#   - Fields are hidden by default so must change "hidden: " property to "no" to include field in an Explore
+#   - This refinement view only includes fields added or edited. Full list of fields available are found in the base view
+#   - Header-level dimensions and measures shown in Explore under view Label Sales Orders
+#   - Item-level dimensions and measures shown in Explore under view label Sales Orders Items
+#
+#########################################################}
+
 include: "/views/base/sales_orders_v2.view"
 
 view: +sales_orders_v2 {
@@ -46,7 +67,7 @@ view: +sales_orders_v2 {
 
 #}
 
-#### Dates & Times
+#### Header Dates & Times
 #{
   dimension_group: creation_date_erdat {
     hidden: no
@@ -73,8 +94,13 @@ view: +sales_orders_v2 {
   }
 #} end dates & times
 
-#### Types, Categories and other Document Groupings
+#### Header Sold to Party, Type, Category, Distribution Channel and other Document Attributes
 #{
+
+  dimension: sold_to_party_kunnr {
+    hidden: no
+    label: "Sold to Party@{SAP_LABEL}"
+  }
 
   dimension: sales_document_type_auart {
     hidden: no
@@ -123,22 +149,10 @@ view: +sales_orders_v2 {
     description: "SD Document Currency at header level"
   }
 
-  dimension: is_item_cancelled {
-    hidden: no
-    type: yesno
-    view_label: "Sales Orders Items"
-    sql: ${rejection_reason_abgru} is not null and ${rejection_reason_abgru} <> '' ;;
-  }
 
   #}
 
 
-  #### Customer dimensions
-
-  dimension: sold_to_party_kunnr {
-    hidden: no
-    label: "Sold to Party@{SAP_LABEL}"
-  }
 
   ## don't think this is needed---Total for Sales Order but does not apply Currency Decimal fix like item-level NETWR
   dimension: net_value_of_the_sales_order_in_document_currency_netwr {
@@ -191,15 +205,28 @@ view: +sales_orders_v2 {
     label: "Base Unit of Measure@{SAP_LABEL}"
   }
 
- dimension: sales_unit_vrkme {
+  dimension: sales_unit_vrkme {
     hidden: no
     view_label: "Sales Orders Items"
     label: "Sales Unit@{SAP_LABEL}"
     }
 
+  dimension: rejection_reason_abgru {
+    hidden: no
+    view_label: "Sales Orders Items"
+    label: "Rejection Reason@{SAP_LABEL}"
+  }
+
+  dimension: is_item_cancelled {
+    hidden: no
+    type: yesno
+    view_label: "Sales Orders Items"
+    sql: ${rejection_reason_abgru} is not null and ${rejection_reason_abgru} <> '' ;;
+  }
+
 # }
 
-  measure: count_document_line_items {
+  measure: count {
     hidden: no
     label: "Count Document Line Items"
     description: "Count of Documents & Items"

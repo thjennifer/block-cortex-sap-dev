@@ -48,7 +48,7 @@ view: partner_function_tmp {
              Item_POSNR,
              PartnerFunction_PARVW,
              Customer_KUNNR
-      from `thjennifer3.CORTEX_SAP_REPORTING.SalesOrderPartnerFunction`
+      from `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.SalesOrderPartnerFunction`
       where SalesDocument_VBELN <> '0000006550' ;;
   }
 

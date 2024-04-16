@@ -37,7 +37,7 @@ view: sales_order_item_partner_function_sdt {
           FROM
             ${partner_function_tmp.SQL_TABLE_NAME} pf
           JOIN
-            `thjennifer3.CORTEX_SAP_REPORTING.CustomersMD` c
+            `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.CustomersMD` c
           ON
             pf.Client_MANDT = c.client_MANDT
             AND pf.Customer_KUNNR = c.CustomerNumber_KUNNR
