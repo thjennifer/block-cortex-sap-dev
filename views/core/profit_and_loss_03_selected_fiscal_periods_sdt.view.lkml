@@ -261,7 +261,7 @@ view: profit_and_loss_03_selected_fiscal_periods_sdt {
     hidden: no
     # Label is Reporting Amount by default. If filter_fiscal_timeframe in query and parameter_compare_to = 'none' then leave label blank"
     label: "{% assign compare = profit_and_loss.parameter_compare_to._parameter_value %}{% if profit_and_loss.filter_fiscal_timeframe._in_query and compare == 'none'%} {% else %}Reporting Amount{% endif %}"
-    description: "Amount in Global Currency for the Reporting fiscal reporting group."
+    description: "Amount in Target Currency for the Reporting fiscal reporting group."
     sql_distinct_key: ${profit_and_loss.key} ;;
     sql: ${profit_and_loss.amount_in_target_currency} ;;
     filters: [fiscal_reporting_group: "Reporting"]
@@ -274,7 +274,7 @@ view: profit_and_loss_03_selected_fiscal_periods_sdt {
     hidden: no
     # Label is Comparison Amount by default. If filter_fiscal_timeframe in query, then Label is Year Ago Amount, Prior Amount or None based on parameter_compare_to
     label: "{% if profit_and_loss.filter_fiscal_timeframe._in_query%}{% assign compare = profit_and_loss.parameter_compare_to._parameter_value %}{% if compare == 'yoy' %}{%assign compare_label = 'Year Ago Amount' %}{%elsif compare == 'prior'%}{%assign compare_label = 'Prior Amount'%}{% else %}{% assign compare_label = 'None' %}{%endif%}{{compare_label}}{%else%}Comparison Amount{%endif%}"
-    description: "Amount in Global Currency for the Comparison fiscal reporting group."
+    description: "Amount in Target Currency for the Comparison fiscal reporting group."
     sql_distinct_key: ${profit_and_loss.key} ;;
     sql: {% if profit_and_loss.parameter_compare_to._parameter_value != 'none' %}${profit_and_loss.amount_in_target_currency}{%else%}NULL{%endif%} ;;
     filters: [fiscal_reporting_group: "Comparison"]
@@ -332,7 +332,7 @@ view: profit_and_loss_03_selected_fiscal_periods_sdt {
 # used in Income Statement dashboard; add to a single-value visualization
   measure: title_income_statement {
     type: number
-    description: "Add this measure to a single-value visualization. Returns a Summary visualization with Company, Global Currency, Reporting Fiscal Timeframes and Total Net Income."
+    description: "Add this measure to a single-value visualization. Returns a Summary visualization with Company, Target Currency, Reporting Fiscal Timeframes and Total Net Income."
     hidden: no
     sql: 1 ;;
     html:

@@ -20,8 +20,8 @@
     title: Top Products by Sales
     explore: sales_orders_v2
     type: looker_bar
-    fields: [materials_md.material_number_matnr, materials_md.material_text_maktx, across_sales_and_currency_conversion_xvw.total_net_value_global]
-    sorts: [across_sales_and_currency_conversion_xvw.total_net_value_global desc]
+    fields: [materials_md.material_number_matnr, materials_md.material_text_maktx, across_sales_and_currency_conversion_xvw.total_net_value_target]
+    sorts: [across_sales_and_currency_conversion_xvw.total_net_value_target desc]
     limit: 10
     x_axis_gridlines: false
     y_axis_gridlines: true
@@ -37,11 +37,11 @@
     x_axis_scale: auto
     y_axis_combined: true
     series_colors:
-      {across_sales_and_currency_conversion_xvw.total_net_value_global: "#74A09F"}
+      {across_sales_and_currency_conversion_xvw.total_net_value_target: "#74A09F"}
 
-    y_axes: [{label: '', orientation: bottom, series: [{axisId: across_sales_and_currency_conversion_xvw.total_net_value_global,
-            id: across_sales_and_currency_conversion_xvw.total_net_value_global, name: Total
-              Net Value (Global Currency 'USD')}], showLabels: true, showValues: false,
+    y_axes: [{label: '', orientation: bottom, series: [{axisId: across_sales_and_currency_conversion_xvw.total_net_value_target,
+            id: across_sales_and_currency_conversion_xvw.total_net_value_target, name: Total
+              Net Value (Target Currency 'USD')}], showLabels: true, showValues: false,
         unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear}]
     x_axis_zoom: true
     y_axis_zoom: true
@@ -54,7 +54,7 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
-      Global Currency: currency_conversion_sdt.select_global_currency
+      Target Currency: currency_conversion_sdt.select_target_currency
     note_state: expanded
     note_display: below
     note_text: |-
@@ -69,8 +69,8 @@
     title: Top Products by Avg Sales
     explore: sales_orders_v2
     type: looker_bar
-    fields: [materials_md.material_number_matnr, materials_md.material_text_maktx, across_sales_and_currency_conversion_xvw.avg_net_value_per_order_global]
-    sorts: [across_sales_and_currency_conversion_xvw.avg_net_value_per_order_global desc]
+    fields: [materials_md.material_number_matnr, materials_md.material_text_maktx, across_sales_and_currency_conversion_xvw.avg_net_value_per_order_target]
+    sorts: [across_sales_and_currency_conversion_xvw.avg_net_value_per_order_target desc]
     # filters:
     #   sales_orders_v2.count_orders: ">=10"
     limit: 10
@@ -88,10 +88,10 @@
     x_axis_scale: auto
     y_axis_combined: true
     series_colors:
-      {across_sales_and_currency_conversion_xvw.avg_net_value_per_order_global: "#74A09F"}
+      {across_sales_and_currency_conversion_xvw.avg_net_value_per_order_target: "#74A09F"}
 
-    y_axes: [{label: '', orientation: bottom, series: [{axisId: across_sales_and_currency_conversion_xvw.total_net_value_global,
-            id: across_sales_and_currency_conversion_xvw.avg_net_value_per_order_global, name: Avg Sales per Order (Global Currency 'USD')}], showLabels: true, showValues: false,
+    y_axes: [{label: '', orientation: bottom, series: [{axisId: across_sales_and_currency_conversion_xvw.total_net_value_target,
+            id: across_sales_and_currency_conversion_xvw.avg_net_value_per_order_target, name: Avg Sales per Order (Target Currency 'USD')}], showLabels: true, showValues: false,
         unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear}]
     x_axis_zoom: true
     y_axis_zoom: true
@@ -104,7 +104,7 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
-      Global Currency: currency_conversion_sdt.select_global_currency
+      Target Currency: currency_conversion_sdt.select_target_currency
     note_state: expanded
     note_display: below
     note_text: |-
@@ -119,8 +119,8 @@
     title: Top Sales Organizations by Sales
     explore: sales_orders_v2
     type: looker_bar
-    fields: [sales_orders_v2.sales_organization_vkorg,sales_organizations_md.sales_org_name_vtext,across_sales_and_currency_conversion_xvw.total_net_value_global]
-    sorts: [across_sales_and_currency_conversion_xvw.total_net_value_global desc]
+    fields: [sales_orders_v2.sales_organization_vkorg,sales_organizations_md.sales_org_name_vtext,across_sales_and_currency_conversion_xvw.total_net_value_target]
+    sorts: [across_sales_and_currency_conversion_xvw.total_net_value_target desc]
     limit: 10
     x_axis_gridlines: false
     y_axis_gridlines: true
@@ -136,11 +136,11 @@
     x_axis_scale: auto
     y_axis_combined: true
     series_colors:
-      {across_sales_and_currency_conversion_xvw.total_net_value_global: "#74A09F"}
+      {across_sales_and_currency_conversion_xvw.total_net_value_target: "#74A09F"}
 
-    y_axes: [{label: '', orientation: bottom, series: [{axisId: across_sales_and_currency_conversion_xvw.total_net_value_global,
-            id: across_sales_and_currency_conversion_xvw.total_net_value_global, name: Total
-              Net Value (Global Currency 'USD')}], showLabels: true, showValues: false,
+    y_axes: [{label: '', orientation: bottom, series: [{axisId: across_sales_and_currency_conversion_xvw.total_net_value_target,
+            id: across_sales_and_currency_conversion_xvw.total_net_value_target, name: Total
+              Net Value (Target Currency 'USD')}], showLabels: true, showValues: false,
         unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear}]
     x_axis_zoom: true
     y_axis_zoom: true
@@ -153,7 +153,7 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
-      Global Currency: currency_conversion_sdt.select_global_currency
+      Target Currency: currency_conversion_sdt.select_target_currency
 
     row: 20
     col: 0
@@ -164,9 +164,9 @@
     title: Sales by Distribution Channel
     explore: sales_orders_v2
     type: looker_bar
-    fields: [across_sales_and_currency_conversion_xvw.total_net_value_global, sales_orders_v2.distribution_channel_vtweg,
-      distribution_channels_md.distribution_channel_name_vtext, across_sales_and_currency_conversion_xvw.percent_of_total_net_value_global]
-    sorts: [across_sales_and_currency_conversion_xvw.total_net_value_global desc 0]
+    fields: [across_sales_and_currency_conversion_xvw.total_net_value_target, sales_orders_v2.distribution_channel_vtweg,
+      distribution_channels_md.distribution_channel_name_vtext, across_sales_and_currency_conversion_xvw.percent_of_total_net_value_target]
+    sorts: [across_sales_and_currency_conversion_xvw.total_net_value_target desc 0]
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -194,14 +194,14 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
-    y_axes: [{label: '', orientation: bottom, series: [{axisId: across_sales_and_currency_conversion_xvw.total_net_value_global,
-            id: across_sales_and_currency_conversion_xvw.total_net_value_global}], showLabels: true, showValues: false, unpinAxis: false,
+    y_axes: [{label: '', orientation: bottom, series: [{axisId: across_sales_and_currency_conversion_xvw.total_net_value_target,
+            id: across_sales_and_currency_conversion_xvw.total_net_value_target}], showLabels: true, showValues: false, unpinAxis: false,
         tickDensity: default, tickDensityCustom: 5, type: linear}]
     x_axis_zoom: true
     y_axis_zoom: true
     series_colors:
-      across_sales_and_currency_conversion_xvw.total_net_value_global: "#74A09F"
-      across_sales_and_currency_conversion_xvw.percent_of_total_net_value_global: transparent
+      across_sales_and_currency_conversion_xvw.total_net_value_target: "#74A09F"
+      across_sales_and_currency_conversion_xvw.percent_of_total_net_value_target: transparent
     advanced_vis_config: "{\n  series: [{\n  \n      dataLabels: {\n        enabled:\
       \ true,\n        align: 'right',\n        verticalAlign: 'top',\n        style:\
       \ {\n          fontSize: '12px',\n          fontWeight: 'bold',\n          textOutline:\
@@ -224,7 +224,7 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
-      Global Currency: currency_conversion_sdt.select_global_currency
+      Target Currency: currency_conversion_sdt.select_target_currency
 
     row: 12
     col: 0
@@ -235,8 +235,8 @@
     title: Sales by Division
     explore: sales_orders_v2
     type: looker_bar
-    fields: [across_sales_and_currency_conversion_xvw.total_net_value_global, sales_orders_v2.division_hdr_spart, divisions_md.division_name_vtext, across_sales_and_currency_conversion_xvw.percent_of_total_net_value_global]
-    sorts: [across_sales_and_currency_conversion_xvw.total_net_value_global desc 0]
+    fields: [across_sales_and_currency_conversion_xvw.total_net_value_target, sales_orders_v2.division_hdr_spart, divisions_md.division_name_vtext, across_sales_and_currency_conversion_xvw.percent_of_total_net_value_target]
+    sorts: [across_sales_and_currency_conversion_xvw.total_net_value_target desc 0]
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -264,14 +264,14 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
-    y_axes: [{label: '', orientation: bottom, series: [{axisId: across_sales_and_currency_conversion_xvw.total_net_value_global,
-                id: across_sales_and_currency_conversion_xvw.total_net_value_global }], showLabels: true, showValues: false, unpinAxis: false,
+    y_axes: [{label: '', orientation: bottom, series: [{axisId: across_sales_and_currency_conversion_xvw.total_net_value_target,
+                id: across_sales_and_currency_conversion_xvw.total_net_value_target }], showLabels: true, showValues: false, unpinAxis: false,
         tickDensity: default, tickDensityCustom: 5, type: linear}]
     x_axis_zoom: true
     y_axis_zoom: true
     series_colors:
-      across_sales_and_currency_conversion_xvw.total_net_value_global: "#74A09F"
-      across_sales_and_currency_conversion_xvw.percent_of_total_net_value_global: transparent
+      across_sales_and_currency_conversion_xvw.total_net_value_target: "#74A09F"
+      across_sales_and_currency_conversion_xvw.percent_of_total_net_value_target: transparent
     advanced_vis_config: "{\n  series: [{\n  \n      dataLabels: {\n        enabled:\
       \ true,\n        align: 'right',\n        verticalAlign: 'top',\n        style:\
       \ {\n          fontSize: '12px',\n          fontWeight: 'bold',\n          textOutline:\
@@ -294,7 +294,7 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
-      Global Currency: currency_conversion_sdt.select_global_currency
+      Target Currency: currency_conversion_sdt.select_target_currency
 
     row: 12
     col: 11

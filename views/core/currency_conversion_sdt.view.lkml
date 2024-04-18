@@ -22,8 +22,8 @@ view: currency_conversion_sdt {
       from `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.CurrencyConversion`
       where Client_MANDT = '@{CLIENT_ID}'
       and ExchangeRateType_KURST = {% parameter select_exchange_rate_type_kurst %}
-      and ToCurrency_TCURR = {% parameter select_global_currency %}
-      --and {% condition select_global_currency %} ToCurrency_TCURR {% endcondition %}
+      and ToCurrency_TCURR = {% parameter select_target_currency %}
+      --and {% condition select_target_currency %} ToCurrency_TCURR {% endcondition %}
       and
         {% if _explore._name == 'sales_orders_v2' %}
             {% condition sales_orders_v2.date_filter %} timestamp(ConvDate) {% endcondition %}
@@ -44,11 +44,11 @@ view: currency_conversion_sdt {
     type: date
   }
 
-  parameter: select_global_currency {
+  parameter: select_target_currency {
     hidden: no
     type: string
-    # default_value: "USD" default will be populated by dashboard filter using user_attribute sap_default_global_currency
-    suggest_explore: global_currency_list_pdt
+    # default_value: "USD" default will be populated by dashboard filter using user_attribute sap_default_target_currency
+    suggest_explore: target_currency_list_pdt
     suggest_dimension: to_currency_tcurr
     default_value: "USD"
   }
@@ -58,7 +58,7 @@ view: currency_conversion_sdt {
     type: string
     label: "Select Exchange Rate Type KURST"
     default_value: "M"
-    suggest_explore: global_currency_list_pdt
+    suggest_explore: target_currency_list_pdt
     suggest_dimension: exchange_rate_type_kurst
   }
 
@@ -100,7 +100,7 @@ view: currency_conversion_sdt {
 
   dimension: to_currency_tcurr {
     hidden: no
-    label: "Global Currency TCURR"
+    label: "Target Currency TCURR"
     type: string
     sql: ${TABLE}.ToCurrency_TCURR ;;
   }

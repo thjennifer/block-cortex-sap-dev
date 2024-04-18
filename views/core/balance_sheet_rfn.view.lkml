@@ -29,8 +29,8 @@
 # in this view if the changes are specific to the Balance Sheet.
 #
 # KEY MEASURES
-#    Amount in Local Currency, Amount in Global Currency
-#    Cumulative Amount in Local Currency, Cumulative Amount in Global Currency
+#    Amount in Local Currency, Amount in Target Currency
+#    Cumulative Amount in Local Currency, Cumulative Amount in Target Currency
 #    Exchange Rate (based on last date in the period)
 #    Avg Exchange Rate, Max Exchange Rate
 #    Current Ratio, Current Assets, and Current Liabilities
@@ -44,7 +44,7 @@
 # and filter to:
 #   - a single Client MANDT (handled with Constant defined in Manifest file)
 #   - a single Language (the Explore based on this view uses User Attribute locale to select language in joined view language_map_sdt)
-#   - a single Global Currency
+#   - a single Target Currency
 #   - a single Hierarchy Name or Financial Statement Version
 #   - a single Chart of Accounts
 #   - a single Company
@@ -209,18 +209,18 @@ view: +balance_sheet {
     value_format_name: millions_d1
   }
 
-  measure: total_amount_in_global_currency {
+  measure: total_amount_in_target_currency {
     type: sum
-    label: "Total Amount (Global Currency)"
-    description: "Period Amount in Target or Global Currency"
+    label: "Total Amount (Target Currency)"
+    description: "Period Amount in Target or Target Currency"
     sql: ${amount_in_target_currency} ;;
     value_format_name: millions_d1
   }
 
-  measure: total_cumulative_amount_in_global_currency {
+  measure: total_cumulative_amount_in_target_currency {
     type: sum
-    label: "Total Cumulative Amount (Global Currency)"
-    description: "End of Period Cumulative Amount in Target or Global Currency"
+    label: "Total Cumulative Amount (Target Currency)"
+    description: "End of Period Cumulative Amount in Target or Target Currency"
     sql: ${cumulative_amount_in_target_currency} ;;
     value_format_name: millions_d1
   }
@@ -249,7 +249,7 @@ view: +balance_sheet {
   # used in Balance Sheet dashboard; add to a single-value visualization
   measure: title_balance_sheet {
     type: number
-    description: "Used in Balance Sheet dashboard as Summary visualization with Company, Global Currency, Fiscal Period and Current Ratio. Add this measure to a single-value visualizaiton."
+    description: "Used in Balance Sheet dashboard as Summary visualization with Company, Target Currency, Fiscal Period and Current Ratio. Add this measure to a single-value visualizaiton."
     sql: 1 ;;
     html:
       {% if company_text._is_filtered %}{% assign company_list = list_companies._value | replace: '|RECORD|',', ' %}
@@ -268,7 +268,7 @@ view: +balance_sheet {
     type: max
     group_label: "Exchange Rates"
     label: "Exchange Rate"
-    description: "Exchange Rate between Currency (Local) and Currency (Global) as of Last Day of Fiscal Period"
+    description: "Exchange Rate between Currency (Local) and Currency (Target) as of Last Day of Fiscal Period"
     sql: ${exchange_rate} ;;
     value_format_name: decimal_4
   }
@@ -277,7 +277,7 @@ view: +balance_sheet {
     type: max
     group_label: "Exchange Rates"
     label: "Avg Exchange Rate"
-    description: "Average Exchange Rate between Currency (Local) and Currency (Global) for the Fiscal Period"
+    description: "Average Exchange Rate between Currency (Local) and Currency (Target) for the Fiscal Period"
     sql: ${avg_exchange_rate} ;;
     value_format_name: decimal_4
   }
@@ -286,7 +286,7 @@ view: +balance_sheet {
     type: max
     group_label: "Exchange Rates"
     label: "Max Exchange Rate"
-    description: "Max Exchange Rate between Currency (Local) and Currency (Global) for the Fiscal Period"
+    description: "Max Exchange Rate between Currency (Local) and Currency (Target) for the Fiscal Period"
     sql: ${max_exchange_rate} ;;
     value_format_name: decimal_4
   }

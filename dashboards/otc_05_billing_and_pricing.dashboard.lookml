@@ -20,7 +20,7 @@
       name: Price Adjustments by Customer
       explore: sales_orders_v2
       type: looker_column
-      fields: [sales_orders_v2.sold_to_party_kunnr, customers_md.name1_name1, sales_order_pricing_sdt.avg_list_price_global,
+      fields: [sales_orders_v2.sold_to_party_kunnr, customers_md.name1_name1, sales_order_pricing_sdt.avg_list_price_target,
         sales_order_pricing_sdt.avg_adjusted_price_target_curr, sales_order_pricing_sdt.abs_difference_list_and_adjusted_price]
       filters:
         sales_order_pricing_sdt.adjusted_price: NOT NULL
@@ -54,8 +54,8 @@
       show_totals_labels: false
       show_silhouette: false
       totals_color: "#808080"
-      y_axes: [{label: '', orientation: left, series: [{axisId: sales_order_pricing_sdt.avg_list_price_global,
-              id: sales_order_pricing_sdt.avg_list_price_global, name: Average
+      y_axes: [{label: '', orientation: left, series: [{axisId: sales_order_pricing_sdt.avg_list_price_target,
+              id: sales_order_pricing_sdt.avg_list_price_target, name: Average
                 List Price (USD)}, {axisId: sales_order_pricing_sdt.avg_adjusted_price_target_curr,
               id: sales_order_pricing_sdt.avg_adjusted_price_target_curr, name: Average
                 Adjusted Price (USD)}], showLabels: true, showValues: false, unpinAxis: false,
@@ -63,7 +63,7 @@
       x_axis_zoom: true
       y_axis_zoom: true
       series_colors:
-        sales_order_pricing_sdt.avg_list_price_global: "#214a43"
+        sales_order_pricing_sdt.avg_list_price_target: "#214a43"
         sales_order_pricing_sdt.avg_adjusted_price_target_curr: "#51726e"
       defaults_version: 1
       hidden_fields: [sales_orders_v2.sold_to_party_kunnr, sales_order_pricing_sdt.abs_difference_list_and_adjusted_price]
@@ -74,7 +74,7 @@
         Sales Org: sales_organizations_md.sales_org_name_vtext
         Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
         Product: materials_md.material_text_maktx
-        Global Currency: currency_conversion_sdt.select_global_currency
+        Target Currency: currency_conversion_sdt.select_target_currency
       row: 2
       col: 0
       width: 22
@@ -85,7 +85,7 @@
       model: cortex_sap_operational_v2
       explore: sales_orders_v2
       type: looker_column
-      fields: [sales_order_pricing_sdt.avg_list_price_global, materials_md.material_number_matnr,
+      fields: [sales_order_pricing_sdt.avg_list_price_target, materials_md.material_number_matnr,
         materials_md.material_text_maktx, sales_order_pricing_sdt.avg_intercompany_price_target_curr]
       filters:
         sales_order_pricing_sdt.inter_company_price: NOT NULL
@@ -119,8 +119,8 @@
       show_totals_labels: false
       show_silhouette: false
       totals_color: "#808080"
-      y_axes: [{label: '', orientation: left, series: [{axisId: sales_order_pricing_sdt.avg_list_price_global,
-              id: sales_order_pricing_sdt.avg_list_price_global, name: Average
+      y_axes: [{label: '', orientation: left, series: [{axisId: sales_order_pricing_sdt.avg_list_price_target,
+              id: sales_order_pricing_sdt.avg_list_price_target, name: Average
                 List Price (USD)}, {axisId: sales_order_pricing_sdt.avg_intercompany_price_target_curr,
               id: sales_order_pricing_sdt.avg_intercompany_price_target_curr, name: Average
                 Intercompany Price (USD)}], showLabels: true, showValues: false, unpinAxis: false,
@@ -132,7 +132,7 @@
         first_last: first
         num_rows: '10'
       series_colors:
-        sales_order_pricing_sdt.avg_list_price_global: "#214a43"
+        sales_order_pricing_sdt.avg_list_price_target: "#214a43"
         sales_order_pricing_sdt.avg_intercompany_price_target_curr: "#879d9d"
       show_null_points: false
       interpolation: step
@@ -147,7 +147,7 @@
         Sales Org: sales_organizations_md.sales_org_name_vtext
         Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
         Product: materials_md.material_text_maktx
-        Global Currency: currency_conversion_sdt.select_global_currency
+        Target Currency: currency_conversion_sdt.select_target_currency
       row: 13
       col: 0
       width: 22

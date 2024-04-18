@@ -30,8 +30,8 @@
 # in this view if the changes are specific to Profit and Loss.
 #
 # KEY MEASURES
-#    Amount in Local Currency, Amount in Global Currency
-#    Cumulative Amount in Local Currency, Cumulative Amount in Global Currency
+#    Amount in Local Currency, Amount in Target Currency
+#    Cumulative Amount in Local Currency, Cumulative Amount in Target Currency
 #    Exchange Rate (based on last date in the period)
 #    Avg Exchange Rate, Max Exchange Rate
 #
@@ -39,7 +39,7 @@
 # To query this table, filter to:
 #   - a single Client MANDT (handled with Constant defined in Manifest file)
 #   - a single Language (the Explore based on this view uses User Attribute locale to select language in joined view language_map_sdt)
-#   - a single Global Currency
+#   - a single Target Currency
 #   - a single Hierarchy Name or Financial Statement Version
 #
 #########################################################}
@@ -246,7 +246,7 @@ view: +profit_and_loss {
   # based on value in CONSTANTs sign_change_multiplier flip the signs so Income is positive and Expenses negative
   dimension: amount_in_target_currency {
     hidden: yes
-    label: "Amount in Global Currency"
+    label: "Amount in Target Currency"
     sql: @{sign_change_multiplier}
       ${TABLE}.AmountInTargetCurrency * {{multiplier}} ;;
   }
@@ -259,8 +259,8 @@ view: +profit_and_loss {
 
   dimension: cumulative_amount_in_target_currency {
     hidden: yes
-    label: "Cumulative Amount in Global Currency"
-    description: "End of Period Cumulative Amount in Global/Target Currency"
+    label: "Cumulative Amount in Target Currency"
+    description: "End of Period Cumulative Amount in Target/Target Currency"
     sql: @{sign_change_multiplier}
       ${TABLE}.CumulativeAmountInTargetCurrency * {{multiplier}} ;;
   }
@@ -294,20 +294,20 @@ view: +profit_and_loss {
     # value_format_name: millions_d1
   }
 
-  measure: total_amount_in_global_currency {
+  measure: total_amount_in_target_currency {
     type: sum
-    label: "Total Amount (Global Currency)"
-    description: "Period Amount in Target or Global Currency"
+    label: "Total Amount (Target Currency)"
+    description: "Period Amount in Target or Target Currency"
     sql: ${amount_in_target_currency} ;;
     value_format_name: decimal_0
     # value_format_name: millions_d1
   }
 
-  measure: total_cumulative_amount_in_global_currency {
+  measure: total_cumulative_amount_in_target_currency {
     hidden: yes
     type: sum
-    label: "Total Cumulative Amount (Global Currency)"
-    description: "End of Period Cumulative Amount in Target or Global Currency"
+    label: "Total Cumulative Amount (Target Currency)"
+    description: "End of Period Cumulative Amount in Target or Target Currency"
     sql: ${cumulative_amount_in_target_currency} ;;
     value_format_name: decimal_0
     # value_format_name: millions_d1
@@ -316,7 +316,7 @@ view: +profit_and_loss {
   measure: net_income {
     type: sum
     hidden: no
-    label: "Total Net Income (Global Currency)"
+    label: "Total Net Income (Target Currency)"
     sql: ${amount_in_target_currency} ;;
     filters: [gllevel_number: "2"]
     value_format_name: millions_d1

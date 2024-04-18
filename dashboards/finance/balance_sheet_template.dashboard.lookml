@@ -7,7 +7,7 @@
 #       Fiscal Period
 #       Comparison Type
 #       Custom Comparison Period
-#       Global Currency
+#       Target Currency
 #       Hierarchy
 #       Chart of Accounts
 #       Company
@@ -37,7 +37,7 @@
     show_single_value_title: false
     show_comparison: false
     listen:
-      Global Currency: balance_sheet.target_currency_tcurr
+      Target Currency: balance_sheet.target_currency_tcurr
       Chart of Accounts: balance_sheet.chart_of_accounts
       Company Code: balance_sheet.company_text
       Fiscal Period: balance_sheet.select_fiscal_period
@@ -86,8 +86,8 @@
     explore: balance_sheet
     field: balance_sheet.select_custom_comparison_period
 
-  - name: Global Currency
-    title: Global Currency
+  - name: Target Currency
+    title: Target Currency
     type: field_filter
     default_value: USD
     allow_multiple_values: false

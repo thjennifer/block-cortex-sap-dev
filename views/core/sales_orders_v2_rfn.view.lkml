@@ -158,7 +158,7 @@ view: +sales_orders_v2 {
   dimension: net_value_of_the_sales_order_in_document_currency_netwr {
     hidden: yes
     label: "Net Value of Sales Order@{SAP_LABEL}"
-    description: "Net Value of Sales Order in Local Currency"
+    description: "Net Value of Sales Order in Document Currency"
   }
 
 
@@ -168,7 +168,7 @@ view: +sales_orders_v2 {
     hidden: no
     view_label: "Sales Orders Items"
     label: "Price of Item@{SAP_LABEL}"
-    description: "Net Price of Item (Local Currency)"
+    description: "Net Price of Item (Document Currency)"
     value_format_name: decimal_2
   }
 
@@ -195,7 +195,7 @@ view: +sales_orders_v2 {
   dimension: sales_order_value_line_item_source_currency {
     view_label: "Sales Orders Items"
     label: "Sales Amount"
-    description: "Item Qty * Net Price (Local/Document Currency)"
+    description: "Item Qty * Net Price (Document/Document Currency)"
     hidden: no
   }
 
@@ -252,8 +252,8 @@ view: +sales_orders_v2 {
   measure: total_net_value {
     hidden: no
     type: sum
-    label: "Total Sales (Local Currency)"
-    description: "Total Sales (Local/Document Currency)"
+    label: "Total Sales (Document Currency)"
+    description: "Total Sales (Document/Document Currency)"
     sql: ${sales_order_value_line_item_source_currency} ;;
     value_format_name: "format_large_numbers_d1"
   }

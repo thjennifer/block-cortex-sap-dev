@@ -78,7 +78,7 @@
 #         Hierarchy: profit_and_loss_navigation_ext.filter1
 #         Display Timeframe: profit_and_loss_navigation_ext.filter2
 #         Select Fiscal Timeframe: profit_and_loss_navigation_ext.filter3
-#         Global Currency: profit_and_loss_navigation_ext.filter4
+#         Target Currency: profit_and_loss_navigation_ext.filter4
 #         Company Code: profit_and_loss_navigation_ext.filter5
 #         Ledger Name: profit_and_loss_navigation_ext.filter6
 #         Top Hierarchy Level to Display: profit_and_loss_navigation_ext.filter7

@@ -12,7 +12,7 @@
   layout: newspaper
   preferred_viewer: dashboards-next
   description: Using standard table with subtotals, reports Fiscal Period Cumulative
-    Amount in Global Currency for the selected hierarchy, chart
+    Amount in Target Currency for the selected hierarchy, chart
     of accounts, company, fiscal period and comparison period (if any).
   filters_location_top: false
   extends: balance_sheet_template
@@ -22,7 +22,7 @@
     name: Balance Sheet
     explore: balance_sheet
     type: looker_grid
-    fields: [balance_sheet_fiscal_periods_selected_sdt.reporting_period_amount_in_global_currency, balance_sheet_fiscal_periods_selected_sdt.comparison_period_amount_in_global_currency,
+    fields: [balance_sheet_fiscal_periods_selected_sdt.reporting_period_amount_in_target_currency, balance_sheet_fiscal_periods_selected_sdt.comparison_period_amount_in_target_currency,
       balance_sheet_fiscal_periods_selected_sdt.difference_value, balance_sheet_fiscal_periods_selected_sdt.difference_percent, balance_sheet_hierarchy_selection_sdt.hier1_node_text,
       balance_sheet_hierarchy_selection_sdt.hier2_node_text, balance_sheet_hierarchy_selection_sdt.hier3_node_text]
     sorts: [balance_sheet_hierarchy_selection_sdt.hier1_node_text, balance_sheet_hierarchy_selection_sdt.hier2_node_text, balance_sheet_hierarchy_selection_sdt.hier3_node_text]
@@ -64,7 +64,7 @@
       Hierarchy: balance_sheet.hierarchy_name
       Chart of Accounts: balance_sheet.chart_of_accounts
       Company Code: balance_sheet.company_text
-      Global Currency: balance_sheet.target_currency_tcurr
+      Target Currency: balance_sheet.target_currency_tcurr
       Ledger Name: universal_ledgers_md.ledger_id_name
       Top Hierarchy Level: balance_sheet_hierarchy_selection_sdt.parameter_pick_start_level
     row: 3
@@ -84,7 +84,7 @@
     show_comparison: false
     listen:
       Fiscal Period: balance_sheet_navigation_ext.filter1
-      Global Currency: balance_sheet_navigation_ext.filter2
+      Target Currency: balance_sheet_navigation_ext.filter2
       Hierarchy: balance_sheet_navigation_ext.filter3
       Chart of Accounts: balance_sheet_navigation_ext.filter4
       Company Code: balance_sheet_navigation_ext.filter5

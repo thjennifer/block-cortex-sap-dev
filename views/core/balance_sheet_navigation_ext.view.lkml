@@ -26,7 +26,7 @@
 #       filter      label                           URL format
 #       -------     ---------------                 ---------------------
 #       filter1     Fiscal Period                   Fiscal+Period
-#       filter2     Global Currency                 Global+Currency
+#       filter2     Target Currency                 Target+Currency
 #       filter3     Hierarchy                       Hierarchy
 #       filter4     Chart of Accounts               Chart+of+Accounts
 #       filter5     Company Code                    Company+Code
@@ -68,7 +68,7 @@
 #       show_comparison: false
 #       listen:
 #         Fiscal Period: balance_sheet_navigation_ext.filter1
-#         Global Currency: balance_sheet_navigation_ext.filter2
+#         Target Currency: balance_sheet_navigation_ext.filter2
 #         Hierarchy: balance_sheet_navigation_ext.filter3
 #         Chart of Accounts: balance_sheet_navigation_ext.filter4
 #         Company Code: balance_sheet_navigation_ext.filter5
@@ -92,7 +92,7 @@ view: balance_sheet_navigation_ext {
     hidden: yes
     type: string
     # sql: 'filter1|Display+Timeframe' ;;
-    sql: 'filter1|Fiscal+Period||filter2|Global+Currency||filter3|Hierarchy||filter4|Chart+of+Accounts||filter5|Company+Code||filter6|Ledger+Name||filter7|Top+Hierarchy+Level' ;;
+    sql: 'filter1|Fiscal+Period||filter2|Target+Currency||filter3|Hierarchy||filter4|Chart+of+Accounts||filter5|Company+Code||filter6|Ledger+Name||filter7|Top+Hierarchy+Level' ;;
   }
 
   parameter: navigation_focus_page {
@@ -118,7 +118,7 @@ view: balance_sheet_navigation_ext {
   filter: filter2 {
     hidden: yes
     type: string
-    label: "Global Currency"
+    label: "Target Currency"
   }
 
   filter: filter3 {

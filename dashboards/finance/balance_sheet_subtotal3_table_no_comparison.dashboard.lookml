@@ -12,7 +12,7 @@
   title: Financial Balance Sheet
   layout: newspaper
   preferred_viewer: dashboards-next
-  description: "Using standard table with subtotals, reports Fiscal Period Cumulative Amount in Global Currency for the selected hierarchy, chart of accounts, company, and fiscal period."
+  description: "Using standard table with subtotals, reports Fiscal Period Cumulative Amount in Target Currency for the selected hierarchy, chart of accounts, company, and fiscal period."
   filters_location_top: false
   extends: [balance_sheet_template, balance_sheet_subtotal3_table]
 
@@ -46,7 +46,7 @@
     name: Balance Sheet
     explore: balance_sheet
     type: looker_grid
-    fields: [balance_sheet_fiscal_periods_selected_sdt.reporting_period_amount_in_global_currency,
+    fields: [balance_sheet_fiscal_periods_selected_sdt.reporting_period_amount_in_target_currency,
       balance_sheet_hierarchy_selection_sdt.hier1_node_text,
       balance_sheet_hierarchy_selection_sdt.hier2_node_text, balance_sheet_hierarchy_selection_sdt.hier3_node_text]
 

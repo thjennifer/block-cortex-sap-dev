@@ -29,10 +29,10 @@
 #         alignment_group_name -- equals the value of the selected reporting period
 #
 # MEASURES
-#     reporting_period_amount_in_global_currency -- Cumulative Amount in Global Currency when fiscal_period_group = 'Reporting'
-#     comparison_period_amount_in_global_currency -- Cumulative Amount in Global Currency when fiscal_period_group = 'Comparison'
-#     difference_value -- reporting_period_amount_in_global_currency - comparison_period_amount_in_global_currency
-#     difference_percent -- (reporting_period_amount_in_global_currency - comparison_period_amount_in_global_currency) / abs(comparison_period_amount_in_global_currency)
+#     reporting_period_amount_in_target_currency -- Cumulative Amount in Target Currency when fiscal_period_group = 'Reporting'
+#     comparison_period_amount_in_target_currency -- Cumulative Amount in Target Currency when fiscal_period_group = 'Comparison'
+#     difference_value -- reporting_period_amount_in_target_currency - comparison_period_amount_in_target_currency
+#     difference_percent -- (reporting_period_amount_in_target_currency - comparison_period_amount_in_target_currency) / abs(comparison_period_amount_in_target_currency)
 #
 #########################################################}
 
@@ -135,20 +135,20 @@ view: balance_sheet_fiscal_periods_selected_sdt {
 # Reporting vs Comparison Period Measures
 # {
 
-  measure: reporting_period_amount_in_global_currency {
+  measure: reporting_period_amount_in_target_currency {
     type: sum_distinct
     sql_distinct_key: ${balance_sheet.key} ;;
     hidden: no
     view_label: "Reporting vs. Comparison Period"
     label_from_parameter: balance_sheet.select_fiscal_period
-    description: "Cumulative Amount in Global Currency for the selected Fiscal Reporting Period"
+    description: "Cumulative Amount in Target Currency for the selected Fiscal Reporting Period"
     sql: ${balance_sheet.cumulative_amount_in_target_currency} ;;
     filters: [fiscal_period_group: "Reporting"]
     value_format_name: millions_d1
     html: @{negative_format} ;;
   }
 
-  measure: comparison_period_amount_in_global_currency {
+  measure: comparison_period_amount_in_target_currency {
     type: sum_distinct
     sql_distinct_key: ${balance_sheet.key} ;;
     hidden: no
@@ -167,9 +167,9 @@ view: balance_sheet_fiscal_periods_selected_sdt {
     {% assign cp =  yr | append: '.'| append: fp[1] %}{{cp}}
     {% elsif compare_to == 'none' %}
     {% endif %}
-    {% else %} Comparison Period Amount in Global Currency
+    {% else %} Comparison Period Amount in Target Currency
     {% endif %}"
-    description: "Cumulative Amount in Global Currency for the selected Fiscal Comparison Period"
+    description: "Cumulative Amount in Target Currency for the selected Fiscal Comparison Period"
     sql: ${balance_sheet.cumulative_amount_in_target_currency} ;;
     filters: [fiscal_period_group: "Comparison"]
     value_format_name: millions_d1
@@ -184,7 +184,7 @@ view: balance_sheet_fiscal_periods_selected_sdt {
     view_label: "Reporting vs. Comparison Period"
     label: "Variance Amount"
     description: "Reporting Period Amount minus Comparison Period Amount"
-    sql: ${reporting_period_amount_in_global_currency} - ${comparison_period_amount_in_global_currency} ;;
+    sql: ${reporting_period_amount_in_target_currency} - ${comparison_period_amount_in_target_currency} ;;
     value_format_name: millions_d1
     html: @{negative_format} ;;
   }
@@ -196,7 +196,7 @@ view: balance_sheet_fiscal_periods_selected_sdt {
     label: "Variance %"
     description: "Percentage Change between Reporting and Comparison Periods"
     # note ABS in denominator because both numerator and denominator can both be negative. ABS allows further Decline between 2 negative numbers to show as negative
-    sql: SAFE_DIVIDE( (${reporting_period_amount_in_global_currency} - ${comparison_period_amount_in_global_currency}),ABS(${comparison_period_amount_in_global_currency})) ;;
+    sql: SAFE_DIVIDE( (${reporting_period_amount_in_target_currency} - ${comparison_period_amount_in_target_currency}),ABS(${comparison_period_amount_in_target_currency})) ;;
     value_format_name: percent_1
     html: @{negative_format} ;;
   }

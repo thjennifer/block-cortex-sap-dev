@@ -336,10 +336,10 @@
   #     sales_orders.base_unit_of_measure_meins: Base UoM
   #     currency_conversion_new.ukurs: Exchange Rate
   #     sales_orders.sales_order_value_line_item_source_currency: Sales Order Value
-  #       Local Currency
-  #     sales_orders.currency_waerk: Local Currency Key
-  #     sales_orders.sales_order_value_glob_curr: Sales Order Value Global Currency
-  #     currency_conversion_new.tcurr: Global Currency
+  #       Document Currency
+  #     sales_orders.currency_waerk: Document Currency Key
+  #     sales_orders.sales_order_value_glob_curr: Sales Order Value Target Currency
+  #     currency_conversion_new.tcurr: Target Currency
   #     sales_orders.creation_date_erdat_date: Creation Date
   #     deliveries.date__proof_of_delivery___podat_date: Actual Delivery Date
   #     deliveries.delivery_date_lfdat_date: Requested Delivery date

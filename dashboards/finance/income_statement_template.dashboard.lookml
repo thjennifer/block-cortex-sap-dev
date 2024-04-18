@@ -14,7 +14,7 @@
 #       Select Fiscal Timeframe
 #       Combine Selected Timeframes?
 #       Select Comparison Type
-#       Global Currency
+#       Target Currency
 #       Company
 #       Ledger Name
 #       Top Hierarchy Level
@@ -41,7 +41,7 @@
       profit_and_loss_03_selected_fiscal_periods_sdt.fiscal_reporting_group: Reporting
     show_single_value_title: false
     listen:
-      Global Currency: profit_and_loss.target_currency_tcurr
+      Target Currency: profit_and_loss.target_currency_tcurr
       Select Fiscal Timeframe: profit_and_loss.filter_fiscal_timeframe
       Display Timeframe: profit_and_loss.parameter_display_time_dimension
       Select Comparison Type: profit_and_loss.parameter_compare_to
@@ -60,7 +60,7 @@
     fields: [profit_and_loss_03_selected_fiscal_periods_sdt.footnote_partial_timeframe]
     show_single_value_title: false
     listen:
-      Global Currency: profit_and_loss.target_currency_tcurr
+      Target Currency: profit_and_loss.target_currency_tcurr
       Select Fiscal Timeframe: profit_and_loss.filter_fiscal_timeframe
       Display Timeframe: profit_and_loss.parameter_display_time_dimension
       Select Comparison Type: profit_and_loss.parameter_compare_to
@@ -88,7 +88,7 @@
       Hierarchy: profit_and_loss_navigation_ext.filter1
       Display Timeframe: profit_and_loss_navigation_ext.filter2
       Select Fiscal Timeframe: profit_and_loss_navigation_ext.filter3
-      Global Currency: profit_and_loss_navigation_ext.filter4
+      Target Currency: profit_and_loss_navigation_ext.filter4
       Company Code: profit_and_loss_navigation_ext.filter5
       Ledger Name: profit_and_loss_navigation_ext.filter6
       Top Hierarchy Level: profit_and_loss_navigation_ext.filter7
@@ -165,8 +165,8 @@
     listens_to_filters: []
     field: profit_and_loss.parameter_compare_to
 
-  - name: Global Currency
-    title: Global Currency
+  - name: Target Currency
+    title: Target Currency
     type: field_filter
     default_value: USD
     allow_multiple_values: false

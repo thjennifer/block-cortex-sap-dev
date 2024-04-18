@@ -32,7 +32,7 @@
 #       filter1     Hierarchy                       Hierarchy
 #       filter2     Display Timeframe               Display+Timeframe
 #       filter3     Select Fiscal Timeframe         Select+Fiscal+Timeframe
-#       filter4     Global Currency                 Global+Currency
+#       filter4     Target Currency                 Target+Currency
 #       filter5     Company Code                    Company+Code
 #       filter6     Ledger Name                     Ledger+Name
 #       filter7     Top Hierarchy Level to Display  Top+Hierarchy+Level+to+Display
@@ -79,7 +79,7 @@
 #         Hierarchy: profit_and_loss_navigation_ext.filter1
 #         Display Timeframe: profit_and_loss_navigation_ext.filter2
 #         Select Fiscal Timeframe: profit_and_loss_navigation_ext.filter3
-#         Global Currency: profit_and_loss_navigation_ext.filter4
+#         Target Currency: profit_and_loss_navigation_ext.filter4
 #         Company Code: profit_and_loss_navigation_ext.filter5
 #         Ledger Name: profit_and_loss_navigation_ext.filter6
 #         Top Hierarchy Level to Display: profit_and_loss_navigation_ext.filter7
@@ -111,7 +111,7 @@ view: profit_and_loss_navigation_ext {
     hidden: yes
     type: string
     # sql: 'filter1|Display+Timeframe' ;;
-    sql: 'filter1|Hierarchy||filter2|Display+Timeframe||filter3|Select+Fiscal+Timeframe||filter4|Global+Currency||filter5|Company+Code||filter6|Ledger+Name||filter7|Top+Hierarchy+Level||filter8|Combine+Selected+Timeframes%3F' ;;
+    sql: 'filter1|Hierarchy||filter2|Display+Timeframe||filter3|Select+Fiscal+Timeframe||filter4|Target+Currency||filter5|Company+Code||filter6|Ledger+Name||filter7|Top+Hierarchy+Level||filter8|Combine+Selected+Timeframes%3F' ;;
   }
 
   parameter: navigation_focus_page {
@@ -149,7 +149,7 @@ view: profit_and_loss_navigation_ext {
   filter: filter4 {
     hidden: yes
     type: string
-    label: "Global Currency"
+    label: "Target Currency"
   }
 
   filter: filter5 {

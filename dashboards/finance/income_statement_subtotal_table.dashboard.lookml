@@ -60,7 +60,7 @@
       profit_and_loss_hierarchy_selection_sdt.hier2_node_text: false
     title_hidden: true
     listen:
-      Global Currency: profit_and_loss.target_currency_tcurr
+      Target Currency: profit_and_loss.target_currency_tcurr
       Select Fiscal Timeframe: profit_and_loss.filter_fiscal_timeframe
       Combine Selected Timeframes?: profit_and_loss.parameter_aggregate
       Display Timeframe: profit_and_loss.parameter_display_time_dimension

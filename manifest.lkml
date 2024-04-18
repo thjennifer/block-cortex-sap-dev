@@ -62,16 +62,16 @@ constant: sign_change_multiplier {
 }
 
 # Constant derive_currency_label
-# captures and formats selected Global Currency for use in 'labels' property
+# captures and formats selected Target Currency for use in 'labels' property
 # example use:
-#   measure: total_net_value_global {
+#   measure: total_net_value_target {
 #     type: sum
 #     label: "@{derive_currency_label}Total Sales ({{currency}})"
-#     sql: ${item_net_value_global_netwr} ;;
+#     sql: ${item_net_value_target_netwr} ;;
 #     }
 #
 constant: derive_currency_label {
-  value: "{% assign currency = currency_conversion_sdt.select_global_currency._parameter_value | remove: \"'\" %}"
+  value: "{% assign currency = currency_conversion_sdt.select_target_currency._parameter_value | remove: \"'\" %}"
 }
 
 

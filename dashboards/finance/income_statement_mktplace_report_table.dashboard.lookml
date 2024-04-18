@@ -61,7 +61,7 @@
     style|profit_and_loss_03_selected_fiscal_periods_sdt.difference_percent: black_red
     title_hidden: true
     listen:
-      Global Currency: profit_and_loss.target_currency_tcurr
+      Target Currency: profit_and_loss.target_currency_tcurr
       Select Fiscal Timeframe: profit_and_loss.filter_fiscal_timeframe
       Display Timeframe: profit_and_loss.parameter_display_time_dimension
       Select Comparison Type: profit_and_loss.parameter_compare_to

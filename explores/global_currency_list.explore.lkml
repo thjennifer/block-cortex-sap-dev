@@ -1,6 +1,6 @@
-include: "/views/core/global_currency_list_pdt.view"
+include: "/views/core/target_currency_list_pdt.view"
 
-explore: global_currency_list_pdt {
+explore: target_currency_list_pdt {
   hidden: yes
-  description: "Used to provide filter suggestions for Global Currency"
+  description: "Used to provide filter suggestions for Target Currency"
 }

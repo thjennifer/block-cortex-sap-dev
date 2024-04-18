@@ -164,7 +164,7 @@
       sales_orders_v2.base_unit_of_measure_meins, currency_conversion_sdt.from_currency_fcurr,
       currency_conversion_sdt.to_currency_tcurr, currency_conversion_sdt.exchange_rate_ukurs,
       sales_orders_v2.total_quantity_ordered, sales_order_item_delivery_summary_ndt.sum_total_quantity_delivered,
-      sales_orders_v2.total_net_value, across_sales_and_currency_conversion_xvw.total_net_value_global]
+      sales_orders_v2.total_net_value, across_sales_and_currency_conversion_xvw.total_net_value_target]
 
     sorts: [sales_orders_v2.sales_document_vbeln]
     limit: 50
@@ -197,7 +197,7 @@
       sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat, sales_orders_v2.total_quantity_ordered,
       sales_orders_v2.base_unit_of_measure_meins, sales_order_item_delivery_summary_ndt.sum_total_quantity_delivered,
       sales_orders_v2.total_net_value, currency_conversion_sdt.from_currency_fcurr,
-      across_sales_and_currency_conversion_xvw.total_net_value_global, currency_conversion_sdt.to_currency_tcurr,
+      across_sales_and_currency_conversion_xvw.total_net_value_target, currency_conversion_sdt.to_currency_tcurr,
       currency_conversion_sdt.exchange_rate_ukurs]
     truncate_header: false
     minimum_column_width: 75
@@ -212,11 +212,11 @@
       sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat: Proof
         of Delivery Date
       sales_orders_v2.base_unit_of_measure_meins: Base UoM
-      currency_conversion_sdt.from_currency_fcurr: Local Currency
-      currency_conversion_sdt.to_currency_tcurr: Global Currency
+      currency_conversion_sdt.from_currency_fcurr: Document Currency
+      currency_conversion_sdt.to_currency_tcurr: Target Currency
       currency_conversion_sdt.exchange_rate_ukurs: Exchange Rate
-      sales_orders_v2.total_net_value: Total Net Value (Local)
-      across_sales_and_currency_conversion_xvw.total_net_value_global: Total Net Value (Global)
+      sales_orders_v2.total_net_value: Total Net Value (Document)
+      across_sales_and_currency_conversion_xvw.total_net_value_target: Total Net Value (Target)
     series_column_widths:
       sales_orders_v2.total_quantity_ordered: 100
       materials_md.material_text_maktx: 150
@@ -227,7 +227,7 @@
       sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat: 100
       currency_conversion_sdt.from_currency_fcurr: 75
       currency_conversion_sdt.to_currency_tcurr: 75
-      across_sales_and_currency_conversion_xvw.total_net_value_global: 75
+      across_sales_and_currency_conversion_xvw.total_net_value_target: 75
       sales_orders_v2.total_net_value: 75
 
     series_cell_visualizations:
@@ -247,7 +247,7 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
-      Global Currency: currency_conversion_sdt.select_global_currency
+      Target Currency: currency_conversion_sdt.select_target_currency
     row: 7
     col: 0
     width: 24

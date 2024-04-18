@@ -89,19 +89,19 @@
     listens_to_filters: []
     field: materials_md.material_text_maktx
 
-  - name: Global Currency
-    title: Global Currency
+  - name: Target Currency
+    title: Target Currency
     type: field_filter
-    default_value: "{{ _user_attributes['sap_default_global_currency'] }}"
+    default_value: "{{ _user_attributes['sap_default_target_currency'] }}"
     allow_multiple_values: false
     required: false
     ui_config:
       type: dropdown_menu
       display: inline
       options: []
-    explore: global_currency_list_pdt
+    explore: target_currency_list_pdt
     listens_to_filters: []
-    field: global_currency_list_pdt.to_currency_tcurr
+    field: target_currency_list_pdt.to_currency_tcurr
 
   elements:
     - title: navigation

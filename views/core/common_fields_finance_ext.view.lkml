@@ -49,8 +49,8 @@ view: common_fields_finance_ext {
   }
 
   dimension: target_currency_tcurr {
-    label: "Currency (Global)"
-    description: "Target or Global Currency to display"
+    label: "Currency (Target)"
+    description: "Target or Target Currency to display"
   }
 
   dimension: ledger_in_general_ledger_accounting {
