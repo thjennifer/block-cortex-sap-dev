@@ -241,6 +241,15 @@ view: +sales_orders_v2 {
     filters: [document_category_vbtyp: "C"]
   }
 
+  measure: count_orders_with_status_link {
+    hidden: yes
+    type: number
+    sql: ${count_orders} ;;
+    # link: {
+    #   # https://cortexdev.cloud.looker.com/dashboards/cortex_sap_operational_v2::otc_order_snapshot?Order+Date=+2022%2F01%2F01+to+2022%2F12%2F31&Country=&Sales+Org=&Distribution+Channel=&Division=&Product=&Target+Currency=USD
+    # }
+  }
+
   measure: count_sales_documents {
     hidden: no
     type: count_distinct

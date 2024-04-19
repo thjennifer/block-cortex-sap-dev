@@ -75,18 +75,21 @@ view: sales_order_item_partner_function_sdt {
   dimension: customer_names_sold_to {
     hidden: no
     type: string
+    label: "Sold To"
     sql: coalesce(${TABLE}.customer_names_sold_to,${sales_order_partner_function_sdt.customer_names_sold_to}) ;;
   }
 
   dimension: customer_names_bill_to {
     hidden: no
     type: string
+    label: "Bill To"
     sql: coalesce(${TABLE}.customer_names_bill_to,${sales_order_partner_function_sdt.customer_names_bill_to}) ;;
   }
 
   dimension: customer_names_ship_to {
     hidden: no
     type: string
+    label: "Ship To"
     sql: coalesce(${TABLE}.customer_names_ship_to,${sales_order_partner_function_sdt.customer_names_ship_to}) ;;
   }
 

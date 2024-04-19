@@ -76,16 +76,19 @@ view: sales_order_partner_function_sdt {
 
   dimension: customer_names_sold_to {
     type: string
+    label: "Sold To"
     sql: ${TABLE}.customer_names_sold_to ;;
   }
 
   dimension: customer_names_bill_to {
     type: string
+    label: "Bill To"
     sql: ${TABLE}.customer_names_bill_to ;;
   }
 
   dimension: customer_names_ship_to {
     type: string
+    label: "Ship To"
     sql: ${TABLE}.customer_names_ship_to ;;
   }
 

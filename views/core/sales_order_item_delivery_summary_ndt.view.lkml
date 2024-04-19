@@ -366,7 +366,7 @@ view: sales_order_item_delivery_summary_ndt {
       label: "Show Late Orders"
       # url: "{{ dummy_set_details._link }}&f[Is+Order+Late]=\"Yes\""
       # url: "{{ dummy_set_details._link}}&f[sales_order_item_delivery_summary_ndt.test_dimension]=odd"
-      url: "{{ dummy_set_details._link}}&f[sales_order_item_delivery_summary_ndt.is_order_late]=Yes"
+      url: "{{ dummy_set_late_details._link}}&f[sales_order_item_delivery_summary_ndt.is_order_late]=Yes"
       # url: "{{ link }}&f[view_name.status]=active&f[view_name.count]=%3E1"
     }
   }
@@ -415,17 +415,17 @@ view: sales_order_item_delivery_summary_ndt {
     sql: ${days_late} ;;
   }
 
-  set: set_details_deliveries {
-    fields: [sales_document_vbeln,  sales_order_partner_function_sdt.customer_names_ship_to, set_product*, is_order_late, requested_delivery_date_as_string, max_proof_of_delivery_date_as_string, max_days_late, sum_total_quantity_delivered]
+  set: set_details_late_deliveries {
+    fields: [sales_document_vbeln,  sales_order_item_partner_function_sdt.customer_names_ship_to, set_product*, is_order_late, requested_delivery_date_as_string, max_proof_of_delivery_date_as_string, max_days_late, sum_total_quantity_delivered]
   }
 
   set: set_product {
     fields: [material_number_matnr, materials_md.material_text_maktx]
   }
 
-  measure: dummy_set_details {
+  measure: dummy_set_late_details {
     hidden:yes
-    drill_fields: [set_details_deliveries*]
+    drill_fields: [set_details_late_deliveries*]
     sql: 1=1 ;;
   }
 

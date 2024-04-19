@@ -1,4 +1,4 @@
-- dashboard: otc_order_details
+- dashboard: otc_order_details_original
   title: Order Status Details
   layout: newspaper
   preferred_viewer: dashboards-next

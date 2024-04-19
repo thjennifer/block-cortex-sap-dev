@@ -1,4 +1,4 @@
-- dashboard: otc_order_snapshot
+- dashboard: otc_order_snapshot_option1
   title: Order Snapshot
   layout: newspaper
   preferred_viewer: dashboards-next
