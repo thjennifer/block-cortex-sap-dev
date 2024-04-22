@@ -33,7 +33,7 @@ include: "/views/core/navigation_otc_ext.view"
 
 explore: sales_orders_v2 {
   label: "Sales Orders"
-
+  persist_for: "2 minutes"
   sql_always_where: ${sales_orders_v2.client_mandt}='@{CLIENT_ID}'
 
   and
@@ -166,13 +166,13 @@ explore: sales_orders_v2 {
   }
 
   join: returns_sdt {
-    view_label: "Sales Orders Items"
+    view_label: "Returns"
     type: left_outer
     relationship: one_to_many
     sql_on:  ${sales_orders_v2.client_mandt} = ${returns_sdt.client_mandt} and
             ${sales_orders_v2.sales_document_vbeln} = ${returns_sdt.reference_sales_document_vbeln} and
             ${sales_orders_v2.item_posnr} = ${returns_sdt.reference_item_posnr} ;;
-    fields: [returns_sdt.is_return]
+    # fields: [returns_sdt.is_return]
   }
 
   join: sales_order_item_billing_summary_sdt {

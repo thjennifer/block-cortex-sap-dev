@@ -364,10 +364,7 @@ view: sales_order_item_delivery_summary_ndt {
 
     link: {
       label: "Show Late Orders"
-      # url: "{{ dummy_set_details._link }}&f[Is+Order+Late]=\"Yes\""
-      # url: "{{ dummy_set_details._link}}&f[sales_order_item_delivery_summary_ndt.test_dimension]=odd"
-      url: "{{ dummy_set_late_details._link}}&f[sales_order_item_delivery_summary_ndt.is_order_late]=Yes"
-      # url: "{{ link }}&f[view_name.status]=active&f[view_name.count]=%3E1"
+      url: "{{ dummy_set_details_late_deliveries._link}}&f[sales_order_item_delivery_summary_ndt.is_order_late]=Yes"
     }
   }
 
@@ -400,6 +397,23 @@ view: sales_order_item_delivery_summary_ndt {
     sql: ${item_order_cycle_time} ;;
     value_format_name: decimal_1
     required_fields: [material_number_matnr]
+    ## dynamic capture of filters with link
+    link: {
+      label: "Show Order Details"
+      icon_url: "/favicon.ico"
+      url: "
+        @{link_generate_variable_defaults}
+        {% assign link = link_generator._link %}
+        {% assign filters_mapping = '@{otc_shared_filters}' %}
+
+        {% assign model = _model._name %}
+        {% assign target_dashboard = _model._name | append: '::otc_order_details' %}
+
+        {% assign default_filters_override = false %}
+
+        @{link_generate_dashboard_url}
+      "
+      }
   }
 
   measure: sum_total_quantity_delivered {
@@ -423,7 +437,7 @@ view: sales_order_item_delivery_summary_ndt {
     fields: [material_number_matnr, materials_md.material_text_maktx]
   }
 
-  measure: dummy_set_late_details {
+  measure: dummy_set_details_late_deliveries {
     hidden:yes
     drill_fields: [set_details_late_deliveries*]
     sql: 1=1 ;;
@@ -439,6 +453,13 @@ view: sales_order_item_delivery_summary_ndt {
     hidden:yes
     drill_fields: [set_product*,percent_orders_delivered_late]
     sql: 1=1 ;;
+  }
+
+  measure: link_generator {
+    hidden: yes
+    type: number
+    sql: 1 ;;
+    drill_fields: [link_generator]
   }
 
 

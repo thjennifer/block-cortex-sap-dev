@@ -5,13 +5,13 @@ view: returns_sdt {
   derived_table: {
     sql: SELECT
         sv2.Client_Mandt,
-        sv2.SalesDocument_VBELN,
-        sv2.Item_POSNR,
-        sv2.DocumentCategory_VBTYP,
-        sv2.CreationDate_ERDAT,
-        sv2.CreationTime_ERZET,
-        sv2.CumulativeOrderQuantity_KWMENG,
-        sv2.NetPrice_NETPR,
+        sv2.SalesDocument_VBELN as Return_SalesDocument_VBELN,
+        sv2.Item_POSNR as Return_Item_POSNR,
+        sv2.DocumentCategory_VBTYP as Return_DocumentCategory_VBTYP,
+        sv2.CreationDate_ERDAT as Return_CreationDate_ERDAT,
+        sv2.CreationTime_ERZET as Return_CreationTime_ERZET,
+        sv2.CumulativeOrderQuantity_KWMENG as Return_ItemQuantity,
+        sv2.NetPrice_NETPR as Return_NetPrice_NETPR,
         sv2.PrecedingDocCategory_VGTYP,
     --ReferenceDocument_VGBEL equals:
     -- SalesDocument_VBELN when PrecedingDocCategory_VGTYP = C
@@ -46,7 +46,8 @@ view: returns_sdt {
 
   dimension: key {
     type: string
-    sql: concat(${client_mandt},${sales_document_vbeln},${item_posnr},${reference_sales_document_vbeln},${reference_item_posnr}) ;;
+    primary_key: yes
+    sql: concat(${client_mandt},${return_sales_document_vbeln},${return_item_posnr},${reference_sales_document_vbeln},${reference_item_posnr}) ;;
   }
 
   dimension: client_mandt {
@@ -54,40 +55,47 @@ view: returns_sdt {
     sql: ${TABLE}.Client_Mandt ;;
   }
 
-  dimension: sales_document_vbeln {
+  dimension: return_sales_document_vbeln {
     type: string
-    sql: ${TABLE}.SalesDocument_VBELN ;;
+    hidden: no
+    sql: ${TABLE}.Return_SalesDocument_VBELN ;;
   }
 
-  dimension: item_posnr {
+  dimension: return_item_posnr {
     type: string
-    sql: ${TABLE}.Item_POSNR ;;
+    sql: ${TABLE}.Return_Item_POSNR ;;
   }
 
-  dimension: document_category_vbtyp {
+  dimension: return_document_category_vbtyp {
     type: string
-    sql: ${TABLE}.DocumentCategory_VBTYP ;;
+    sql: ${TABLE}.Return_DocumentCategory_VBTYP ;;
   }
 
-  dimension: creation_date_erdat {
+  dimension: return_creation_date_erdat {
     type: date
     datatype: date
-    sql: ${TABLE}.CreationDate_ERDAT ;;
+    sql: ${TABLE}.Return_CreationDate_ERDAT ;;
   }
 
-  dimension: creation_time_erzet {
+  dimension: return_order_date_as_string {
     type: string
-    sql: ${TABLE}.CreationTime_ERZET ;;
+    label: "Return Order Date"
+    sql: STRING(${TABLE}.Return_CreationDate_ERDAT) ;;
   }
 
-  dimension: cumulative_order_quantity_kwmeng {
-    type: number
-    sql: ${TABLE}.CumulativeOrderQuantity_KWMENG ;;
+  dimension: return_creation_time_erzet {
+    type: string
+    sql: ${TABLE}.Return_CreationTime_ERZET ;;
   }
 
-  dimension: net_price_netpr {
+  dimension: return_item_quantity {
     type: number
-    sql: ${TABLE}.NetPrice_NETPR ;;
+    sql: ${TABLE}.Return_ItemQuantity ;;
+  }
+
+  dimension: return_net_price_netpr {
+    type: number
+    sql: ${TABLE}.return_NetPrice_NETPR ;;
   }
 
   dimension: preceding_doc_category_vgtyp {
@@ -129,6 +137,12 @@ view: returns_sdt {
   #   type: count_distinct
   #   sql: ${reference_sales_document_vbeln} ;;
   # }
+
+  measure: total_quantity_returned {
+    hidden: no
+    type: sum
+    sql: ${return_item_quantity} ;;
+  }
 
 
 }

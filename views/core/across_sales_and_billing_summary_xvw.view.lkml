@@ -38,4 +38,9 @@ view: across_sales_and_billing_summary_xvw {
             {%endif%}<p style="color: {{color}}"><b> {{sym}} {{value}}</b> </p>;;
   }
 
+  measure: max_order_status {
+    type: string
+    sql: max(${order_status}) ;;
+  }
+
   }

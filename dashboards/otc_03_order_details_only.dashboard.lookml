@@ -248,6 +248,7 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Target Currency: currency_conversion_sdt.select_target_currency
+      Is Blocked: deliveries.is_blocked
     row: 7
     col: 0
     width: 24
@@ -256,10 +257,10 @@
 
   filters:
 
-  - name: "Order Status"
-    title: "Order Status"
+  - name: Order Status
+    title: Order Status
     type: field_filter
-    default_value: 'Cancelled'
+    # default_value: 'Cancelled'
     allow_multiple_values: true
     required: false
     ui_config:
@@ -268,8 +269,8 @@
     explore: sales_orders_v2
     field: across_sales_and_billing_summary_xvw.order_status
 
-  - name: Is Blocked (Yes / No)
-    title: Is Blocked (Yes / No)
+  - name: Is Blocked
+    title: Is Blocked
     type: field_filter
     default_value: 'No'
     allow_multiple_values: true

@@ -75,6 +75,13 @@ view: +sales_orders_v2 {
     description: "Sales Order Creation Date ERDAT"
   }
 
+  dimension: order_date_as_string {
+    label: "Order Date"
+    hidden: no
+    type: string
+    sql: STRING(${creation_date_erdat_raw}) ;;
+  }
+
   dimension: creation_time_erzet {
     hidden: no
     label: "Creation Time ERZET"
@@ -241,14 +248,59 @@ view: +sales_orders_v2 {
     filters: [document_category_vbtyp: "C"]
   }
 
-  measure: count_orders_with_status_link {
+  measure: count_orders_with_link {
     hidden: yes
     type: number
     sql: ${count_orders} ;;
+    #  url: "{%assign model = _model._name %}/dashboards/{{model}}::otc_order_details?Order+Date=+2022%2F01%2F01+to+2022%2F12%2F31&Country={{_filters['countries_md.country_name_landx'] | url_encode}}&Sales+Org={{_filters['sales_organizations_md.sales_org_name_vtext'] | url_encode}}&Distribution+Channel={{_filters['distribution_channels_md.distribution_channel_name_vtext'] | url_encode}}&Division={{_filters['divisions_md.division_name_vtext'] | url_encode}}&Product={{_filters['materials_md.material_text_maktx'] | url_encode}}&Target+Currency={{_filters['currency_conversion_sdt.select_target_currency'] | url_encode}}
+ # url: "/dashboards/cortex_sap_operational_v2::otc_order_details?Order+Status={{across_sales_and_billing_summary_xvw.order_status._value))"
+
     # link: {
-    #   # https://cortexdev.cloud.looker.com/dashboards/cortex_sap_operational_v2::otc_order_snapshot?Order+Date=+2022%2F01%2F01+to+2022%2F12%2F31&Country=&Sales+Org=&Distribution+Channel=&Division=&Product=&Target+Currency=USD
+    #   label: "Show Order Details"
+    #   url: "/dashboards/cortex_sap_operational_v2::otc_order_details?Order+Status={{ across_sales_and_billing_summary_xvw.order_status._value }}"
+
+    #   icon_url: "/favicon.ico"
     # }
+
+    # ## opens drill modal with the selected filters
+    link: {
+      label: "testing url"
+      url: "{{link}}"
+    }
+    drill_fields: [sales_document_vbeln]
+
+    ## dynamic capture of filters with link
+    link: {
+      label: "Show Order Details"
+      icon_url: "/favicon.ico"
+      url: "
+      @{link_generate_variable_defaults}
+      {% assign link = link_generator._link %}
+      {% assign filters_mapping = '@{otc_shared_filters}' | strip_new_lines | append: '||across_sales_and_billing_summary_xvw.order_status|Order Status||deliveries.is_blocked|Is Blocked' %}
+
+      {% assign model = _model._name %}
+      {% assign target_dashboard = _model._name | append: '::otc_order_details' %}
+
+      {% assign default_filters_override = false %}
+
+      @{link_generate_dashboard_url}
+      "
+    }
   }
+# {% assign filters_mapping = 'sales_orders_v2.creation_date_erdat_date|Order Date||divisions_md.division_name_vtext|Division||countries_md.country_name_landx|Country||materials_md.material_text_maktx|Product||sales_organizations_md.sales_org_name_vtext|Sales Org||distribution_channels_md.distribution_channel_name_vtext|Distribution Channel||currency_conversion_sdt.select_target_currency|Target Currency||across_sales_and_billing_summary_xvw.order_status|Order Status' %}
+
+  # {% assign default_filters = ''%}
+
+# constant: otc_shared_filters {
+#   value: "Order+Date|sales_orders_v2.creation_date_erdat_date ||
+#       Division|divisions_md.division_name_vtext ||
+#       Country|countries_md.country_name_landx ||
+#       Sales+Org|sales_organizations_md.sales_org_name_vtext ||
+#       Distribution+Channel|distribution_channels_md.distribution_channel_name_vtext ||
+#       Product|materials_md.material_text_maktx ||
+#       Target+Currency|currency_conversion_sdt.select_target_currency"
+# }
+  # Division|divisions_md.division_name_vtext||Country|countries_md.country_name_landx||Product|materials_md.material_text_maktx
 
   measure: count_sales_documents {
     hidden: no
@@ -368,6 +420,23 @@ view: +sales_orders_v2 {
 
 #}
 
+dimension: test_url {
+  view_label: "ZZZZ tests"
+  hidden: no
+  sql: '@{otc_shared_filters}' ;;
+}
 
+  dimension: test2_url {
+    view_label: "ZZZZ tests"
+    hidden: no
+    sql: '@{otc_filter_url}' ;;
+  }
+
+  measure: link_generator {
+    hidden: yes
+    type: number
+    sql: 1 ;;
+    drill_fields: [link_generator]
+  }
 
   }
