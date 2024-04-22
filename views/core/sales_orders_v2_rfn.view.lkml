@@ -263,11 +263,11 @@ view: +sales_orders_v2 {
     # }
 
     # ## opens drill modal with the selected filters
-    link: {
-      label: "testing url"
-      url: "{{link}}"
-    }
-    drill_fields: [sales_document_vbeln]
+    # link: {
+    #   label: "testing url"
+    #   url: "{{link}}"
+    # }
+    # drill_fields: [sales_document_vbeln]
 
     ## dynamic capture of filters with link
     link: {
@@ -420,17 +420,6 @@ view: +sales_orders_v2 {
 
 #}
 
-dimension: test_url {
-  view_label: "ZZZZ tests"
-  hidden: no
-  sql: '@{otc_shared_filters}' ;;
-}
-
-  dimension: test2_url {
-    view_label: "ZZZZ tests"
-    hidden: no
-    sql: '@{otc_filter_url}' ;;
-  }
 
   measure: link_generator {
     hidden: yes

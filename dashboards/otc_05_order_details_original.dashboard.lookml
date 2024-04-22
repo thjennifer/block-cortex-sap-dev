@@ -1,5 +1,5 @@
-- dashboard: otc_order_details
-  title: Order Details
+- dashboard: otc_order_details_original
+  title: Order Status Details
   layout: newspaper
   preferred_viewer: dashboards-next
   crossfilter_enabled: true
@@ -15,7 +15,7 @@
   - title: navigation
     name: navigation
     filters:
-      navigation_otc_ext.navigation_focus_page: '3'
+      navigation_otc_ext.navigation_focus_page: '5'
 
 
   # - name: header_order_status
@@ -27,130 +27,130 @@
   #   width: 24
   #   height: 1
 
-  # - title: Total Orders
-  #   name: Total Orders
-  #   explore: sales_orders_v2
-  #   type: single_value
-  #   fields: [sales_orders_v2.count_orders]
-  #   listen:
-  #     # " Order Status": sales_orders.sales_order_status
-  #     Order Date: sales_orders_v2.creation_date_erdat_date
-  #     Division: divisions_md.division_name_vtext
-  #     Country: countries_md.country_name_landx
-  #     Sales Org: sales_organizations_md.sales_org_name_vtext
-  #     Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-  #     Product: materials_md.material_text_maktx
-  #   note_state: collapsed
-  #   note_display: hover
-  #   note_text: "The number of sales orders (document category type = C)."
-  #   row: 2
-  #   col: 0
-  #   width: 5
-  #   height: 4
+  - title: Total Orders
+    name: Total Orders
+    explore: sales_orders_v2
+    type: single_value
+    fields: [sales_orders_v2.count_orders]
+    listen:
+      # " Order Status": sales_orders.sales_order_status
+      Order Date: sales_orders_v2.creation_date_erdat_date
+      Division: divisions_md.division_name_vtext
+      Country: countries_md.country_name_landx
+      Sales Org: sales_organizations_md.sales_org_name_vtext
+      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
+      Product: materials_md.material_text_maktx
+    note_state: collapsed
+    note_display: hover
+    note_text: "The number of sales orders (document category type = C)."
+    row: 2
+    col: 0
+    width: 5
+    height: 4
 
-  # - title: Blocked Orders
-  #   name: Blocked Orders
-  #   explore: sales_orders_v2
-  #   type: single_value
-  #   fields: [across_sales_and_deliveries_xvw.count_blocked_orders]
-  #   # enable_conditional_formatting: true
-  #   # conditional_formatting_include_totals: false
-  #   # conditional_formatting_include_nulls: false
-  #   # conditional_formatting: [{type: greater than, value: 5, background_color: '',
-  #   #     font_color: "#EA4335",
-  #   #     bold: false, italic: false, strikethrough: false, fields: !!null ''}]
-  #   listen:
-  #     # " Order Status": sales_orders_v2.sales_order_status
-  #     Order Date: sales_orders_v2.creation_date_erdat_date
-  #     Division: divisions_md.division_name_vtext
-  #     Country: countries_md.country_name_landx
-  #     Sales Org: sales_organizations_md.sales_org_name_vtext
-  #     Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-  #     Product: materials_md.material_text_maktx
-  #   note_state: collapsed
-  #   note_display: hover
-  #   note_text: "The number of sales orders blocked for delivery reasons (such as customers exceeding credit limit or insufficient stock)."
-  #   row: 2
-  #   col: 5
-  #   width: 5
-  #   height: 4
+  - title: Blocked Orders
+    name: Blocked Orders
+    explore: sales_orders_v2
+    type: single_value
+    fields: [across_sales_and_deliveries_xvw.count_blocked_orders]
+    # enable_conditional_formatting: true
+    # conditional_formatting_include_totals: false
+    # conditional_formatting_include_nulls: false
+    # conditional_formatting: [{type: greater than, value: 5, background_color: '',
+    #     font_color: "#EA4335",
+    #     bold: false, italic: false, strikethrough: false, fields: !!null ''}]
+    listen:
+      # " Order Status": sales_orders_v2.sales_order_status
+      Order Date: sales_orders_v2.creation_date_erdat_date
+      Division: divisions_md.division_name_vtext
+      Country: countries_md.country_name_landx
+      Sales Org: sales_organizations_md.sales_org_name_vtext
+      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
+      Product: materials_md.material_text_maktx
+    note_state: collapsed
+    note_display: hover
+    note_text: "The number of sales orders blocked for delivery reasons (such as customers exceeding credit limit or insufficient stock)."
+    row: 2
+    col: 5
+    width: 5
+    height: 4
 
-  # - title: Order Status
-  #   name: Order Status Bar
-  #   explore: sales_orders_v2
-  #   type: looker_bar
-  #   fields: [across_sales_and_billing_summary_xvw.order_status, sales_orders_v2.count_orders]
-  #   pivots: [across_sales_and_billing_summary_xvw.order_status]
-  #   filters:
-  #     across_sales_and_billing_summary_xvw.order_status: "-NULL"
-  #   sorts: [across_sales_and_billing_summary_xvw.order_status desc]
-  #   limit: 500
-  #   column_limit: 50
-  #   x_axis_gridlines: false
-  #   y_axis_gridlines: true
-  #   show_view_names: false
-  #   show_y_axis_labels: true
-  #   show_y_axis_ticks: true
-  #   y_axis_tick_density: default
-  #   y_axis_tick_density_custom: 5
-  #   show_x_axis_label: true
-  #   show_x_axis_ticks: false
-  #   y_axis_scale_mode: linear
-  #   x_axis_reversed: false
-  #   y_axis_reversed: false
-  #   plot_size_by_field: false
-  #   trellis: ''
-  #   stacking: percent
-  #   limit_displayed_rows: false
-  #   legend_position: center
-  #   point_style: none
-  #   show_value_labels: false
-  #   label_density: 25
-  #   x_axis_scale: auto
-  #   y_axis_combined: true
-  #   ordering: none
-  #   show_null_labels: false
-  #   show_totals_labels: false
-  #   show_silhouette: false
-  #   totals_color: "#808080"
-  #   y_axes: [{label: '', orientation: bottom, series: [{axisId: Open - sales_orders_v2.count_orders,
-  #           id: Open - sales_orders_v2.count_orders, name: Open}, {axisId: Closed
-  #             - sales_orders_v2.count_orders, id: Closed - sales_orders_v2.count_orders,
-  #           name: Closed}, {axisId: Cancelled - sales_orders_v2.count_orders, id: Cancelled
-  #             - sales_orders_v2.count_orders, name: Cancelled}], showLabels: false,
-  #       showValues: false, unpinAxis: false, tickDensity: default, tickDensityCustom: 5,
-  #       type: linear}]
-  #   x_axis_zoom: true
-  #   y_axis_zoom: true
-  #   hide_legend: true
-  #   series_colors:
-  #     Open - sales_orders_v2.count_orders: "#98B6B1"
-  #     Closed - sales_orders_v2.count_orders: "#BFBDC1"
-  #     Cancelled - sales_orders_v2.count_orders: "#Eb9486"
-  #   advanced_vis_config: "{\n  title: {\n    text: \"Order Status\",\n    verticalAlign:\
-  #     \ 'bottom',\n    \n    \n  },\n  plotOptions: {\n    series: {\n      dataLabels:\
-  #     \ {\n        enabled: true,\n        align: 'center',\n        inside: true,\n\
-  #     \        use_html: true,\n        format: '<span style=\"font-size:120%\"<b>{series.name}</b></span><span\
-  #     \ style=\"font-weight: normal; font-size:100%;\"><br><br>{point.y: ,.0f}<br>{percentage:.1f}%</span>',\n\
-  #     \      },\n    },\n  },\n  series: [{\n    name: 'Open',\n    dataLabels: {\n\
-  #     \      enabled: true,\n    },\n  }, {\n    name: 'Closed',\n    dataLabels:\
-  #     \ {\n      enabled: true,\n    },\n  }, {\n    name: 'Cancelled',\n    dataLabels:\
-  #     \ {\n      enabled: true,\n      inside: true,\n      align: 'left',\n     \
-  #     \ x: 40\n    },\n  }]\n}"
-  #   defaults_version: 1
-  #   title_hidden: true
-  #   listen:
-  #     # " Order Status": sales_orders_v2.sales_order_status
-  #     Order Date: sales_orders_v2.creation_date_erdat_date
-  #     Division: divisions_md.division_name_vtext
-  #     Country: countries_md.country_name_landx
-  #     Sales Org: sales_organizations_md.sales_org_name_vtext
-  #     Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-  #     Product: materials_md.material_text_maktx
-  #   row: 2
-  #   col: 10
-  #   width: 14
-  #   height: 4
+  - title: Order Status
+    name: Order Status Bar
+    explore: sales_orders_v2
+    type: looker_bar
+    fields: [across_sales_and_billing_summary_xvw.order_status, sales_orders_v2.count_orders]
+    pivots: [across_sales_and_billing_summary_xvw.order_status]
+    filters:
+      across_sales_and_billing_summary_xvw.order_status: "-NULL"
+    sorts: [across_sales_and_billing_summary_xvw.order_status desc]
+    limit: 500
+    column_limit: 50
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: false
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: percent
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    y_axes: [{label: '', orientation: bottom, series: [{axisId: Open - sales_orders_v2.count_orders,
+            id: Open - sales_orders_v2.count_orders, name: Open}, {axisId: Closed
+              - sales_orders_v2.count_orders, id: Closed - sales_orders_v2.count_orders,
+            name: Closed}, {axisId: Cancelled - sales_orders_v2.count_orders, id: Cancelled
+              - sales_orders_v2.count_orders, name: Cancelled}], showLabels: false,
+        showValues: false, unpinAxis: false, tickDensity: default, tickDensityCustom: 5,
+        type: linear}]
+    x_axis_zoom: true
+    y_axis_zoom: true
+    hide_legend: true
+    series_colors:
+      Open - sales_orders_v2.count_orders: "#98B6B1"
+      Closed - sales_orders_v2.count_orders: "#BFBDC1"
+      Cancelled - sales_orders_v2.count_orders: "#Eb9486"
+    advanced_vis_config: "{\n  title: {\n    text: \"Order Status\",\n    verticalAlign:\
+      \ 'bottom',\n    \n    \n  },\n  plotOptions: {\n    series: {\n      dataLabels:\
+      \ {\n        enabled: true,\n        align: 'center',\n        inside: true,\n\
+      \        use_html: true,\n        format: '<span style=\"font-size:120%\"<b>{series.name}</b></span><span\
+      \ style=\"font-weight: normal; font-size:100%;\"><br><br>{point.y: ,.0f}<br>{percentage:.1f}%</span>',\n\
+      \      },\n    },\n  },\n  series: [{\n    name: 'Open',\n    dataLabels: {\n\
+      \      enabled: true,\n    },\n  }, {\n    name: 'Closed',\n    dataLabels:\
+      \ {\n      enabled: true,\n    },\n  }, {\n    name: 'Cancelled',\n    dataLabels:\
+      \ {\n      enabled: true,\n      inside: true,\n      align: 'left',\n     \
+      \ x: 40\n    },\n  }]\n}"
+    defaults_version: 1
+    title_hidden: true
+    listen:
+      # " Order Status": sales_orders_v2.sales_order_status
+      Order Date: sales_orders_v2.creation_date_erdat_date
+      Division: divisions_md.division_name_vtext
+      Country: countries_md.country_name_landx
+      Sales Org: sales_organizations_md.sales_org_name_vtext
+      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
+      Product: materials_md.material_text_maktx
+    row: 2
+    col: 10
+    width: 14
+    height: 4
 
   - title: Order Details
     name: Order Details
@@ -248,7 +248,6 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Target Currency: currency_conversion_sdt.select_target_currency
-      Is Blocked: deliveries.is_blocked
     row: 7
     col: 0
     width: 24
@@ -257,27 +256,16 @@
 
   filters:
 
-  - name: Order Status
-    title: Order Status
+  - name: "Order Status"
+    title: "Order Status"
     type: field_filter
-    # default_value: 'Cancelled'
+    default_value: 'Cancelled'
     allow_multiple_values: true
     required: false
     ui_config:
-      type: button_group
+      type: checkboxes
       display: popover
-    explore: sales_orders_v2
-    field: across_sales_and_billing_summary_xvw.order_status
-
-  - name: Is Blocked
-    title: Is Blocked
-    type: field_filter
-    default_value: 'No'
-    allow_multiple_values: true
-    required: false
-    ui_config:
-      type: button_toggles
-      display: inline
+      options: []
     explore: sales_orders_v2
     listens_to_filters: []
-    field: deliveries.is_blocked
+    field: across_sales_and_billing_summary_xvw.order_status

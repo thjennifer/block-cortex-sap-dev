@@ -74,69 +74,10 @@ constant: derive_currency_label {
   value: "{% assign currency = currency_conversion_sdt.select_target_currency._parameter_value | remove: \"'\" %}"
 }
 
-
-# constant: otc_shared_filters {
-#   value: "Order+Date|sales_orders_v2.creation_date_erdat_date ||
-#       Division|divisions_md.division_name_vtext ||
-#       Country|countries_md.country_name_landx ||
-#       Sales+Org|sales_organizations_md.sales_org_name_vtext ||
-#       Distribution+Channel|distribution_channels_md.distribution_channel_name_vtext ||
-#       Product|materials_md.material_text_maktx ||
-#       Target+Currency|currency_conversion_sdt.select_target_currency"
-# }
-
 constant: otc_shared_filters {
   value: "sales_orders_v2.creation_date_erdat_date|Order Date||divisions_md.division_name_vtext|Division||countries_md.country_name_landx|Country||materials_md.material_text_maktx|Product||sales_organizations_md.sales_org_name_vtext|Sales Org||distribution_channels_md.distribution_channel_name_vtext|Distribution Channel||currency_conversion_sdt.select_target_currency|Target Currency"
 }
 
-# Country={{_filters['countries_md.country_name_landx'] | url_encode}}&Sales+Org={{_filters['sales_organizations_md.sales_org_name_vtext'] | url_encode}}&Distribution+Channel={{_filters['distribution_channels_md.distribution_channel_name_vtext'] | url_encode}}&Division={{_filters['divisions_md.division_name_vtext'] | url_encode}}&Product={{_filters['materials_md.material_text_maktx'] | url_encode}}&Target+Currency={{_filters['currency_conversion_sdt.select_target_currency'] | url_encode}}"
-# sql: 'filter1|Order+Date||filter2|Country||filter3|Sales+Org||filter4|Distribution+Channel||filter5|Division||filter6|Product' ;;
-
-constant: otc_filter_url {
-  value: "{% assign filterItems = '@{otc_shared_filters}' | split: '||'  %}{% assign queryString = '' %}{% for filterItem in filterItems %}{% assign filterParts = filterItem | split: '|' %}{{filterItems[2] | strip_newlines}}{% endfor%}"
-}
-# constant: otc_filter_url {
-#   value: "{% assign filterItems = @{otc_shared_filters} | split: '||' %}
-#           {% assign queryString = '' %}
-#           <!-- loop through filterItems defined in otc_shared_filters dimension to create queryString used in dashboard url-->
-#           {% for filterItem in filterItems %}
-#               <!-- split filter into parts -->
-#               {% assign filterParts = filterItem | split: '|' %}
-#               {% assign filterField = filterParts[1] %} <!-- for readability -->
-#               {% assign filterName = filterParts[0] %} <!-- for readability -->
-
-#           <!-- Define Filters -->
-#           <!-- case on filter, because we can't mix value interpolation into logic evaluation -->
-#           <!-- for example, this will not work: {% assign filterValue = _filters['{{ filter }}'] %} -->
-#           <!-- Add more cases for more filters ** -->
-#           {% case filterName%}
-#           {% when \"Order+Date\" %}
-#           {% assign filterValue = _filters['sales_orders_v2.creation_date_erdat_date'] | url_encode %}
-#           {% when 'Division' %}
-#           {% assign filterValue = _filters['divisions_md.division_name_vtext'] | url_encode %}
-#           {% when 'Country' %}
-#           {% assign filterValue = _filters['countries_md.country_name_landx'] | url_encode %}
-#           {% when 'Sales+Org' %}
-#           {% assign filterValue = _filters['sales_organizations_md.sales_org_name_vtext'] | url_encode %}
-#           {% when 'Distribution+Channel' %}
-#           {% assign filterValue = _filters['distribution_channels_md.distribution_channel_name_vtext'] | url_encode %}
-#           {% when 'Product' %}
-#           {% assign filterValue = _filters['materials_md.material_text_maktx'] | url_encode %}
-#           {% when 'Target+Currency' %}
-#           {% assign filterValue = _filters['currency_conversion_sdt.select_target_currency'] | url_encode %}
-#             {% else %}
-#           {% assign filterValue = 'out of range filter' %}
-#           <!-- if you see this value, you've added more filters than supported -->
-#           {% endcase %}
-
-#           <!-- create individual filterString -->
-#           {% assign filterString = filterName | append: '=' | append: filterValue %}
-
-#           <!-- tack individual filterString onto end of queryString -->
-#           {% assign queryString = queryString | append: filterString | append: '&' %}
-
-#       {% endfor %}"
-# }
 
 
 #} end additional constants

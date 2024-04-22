@@ -14,7 +14,7 @@
     - title: navigation
       name: navigation
       filters:
-        navigation_otc_ext.navigation_focus_page: '5'
+        navigation_otc_ext.navigation_focus_page: '4'
 
     - title: Price Adjustments by Customer
       name: Price Adjustments by Customer

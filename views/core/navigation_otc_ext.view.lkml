@@ -6,7 +6,7 @@ view: navigation_otc_ext {
   dimension: dash_bindings {
     hidden: yes
     type: string
-    sql: 'otc_order_fulfillment|Order Fulfillment||otc_order_snapshot|Order Status||otc_order_details|Order Details||otc_sales_performance|Sales Performance||otc_billing_and_pricing|Billing and Pricing' ;;
+    sql: 'otc_order_fulfillment|Order Fulfillment||otc_order_snapshot|Order Status||otc_sales_performance|Sales Performance||otc_billing_and_pricing|Billing and Pricing||otc_order_details|Order Details' ;;
   }
 
   dimension: filter_bindings {
