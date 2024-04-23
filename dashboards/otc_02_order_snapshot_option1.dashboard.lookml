@@ -27,6 +27,7 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
+      Sold to: customers_md.name1_name1
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders processed without manual touches or interventions during order entry, scheduling, shipping and invoicing."
@@ -47,6 +48,7 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
+      Sold to: customers_md.name1_name1
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders that can be fulfilled immediately by available inventory."
@@ -67,6 +69,7 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
+      Sold to: customers_md.name1_name1
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders with a product cancellation."
@@ -87,6 +90,7 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
+      Sold to: customers_md.name1_name1
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders with a product return."
@@ -180,6 +184,14 @@
     note_text: Top 10 Products with Largest Difference between Quantity Ordered and Delivered
     hidden_fields: [materials_md.material_number_matnr, across_sales_and_deliveries_xvw.difference_delivery_qty_order_qty,
       across_sales_and_deliveries_xvw.percent_difference_order_qty_delivery_qty]
+    listen:
+      Order Date: sales_orders_v2.creation_date_erdat_date
+      Division: divisions_md.division_name_vtext
+      Country: countries_md.country_name_landx
+      Sales Org: sales_organizations_md.sales_org_name_vtext
+      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
+      Product: materials_md.material_text_maktx
+      Sold to: customers_md.name1_name1
     row: 2
     col: 5
     width: 19

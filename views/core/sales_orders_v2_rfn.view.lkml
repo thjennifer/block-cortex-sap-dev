@@ -209,7 +209,8 @@ view: +sales_orders_v2 {
   dimension: base_unit_of_measure_meins {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "Base Unit of Measure@{SAP_LABEL}"
+    label: "Base UoM"
+    description: "Base Unit of Measure@{SAP_LABEL}"
   }
 
   dimension: sales_unit_vrkme {
@@ -271,7 +272,7 @@ view: +sales_orders_v2 {
 
     ## dynamic capture of filters with link
     link: {
-      label: "Show Order Details"
+      label: "Open Order Details Dashboard"
       icon_url: "/favicon.ico"
       url: "
       @{link_generate_variable_defaults}

@@ -27,6 +27,7 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Division: divisions_md.division_name_vtext
+      Sold to: customers_md.name1_name1
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders fulfilled completely (for all line items)."
@@ -47,6 +48,7 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Division: divisions_md.division_name_vtext
+      Sold to: customers_md.name1_name1
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders fulfilled by the promised delivery date."
@@ -68,6 +70,7 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Division: divisions_md.division_name_vtext
+      Sold to: customers_md.name1_name1
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders fulfilled completely (for all line items) by the promised delivery date."
@@ -92,6 +95,7 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Division: divisions_md.division_name_vtext
+      Sold to: customers_md.name1_name1
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders not fully delivered by the promised delivery date."
@@ -163,6 +167,7 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Division: divisions_md.division_name_vtext
+      Sold to: customers_md.name1_name1
     note_state: collapsed
     note_display: hover
     note_text: "Order cycle time is average number of days between order placement and order delivery. "
@@ -210,6 +215,7 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Division: divisions_md.division_name_vtext
+      Sold to: customers_md.name1_name1
     row: 5
     col: 0
     width: 12

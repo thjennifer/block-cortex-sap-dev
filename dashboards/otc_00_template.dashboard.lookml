@@ -76,6 +76,19 @@
     listens_to_filters: []
     field: divisions_md.division_name_vtext
 
+  - name: Sold to
+    title: Sold to
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: advanced
+      display: popover
+    explore: sales_orders_v2
+    listens_to_filters: []
+    field: customers_md.name1_name1
+
   - name: Product
     title: Product
     type: field_filter
@@ -83,7 +96,7 @@
     allow_multiple_values: true
     required: false
     ui_config:
-      type: checkboxes
+      type: advanced
       display: popover
     explore: sales_orders_v2
     listens_to_filters: []
@@ -121,6 +134,7 @@
         Distribution Channel: navigation_otc_ext.filter4
         Division: navigation_otc_ext.filter5
         Product: navigation_otc_ext.filter6
+        Sold to: navigation_otc_ext.filter7
       row: 0
       col: 0
       width: 24

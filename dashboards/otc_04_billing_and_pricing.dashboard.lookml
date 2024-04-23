@@ -75,6 +75,7 @@
         Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
         Product: materials_md.material_text_maktx
         Target Currency: currency_conversion_sdt.select_target_currency
+        Sold to: customers_md.name1_name1
       row: 2
       col: 0
       width: 22
@@ -148,6 +149,7 @@
         Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
         Product: materials_md.material_text_maktx
         Target Currency: currency_conversion_sdt.select_target_currency
+        Sold to: customers_md.name1_name1
       row: 13
       col: 0
       width: 22

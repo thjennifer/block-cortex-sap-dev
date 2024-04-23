@@ -240,14 +240,15 @@
       <font size="-2">Limited to 50 Order Items. To see more, select "Explore from Here" option and adjust row limit setting.
       </font>
     listen:
-      Order Status: across_sales_and_billing_summary_xvw.order_status
       Order Date: sales_orders_v2.creation_date_erdat_date
       Division: divisions_md.division_name_vtext
       Country: countries_md.country_name_landx
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
+      Sold to: customers_md.name1_name1
       Product: materials_md.material_text_maktx
       Target Currency: currency_conversion_sdt.select_target_currency
+      Order Status: across_sales_and_billing_summary_xvw.order_status
       Is Blocked: deliveries.is_blocked
     row: 7
     col: 0
@@ -260,7 +261,7 @@
   - name: Order Status
     title: Order Status
     type: field_filter
-    default_value: 'Cancelled'
+    default_value: ''
     allow_multiple_values: true
     required: false
     ui_config:
