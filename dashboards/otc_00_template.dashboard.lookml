@@ -87,7 +87,7 @@
       display: popover
     explore: sales_orders_v2
     listens_to_filters: []
-    field: customers_md.name1_name1
+    field: customers_md.customer_name
 
   - name: Product
     title: Product

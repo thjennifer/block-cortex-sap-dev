@@ -277,7 +277,7 @@ view: +sales_orders_v2 {
       url: "
       @{link_generate_variable_defaults}
       {% assign link = link_generator._link %}
-      {% assign filters_mapping = '@{otc_shared_filters}' | strip_new_lines | append: '||across_sales_and_billing_summary_xvw.order_status|Order Status||deliveries.is_blocked|Is Blocked' %}
+      {% assign filters_mapping = '@{link_otc_shared_filters}' | strip_new_lines | append: '||across_sales_and_billing_summary_xvw.order_status|Order Status||deliveries.is_blocked|Is Blocked' %}
 
       {% assign model = _model._name %}
       {% assign target_dashboard = _model._name | append: '::otc_order_details' %}
@@ -292,7 +292,7 @@ view: +sales_orders_v2 {
 
   # {% assign default_filters = ''%}
 
-# constant: otc_shared_filters {
+# constant: link_otc_shared_filters {
 #   value: "Order+Date|sales_orders_v2.creation_date_erdat_date ||
 #       Division|divisions_md.division_name_vtext ||
 #       Country|countries_md.country_name_landx ||

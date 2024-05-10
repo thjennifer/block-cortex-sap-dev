@@ -20,7 +20,7 @@
       name: Price Adjustments by Customer
       explore: sales_orders_v2
       type: looker_column
-      fields: [sales_orders_v2.sold_to_party_kunnr, customers_md.name1_name1, sales_order_pricing_sdt.avg_list_price_target,
+      fields: [sales_orders_v2.sold_to_party_kunnr, customers_md.customer_name, sales_order_pricing_sdt.avg_list_price_target,
         sales_order_pricing_sdt.avg_adjusted_price_target_curr, sales_order_pricing_sdt.abs_difference_list_and_adjusted_price]
       filters:
         sales_order_pricing_sdt.adjusted_price: NOT NULL
@@ -75,7 +75,7 @@
         Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
         Product: materials_md.material_text_maktx
         Target Currency: currency_conversion_sdt.select_target_currency
-        Sold to: customers_md.name1_name1
+        Sold to: customers_md.customer_name
       row: 2
       col: 0
       width: 22
@@ -149,7 +149,7 @@
         Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
         Product: materials_md.material_text_maktx
         Target Currency: currency_conversion_sdt.select_target_currency
-        Sold to: customers_md.name1_name1
+        Sold to: customers_md.customer_name
       row: 13
       col: 0
       width: 22

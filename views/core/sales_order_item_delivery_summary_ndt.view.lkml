@@ -404,7 +404,7 @@ view: sales_order_item_delivery_summary_ndt {
       url: "
         @{link_generate_variable_defaults}
         {% assign link = link_generator._link %}
-        {% assign filters_mapping = '@{otc_shared_filters}' %}
+        {% assign filters_mapping = '@{link_otc_shared_filters}' %}
 
         {% assign model = _model._name %}
         {% assign target_dashboard = _model._name | append: '::otc_order_details' %}

@@ -27,7 +27,7 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
-      Sold to: customers_md.name1_name1
+      Sold to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders processed without manual touches or interventions during order entry, scheduling, shipping and invoicing."
@@ -48,7 +48,7 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
-      Sold to: customers_md.name1_name1
+      Sold to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders that can be fulfilled immediately by available inventory."
@@ -69,7 +69,7 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
-      Sold to: customers_md.name1_name1
+      Sold to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders with a product cancellation."
@@ -90,7 +90,7 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
-      Sold to: customers_md.name1_name1
+      Sold to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders with a product return."
@@ -191,7 +191,7 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
-      Sold to: customers_md.name1_name1
+      Sold to: customers_md.customer_name
     row: 2
     col: 5
     width: 19

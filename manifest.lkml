@@ -18,10 +18,10 @@ constant: CLIENT_ID {
   export: override_required
 }
 
-constant: USE_DEMO_DATA {
-  value: "Yes"
-  export: override_required
-}
+# constant: USE_DEMO_DATA {
+#   value: "Yes"
+#   export: override_required
+# }
 
 # Revenue is generally displayed in general ledger as a negative number, which indicates a credit.
 # By setting Sign Change value to 'yes', it's displayed as a positive number in income statement reports.
@@ -35,7 +35,8 @@ constant: SIGN_CHANGE {
 #{
 
 # Constant negative_format
-# shows negative values in red, at this constant to the html: parameter
+# shows negative values in red
+# add this constant to the html: parameter
 # example use:
 #   measure: profit {
 #     type: number
@@ -74,8 +75,8 @@ constant: derive_currency_label {
   value: "{% assign currency = currency_conversion_sdt.select_target_currency._parameter_value | remove: \"'\" %}"
 }
 
-constant: otc_shared_filters {
-  value: "sales_orders_v2.creation_date_erdat_date|Order Date||divisions_md.division_name_vtext|Division||countries_md.country_name_landx|Country||materials_md.material_text_maktx|Product||sales_organizations_md.sales_org_name_vtext|Sales Org||distribution_channels_md.distribution_channel_name_vtext|Distribution Channel||currency_conversion_sdt.select_target_currency|Target Currency||customers_md.name1_name1|Sold to"
+constant: link_otc_shared_filters {
+  value: "sales_orders_v2.creation_date_erdat_date|Order Date||divisions_md.division_name_vtext|Division||countries_md.country_name_landx|Country||materials_md.material_text_maktx|Product||sales_organizations_md.sales_org_name_vtext|Sales Org||distribution_channels_md.distribution_channel_name_vtext|Distribution Channel||currency_conversion_sdt.select_target_currency|Target Currency||customers_md.|Sold to"
 }
 
 
@@ -94,6 +95,9 @@ constant: DASHBOARD_LOGO {
   value: "https://marketplace-api.looker.com/block-icons/cortex_icon.png"
 }
 
+constant: default_target_date {
+  value: "{% if _user_attributes['sap_use_demo_data'] == 'Yes' %}{% assign td = '2023-11-30' %}{%else%}{% assign td = now | date: '%Y-%m-%d' %}{%endif%}"
+}
 # constant: DEFAULT_DATE_FILTER {
 #   value: "{% if @{USE_DEMO_DATA} =='Yes' %}{% assign date_range = '2022/01/01 to 2022/03/22' %}
 #           {% else %} {% assign date_range = 'last 1 year' %}

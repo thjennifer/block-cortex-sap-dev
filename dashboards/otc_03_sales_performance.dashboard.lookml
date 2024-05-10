@@ -56,7 +56,7 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Target Currency: currency_conversion_sdt.select_target_currency
-      Sold to: customers_md.name1_name1
+      Sold to: customers_md.customer_name
     # note_state: expanded
     note_display: hover
     note_text: |-
@@ -107,7 +107,7 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Target Currency: currency_conversion_sdt.select_target_currency
-      Sold to: customers_md.name1_name1
+      Sold to: customers_md.customer_name
     # note_state: expanded
     note_display: hover
     note_text: |-
@@ -157,7 +157,7 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Target Currency: currency_conversion_sdt.select_target_currency
-      Sold to: customers_md.name1_name1
+      Sold to: customers_md.customer_name
 
     row: 20
     col: 0
@@ -168,7 +168,7 @@
     title: Top Customers by Avg Sales
     explore: sales_orders_v2
     type: looker_bar
-    fields: [sales_orders_v2.sold_to_party_kunnr, customers_md.name1_name1, across_sales_and_currency_conversion_xvw.avg_net_value_per_order_target]
+    fields: [sales_orders_v2.sold_to_party_kunnr, customers_md.customer_name, across_sales_and_currency_conversion_xvw.avg_net_value_per_order_target]
     sorts: [across_sales_and_currency_conversion_xvw.avg_net_value_per_order_target desc]
     # filters:
     #   sales_orders_v2.count_orders: ">=10"
@@ -206,7 +206,7 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Target Currency: currency_conversion_sdt.select_target_currency
-      Sold to: customers_md.name1_name1
+      Sold to: customers_md.customer_name
     # note_state: expanded
     note_display: hover
     note_text: |-
@@ -362,7 +362,7 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Target Currency: currency_conversion_sdt.select_target_currency
-      Sold to: customers_md.name1_name1
+      Sold to: customers_md.customer_name
 
     row: 12
     col: 0
@@ -433,7 +433,7 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Target Currency: currency_conversion_sdt.select_target_currency
-      Sold to: customers_md.name1_name1
+      Sold to: customers_md.customer_name
 
     row: 12
     col: 11

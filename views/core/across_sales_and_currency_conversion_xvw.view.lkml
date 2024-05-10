@@ -70,7 +70,7 @@ view: across_sales_and_currency_conversion_xvw {
       url: "
       @{link_generate_variable_defaults}
       {% assign link = link_generator._link %}
-      {% assign filters_mapping = '@{otc_shared_filters}' | append: '||across_sales_and_billing_summary_xvw.order_status|Order Status||deliveries.is_blocked|Is Blocked' %}
+      {% assign filters_mapping = '@{link_otc_shared_filters}' | append: '||across_sales_and_billing_summary_xvw.order_status|Order Status||deliveries.is_blocked|Is Blocked' %}
 
       {% assign model = _model._name %}
       {% assign target_dashboard = _model._name | append: '::otc_order_details' %}

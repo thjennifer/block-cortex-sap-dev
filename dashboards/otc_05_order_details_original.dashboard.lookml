@@ -40,7 +40,7 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
-      Sold to: customers_md.name1_name1
+      Sold to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
     note_text: "The number of sales orders (document category type = C)."
@@ -68,7 +68,7 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
-      Sold to: customers_md.name1_name1
+      Sold to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
     note_text: "The number of sales orders blocked for delivery reasons (such as customers exceeding credit limit or insufficient stock)."
@@ -149,7 +149,7 @@
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
-      Sold to: customers_md.name1_name1
+      Sold to: customers_md.customer_name
     row: 2
     col: 10
     width: 14
@@ -251,7 +251,7 @@
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
       Product: materials_md.material_text_maktx
       Target Currency: currency_conversion_sdt.select_target_currency
-      Sold to: customers_md.name1_name1
+      Sold to: customers_md.customer_name
     row: 7
     col: 0
     width: 24

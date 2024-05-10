@@ -245,7 +245,7 @@
       Country: countries_md.country_name_landx
       Sales Org: sales_organizations_md.sales_org_name_vtext
       Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Sold to: customers_md.name1_name1
+      Sold to: customers_md.customer_name
       Product: materials_md.material_text_maktx
       Target Currency: currency_conversion_sdt.select_target_currency
       Order Status: across_sales_and_billing_summary_xvw.order_status

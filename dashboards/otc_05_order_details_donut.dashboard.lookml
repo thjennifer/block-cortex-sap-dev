@@ -328,7 +328,7 @@
   #     sales_orders.sales_document_vbeln: Sales Order
   #     sales_orders.item_posnr: Sales Order Line Item
   #     materials_md.material_text_maktx: Product
-  #     customers_md.name1_name1: Sold to Party
+  #     customers_md.customer_name: Sold to Party
   #     customers_md.name2_name2: Ship to Party
   #     customers_md.name3_name3: Bill to Party
   #     sales_orders.sales_order_status: Order Status

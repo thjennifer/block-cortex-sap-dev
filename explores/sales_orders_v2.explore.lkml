@@ -113,9 +113,11 @@ explore: sales_orders_v2 {
     view_label: "Sales Orders"
     type: left_outer
     relationship: many_to_one
-    sql_on: ${sales_orders_v2.client_mandt} = ${customers_md.client_mandt} and
-            ${sales_orders_v2.sold_to_party_kunnr} = ${customers_md.customer_number_kunnr};;
-    fields: [customers_md.name1_name1]
+    sql_on: ${sales_orders_v2.client_mandt} = ${customers_md.client_mandt} AND
+            ${sales_orders_v2.sold_to_party_kunnr} = ${customers_md.customer_number_kunnr} AND
+            ${language_map_sdt.language_spras} = ${customers_md.language_key_spras}
+            ;;
+    fields: [customers_md.customer_name]
   }
 
   join: countries_md {
