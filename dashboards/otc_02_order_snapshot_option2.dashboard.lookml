@@ -22,13 +22,13 @@
     fields: [sales_orders_v2.count_orders]
     listen:
       # " Order Status": sales_orders.sales_order_status
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-      Sold to: customers_md.customer_name
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
     note_text: "The number of sales orders (document category type = C)."
@@ -140,13 +140,13 @@
         }]
       }
     listen:
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-      Sold to: customers_md.customer_name
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
     row: 5
     col: 0
     width: 4
@@ -160,13 +160,13 @@
     filters:
       deliveries.is_blocked: 'Yes'
     listen:
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-      Sold to: customers_md.customer_name
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
     note_text: "The number of sales orders blocked for delivery reasons (such as customers exceeding credit limit or insufficient stock)."
@@ -181,13 +181,13 @@
     type: single_value
     fields: [across_sales_and_returns_xvw.percent_orders_with_return]
     listen:
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-      Sold to: customers_md.customer_name
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders with a product return."
@@ -202,13 +202,13 @@
     type: single_value
     fields: [one_touch_order.percent_one_touch_orders]
     listen:
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-      Sold to: customers_md.customer_name
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders processed without manual touches or interventions during order entry, scheduling, shipping and invoicing."
@@ -223,13 +223,13 @@
     type: single_value
     fields: [sales_order_schedule_line_sdt.avg_fill_rate_item]
     listen:
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-      Sold to: customers_md.customer_name
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders that can be fulfilled immediately by available inventory."
@@ -328,13 +328,13 @@
     hidden_fields: [materials_md.material_number_matnr, across_sales_and_deliveries_xvw.difference_delivery_qty_order_qty,
       across_sales_and_deliveries_xvw.percent_difference_order_qty_delivery_qty]
     listen:
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-      Sold to: customers_md.customer_name
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
     row: 2
     col: 8
     width: 15
@@ -406,12 +406,13 @@
   #   note_display: above
   #   note_text: Top 10 Products by Total Sales Order Line Items
   #   listen:
-  #     Order Date: sales_orders_v2.creation_date_erdat_date
-  #     Division: divisions_md.division_name_vtext
-  #     Country: countries_md.country_name_landx
-  #     Sales Org: sales_organizations_md.sales_org_name_vtext
-  #     Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-  #     Product: materials_md.material_text_maktx
+  # date: sales_orders_v2.creation_date_erdat_date
+  # country: countries_md.country_name_landx
+  # sales_org: sales_organizations_md.sales_org_name_vtext
+  # distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+  # product: materials_md.material_text_maktx
+  # division: divisions_md.division_name_vtext
+  # sold_to: customers_md.customer_name
   #   row: 3
   #   col: 7
   #   width: 17

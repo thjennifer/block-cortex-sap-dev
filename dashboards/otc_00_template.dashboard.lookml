@@ -8,7 +8,7 @@
   extension: required
 
   filters:
-  - name: Order Date
+  - name: date
     title: Order Date
     type: date_filter
     default_value:  "{% if _user_attributes['sap_use_demo_data'] =='Yes' %}{% assign date_range = '2022/01/01 to 2022/12/31' %}
@@ -24,7 +24,7 @@
       display: inline
       options: []
 
-  - name: Country
+  - name: country
     title: Country
     type: field_filter
     default_value: ''
@@ -37,7 +37,7 @@
     listens_to_filters: []
     field: countries_md.country_name_landx
 
-  - name: Sales Org
+  - name: sales_org
     title: Sales Org
     type: field_filter
     default_value: ''
@@ -50,7 +50,7 @@
     listens_to_filters: []
     field: sales_organizations_md.sales_org_name_vtext
 
-  - name: Distribution Channel
+  - name: distribution_channel
     title: Distribution Channel
     type: field_filter
     default_value: ''
@@ -63,7 +63,7 @@
     listens_to_filters: []
     field: distribution_channels_md.distribution_channel_name_vtext
 
-  - name: Division
+  - name: division
     title: Division
     type: field_filter
     default_value: ''
@@ -76,7 +76,7 @@
     listens_to_filters: []
     field: divisions_md.division_name_vtext
 
-  - name: Sold to
+  - name: sold_to
     title: Sold to
     type: field_filter
     default_value: ''
@@ -89,7 +89,7 @@
     listens_to_filters: []
     field: customers_md.customer_name
 
-  - name: Product
+  - name: product
     title: Product
     type: field_filter
     default_value: ''
@@ -102,7 +102,7 @@
     listens_to_filters: []
     field: materials_md.material_text_maktx
 
-  - name: Target Currency
+  - name: target_currency
     title: Target Currency
     type: field_filter
     default_value: "{{ _user_attributes['sap_default_target_currency'] }}"
@@ -128,13 +128,13 @@
       show_single_value_title: false
       show_comparison: false
       listen:
-        Order Date: navigation_otc_ext.filter1
-        Country: navigation_otc_ext.filter2
-        Sales Org: navigation_otc_ext.filter3
-        Distribution Channel: navigation_otc_ext.filter4
-        Division: navigation_otc_ext.filter5
-        Product: navigation_otc_ext.filter6
-        Sold to: navigation_otc_ext.filter7
+        date: navigation_otc_ext.filter1
+        country: navigation_otc_ext.filter2
+        sales_org: navigation_otc_ext.filter3
+        distribution_channel: navigation_otc_ext.filter4
+        division: navigation_otc_ext.filter5
+        product: navigation_otc_ext.filter6
+        sold_to: navigation_otc_ext.filter7
       row: 0
       col: 0
       width: 24

@@ -37,7 +37,7 @@ view: across_sales_and_currency_conversion_xvw {
     hidden: no
     type: sum
     view_label: "Sales Orders"
-    label: "@{derive_currency_label}Total Sales ({{currency}})"
+    label: "@{label_currency}Total Sales ({{currency}})"
     sql: ${item_net_value_target_netwr} ;;
     filters: [sales_orders_v2.document_category_vbtyp: "C"]
     value_format_name: "format_large_numbers_d1"
@@ -53,9 +53,9 @@ view: across_sales_and_currency_conversion_xvw {
     hidden: no
     type: number
     view_label: "Sales Orders"
-    label: "@{derive_currency_label}Average Sales per Order ({{currency}})"
+    label: "@{label_currency}Average Sales per Order ({{currency}})"
     sql: safe_divide(${total_net_value_target},${sales_orders_v2.count_orders});;
-    sql_distinct_key: ${sales_orders_v2.key};;
+    # sql_distinct_key: ${sales_orders_v2.key};;
     value_format_name: "format_large_numbers_d1"
     link: {
       label: "Show Orders"
@@ -68,16 +68,16 @@ view: across_sales_and_currency_conversion_xvw {
       label: "Open Order Details Dashboard"
       icon_url: "/favicon.ico"
       url: "
-      @{link_generate_variable_defaults}
+      @{link_build_variable_defaults}
       {% assign link = link_generator._link %}
-      {% assign filters_mapping = '@{link_otc_shared_filters}' | append: '||across_sales_and_billing_summary_xvw.order_status|Order Status||deliveries.is_blocked|Is Blocked' %}
+      {% assign filters_mapping = '@{link_map_otc_sales_orders_to_order_details}' | append: '||across_sales_and_billing_summary_xvw.order_status|Order Status||deliveries.is_blocked|Is Blocked' %}
 
       {% assign model = _model._name %}
       {% assign target_dashboard = _model._name | append: '::otc_order_details' %}
 
       {% assign default_filters_override = false %}
 
-      @{link_generate_dashboard_url}
+      @{link_build_dashboard_url}
       "
     }
 
@@ -97,7 +97,7 @@ view: across_sales_and_currency_conversion_xvw {
     label: "Percent of Total Sales (Target)"
     type: percent_of_total
     sql: ${total_net_value_target} ;;
-    sql_distinct_key: ${sales_orders_v2.key};;
+    # sql_distinct_key: ${sales_orders_v2.key};;
   }
 
   set: set_details_sales_performance {

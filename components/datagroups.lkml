@@ -25,7 +25,7 @@ datagroup: balance_sheet_node_count {
           Level,
           Node
         FROM
-          `@{GCP_PROJECT}.@{REPORTING_DATASET}.BalanceSheet`
+          `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.BalanceSheet`
         GROUP BY
           1, 2, 3, 4, 5) t ;;
 
@@ -43,7 +43,7 @@ datagroup: profit_and_loss_node_count {
           GLLevel,
           GLNode
         FROM
-          `@{GCP_PROJECT}.@{REPORTING_DATASET}.ProfitAndLoss`
+          `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.ProfitAndLoss`
         GROUP BY
           1, 2, 3, 4, 5) t ;;
 

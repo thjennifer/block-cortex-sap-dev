@@ -49,14 +49,14 @@
     hidden_fields: [materials_md.material_number_matnr]
 
     listen:
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-      Target Currency: currency_conversion_sdt.select_target_currency
-      Sold to: customers_md.customer_name
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
+      target_currency: currency_conversion_sdt.select_target_currency
     # note_state: expanded
     note_display: hover
     note_text: |-
@@ -100,14 +100,14 @@
     hidden_fields: [materials_md.material_number_matnr]
 
     listen:
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-      Target Currency: currency_conversion_sdt.select_target_currency
-      Sold to: customers_md.customer_name
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
+      target_currency: currency_conversion_sdt.select_target_currency
     # note_state: expanded
     note_display: hover
     note_text: |-
@@ -150,15 +150,14 @@
     hidden_fields: [sales_orders_v2.sales_organization_vkorg]
 
     listen:
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-      Target Currency: currency_conversion_sdt.select_target_currency
-      Sold to: customers_md.customer_name
-
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
+      target_currency: currency_conversion_sdt.select_target_currency
     row: 20
     col: 0
     width: 10
@@ -199,14 +198,14 @@
     hidden_fields: [sales_orders_v2.sold_to_party_kunnr]
 
     listen:
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-      Target Currency: currency_conversion_sdt.select_target_currency
-      Sold to: customers_md.customer_name
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
+      target_currency: currency_conversion_sdt.select_target_currency
     # note_state: expanded
     note_display: hover
     note_text: |-
@@ -355,15 +354,14 @@
     # hidden_fields: [sales_orders_v2.distribution_channel_vtweg]
 
     listen:
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-      Target Currency: currency_conversion_sdt.select_target_currency
-      Sold to: customers_md.customer_name
-
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
+      target_currency: currency_conversion_sdt.select_target_currency
     row: 12
     col: 0
     width: 10
@@ -426,15 +424,14 @@
     hidden_fields: [sales_orders_v2.division_hdr_spart]
 
     listen:
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-      Target Currency: currency_conversion_sdt.select_target_currency
-      Sold to: customers_md.customer_name
-
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
+      target_currency: currency_conversion_sdt.select_target_currency
     row: 12
     col: 11
     width: 10

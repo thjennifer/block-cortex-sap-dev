@@ -127,8 +127,7 @@ view: +accounting_documents_receivable {
 
   dimension: days_overdue {
     hidden: no
-    sql: @{default_target_date}
-        DATE_DIFF(DATE('{{td}}'),${net_due_date},DAY);;
+    sql: DATE_DIFF(DATE(@{default_target_date}),${net_due_date},DAY);;
   }
 
   dimension: overdue_day_ranges {
@@ -162,7 +161,7 @@ view: +accounting_documents_receivable {
   measure: total_receivable_target_currency {
     hidden: no
     type: sum
-    label: "@{derive_currency_label}Total Receivable ({{currency}})"
+    label: "@{label_currency}Total Receivable ({{currency}})"
     sql: ${accounts_receivable_target_currency} ;;
     value_format_name: "format_large_numbers_d1"
   }
@@ -170,7 +169,7 @@ view: +accounting_documents_receivable {
   measure: total_open_and_overdue_target_currency {
     hidden: no
     type: sum
-    label: "@{derive_currency_label}Total Open and Overdue ({{currency}})"
+    label: "@{label_currency}Total Open and Overdue ({{currency}})"
     sql: ${open_and_overdue_target_currency} ;;
     value_format_name: "format_large_numbers_d1"
     link: {
@@ -182,7 +181,7 @@ view: +accounting_documents_receivable {
   measure: total_doubtful_receivables_target_currency {
     hidden: no
     type: sum
-    label: "@{derive_currency_label}Total Doubtful Receivable ({{currency}})"
+    label: "@{label_currency}Total Doubtful Receivable ({{currency}})"
     sql: ${doubtful_receivables_target_currency} ;;
     value_format_name: "format_large_numbers_d1"
     link: {
@@ -194,7 +193,7 @@ view: +accounting_documents_receivable {
   measure: total_sales_target_currency {
     hidden: no
     type: sum
-    label: "@{derive_currency_label}Total Sales ({{currency}})"
+    label: "@{label_currency}Total Sales ({{currency}})"
     sql: ${sales_target_currency} ;;
     value_format_name: "format_large_numbers_d1"
   }
@@ -213,16 +212,15 @@ view: +accounting_documents_receivable {
     hidden: yes
     label: "Sales DSO"
     sql:
-     @{default_target_date}
      --case when PostingDateInTheDocument_BUDAT <= Current Date AND
      --          PostingDateInTheDocument_BUDAT >= (Current_Date - parameter_num_monthly_periods_for_dso MONTHS)
      --       THEN sales_target_currency
      -- for test data using CURRENT_DATE will always return 0
       CASE
       WHEN
-          ${posting_date_in_the_document_budat_date} <= DATE('{{td}}') AND
+          ${posting_date_in_the_document_budat_date} <= DATE(@{default_target_date}) AND
           ${posting_date_in_the_document_budat_date} >=
-          DATE_SUB(DATE('{{td}}'),INTERVAL {% parameter parameter_num_monthly_periods_for_dso %} MONTH )
+          DATE_SUB(DATE(@{default_target_date}),INTERVAL {% parameter parameter_num_monthly_periods_for_dso %} MONTH )
         THEN ${sales}
       END;;
     }
@@ -230,18 +228,17 @@ view: +accounting_documents_receivable {
   measure: sales_target_currency_dso {
     type: sum
     hidden: no
-    label: "@{derive_currency_label}Sales DSO ({{currency}})"
+    label: "@{label_currency}Sales DSO ({{currency}})"
     sql:
-     @{default_target_date}
      --case when PostingDateInTheDocument_BUDAT <= Current Date AND
      --          PostingDateInTheDocument_BUDAT >= (Current_Date - parameter_num_monthly_periods_for_dso MONTHS)
      --       THEN sales_target_currency
      -- for test data using CURRENT_DATE will always return 0
       CASE
       WHEN
-          ${posting_date_in_the_document_budat_date} <= DATE('{{td}}') AND
+          ${posting_date_in_the_document_budat_date} <= DATE(@{default_target_date}) AND
           ${posting_date_in_the_document_budat_date} >=
-          DATE_SUB(DATE('{{td}}'),INTERVAL {% parameter parameter_num_monthly_periods_for_dso %} MONTH )
+          DATE_SUB(DATE(@{default_target_date}),INTERVAL {% parameter parameter_num_monthly_periods_for_dso %} MONTH )
         THEN ${sales_target_currency}
       END;;
     value_format_name: "format_large_numbers_d1"
@@ -252,15 +249,14 @@ view: +accounting_documents_receivable {
     hidden: yes
     label: "Accounts Receivable DSO"
     sql:
-    @{default_target_date}
     --case when PostingDateInTheDocument_BUDAT <= Current Date AND
      --          PostingDateInTheDocument_BUDAT >= (Current_Date - parameter_num_monthly_periods_for_dso MONTHS)
      --       THEN accounts_receivable_target_currency
 
     CASE WHEN
-        ${posting_date_in_the_document_budat_date} <= DATE('{{td}}') AND
+        ${posting_date_in_the_document_budat_date} <= DATE(@{default_target_date}) AND
         ${posting_date_in_the_document_budat_date} >=
-          DATE_SUB(DATE('{{td}}'), INTERVAL {% parameter parameter_num_monthly_periods_for_dso %} MONTH )
+          DATE_SUB(DATE(@{default_target_date}), INTERVAL {% parameter parameter_num_monthly_periods_for_dso %} MONTH )
       THEN ${accounts_receivable}
     END;;
     value_format_name: "format_large_numbers_d1"
@@ -269,17 +265,16 @@ view: +accounting_documents_receivable {
   measure: accounts_receivable_target_currency_dso {
     type: sum
     hidden: no
-    label: "@{derive_currency_label}Accounts Receivable DSO ({{currency}})"
+    label: "@{label_currency}Accounts Receivable DSO ({{currency}})"
     sql:
-    @{default_target_date}
     --case when PostingDateInTheDocument_BUDAT <= Current Date AND
      --          PostingDateInTheDocument_BUDAT >= (Current_Date - parameter_num_monthly_periods_for_dso MONTHS)
      --       THEN accounts_receivable_target_currency
 
       CASE WHEN
-      ${posting_date_in_the_document_budat_date} <= DATE('{{td}}') AND
+      ${posting_date_in_the_document_budat_date} <= DATE(@{default_target_date}) AND
       ${posting_date_in_the_document_budat_date} >=
-      DATE_SUB(DATE('{{td}}'), INTERVAL {% parameter parameter_num_monthly_periods_for_dso %} MONTH )
+      DATE_SUB(DATE(@{default_target_date}), INTERVAL {% parameter parameter_num_monthly_periods_for_dso %} MONTH )
       THEN ${accounts_receivable_target_currency}
       END;;
   }

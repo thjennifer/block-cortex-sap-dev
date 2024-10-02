@@ -7,7 +7,7 @@
 # - prior_fiscal_year_period
 #
 # SOURCE
-# Table @{GCP_PROJECT}.@{REPORTING_DATASET}.BalanceSheet
+# Table @{GCP_PROJECT_ID}.@{REPORTING_DATASET}.BalanceSheet
 #
 # REFERENCED BY
 # View balance_sheet_fiscal_periods_selected to identify comparison period based on user selections
@@ -36,8 +36,8 @@ view: balance_sheet_fiscal_periods_sdt {
               CompanyCode AS company_code,
               FiscalYear AS fiscal_year,
               FiscalPeriod AS fiscal_period
-            FROM `@{GCP_PROJECT}.@{REPORTING_DATASET}.BalanceSheet`
-            WHERE Client = '@{CLIENT}'
+            FROM `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.BalanceSheet`
+            WHERE Client = '@{CLIENT_ID}'
             GROUP BY
               hierarchy_name,
               company_code,

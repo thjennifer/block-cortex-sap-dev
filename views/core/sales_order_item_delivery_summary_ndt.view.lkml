@@ -402,16 +402,16 @@ view: sales_order_item_delivery_summary_ndt {
       label: "Show Order Details"
       icon_url: "/favicon.ico"
       url: "
-        @{link_generate_variable_defaults}
+        @{link_build_variable_defaults}
         {% assign link = link_generator._link %}
-        {% assign filters_mapping = '@{link_otc_shared_filters}' %}
+        {% assign filters_mapping = '@{link_map_otc_sales_orders_to_order_details}' %}
 
         {% assign model = _model._name %}
         {% assign target_dashboard = _model._name | append: '::otc_order_details' %}
 
         {% assign default_filters_override = false %}
 
-        @{link_generate_dashboard_url}
+        @{link_build_dashboard_url}
       "
       }
   }

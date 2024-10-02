@@ -37,18 +37,18 @@ view: +sales_orders_v2 {
 
   dimension: client_mandt {
     hidden: yes
-    label: "Client@{SAP_LABEL}"}
+    label: "Client@{label_sap_code}"}
 
   dimension: sales_document_vbeln {
     hidden: no
-    label: "Sales Document@{SAP_LABEL}"
+    label: "Sales Document@{label_sap_code}"
     description: "Sales Order Number"
     }
 
   dimension: item_posnr {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "Item@{SAP_LABEL}"
+    label: "Item@{label_sap_code}"
     description: "Item Number"
   }
 
@@ -106,53 +106,53 @@ view: +sales_orders_v2 {
 
   dimension: sold_to_party_kunnr {
     hidden: no
-    label: "Sold to Party@{SAP_LABEL}"
+    label: "Sold to Party@{label_sap_code}"
   }
 
   dimension: sales_document_type_auart {
     hidden: no
-    label: "Sales Document Type@{SAP_LABEL}"
+    label: "Sales Document Type@{label_sap_code}"
   }
 
   dimension: document_category_vbtyp {
     hidden: no
-    label: "Sales Document Category@{SAP_LABEL}"
+    label: "Sales Document Category@{label_sap_code}"
     description: "Document Category (C, M, J, etc)"
   }
 
   dimension: sales_organization_vkorg {
     hidden: no
-    label: "Sales Organization@{SAP_LABEL}"
+    label: "Sales Organization@{label_sap_code}"
   }
 
   dimension: distribution_channel_vtweg {
     hidden: no
-    label: "Distribution Channel@{SAP_LABEL}"
+    label: "Distribution Channel@{label_sap_code}"
   }
 
   dimension: division_hdr_spart {
     hidden: no
-    label: "Division (header)@{SAP_LABEL}"
+    label: "Division (header)@{label_sap_code}"
   }
 
   dimension: sales_group_vkgrp {
     hidden: no
-    label: "Sales Group@{SAP_LABEL}"
+    label: "Sales Group@{label_sap_code}"
     }
 
   dimension: sales_office_vkbur {
     hidden: no
-    label: "Sales Office@{SAP_LABEL}"
+    label: "Sales Office@{label_sap_code}"
   }
 
   dimension: cost_center_hdr_kostl {
     hidden: no
-    label: "Cost Center (header)@{SAP_LABEL}"
+    label: "Cost Center (header)@{label_sap_code}"
   }
 
   dimension: currency_hdr_waerk {
     hidden: no
-    label: "Currency (header)@{SAP_LABEL}"
+    label: "Currency (header)@{label_sap_code}"
     description: "SD Document Currency at header level"
   }
 
@@ -164,7 +164,7 @@ view: +sales_orders_v2 {
   ## don't think this is needed---Total for Sales Order but does not apply Currency Decimal fix like item-level NETWR
   dimension: net_value_of_the_sales_order_in_document_currency_netwr {
     hidden: yes
-    label: "Net Value of Sales Order@{SAP_LABEL}"
+    label: "Net Value of Sales Order@{label_sap_code}"
     description: "Net Value of Sales Order in Document Currency"
   }
 
@@ -174,7 +174,7 @@ view: +sales_orders_v2 {
   dimension: net_price_netpr {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "Price of Item@{SAP_LABEL}"
+    label: "Price of Item@{label_sap_code}"
     description: "Net Price of Item (Document Currency)"
     value_format_name: decimal_2
   }
@@ -182,13 +182,13 @@ view: +sales_orders_v2 {
   dimension: cumulative_order_quantity_kwmeng {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "Order Quantity of Item@{SAP_LABEL}"
+    label: "Order Quantity of Item@{label_sap_code}"
   }
 
   dimension: cumulative_confirmed_quantity_kbmeng {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "Confirmed Quantity of Item@{SAP_LABEL}"
+    label: "Confirmed Quantity of Item@{label_sap_code}"
     description: "Confirmed Quantity of Item in Sale Unit of Measure"
   }
 
@@ -210,19 +210,19 @@ view: +sales_orders_v2 {
     hidden: no
     view_label: "Sales Orders Items"
     label: "Base UoM"
-    description: "Base Unit of Measure@{SAP_LABEL}"
+    description: "Base Unit of Measure@{label_sap_code}"
   }
 
   dimension: sales_unit_vrkme {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "Sales Unit@{SAP_LABEL}"
+    label: "Sales Unit@{label_sap_code}"
     }
 
   dimension: rejection_reason_abgru {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "Rejection Reason@{SAP_LABEL}"
+    label: "Rejection Reason@{label_sap_code}"
   }
 
   dimension: is_item_cancelled {
@@ -275,16 +275,16 @@ view: +sales_orders_v2 {
       label: "Open Order Details Dashboard"
       icon_url: "/favicon.ico"
       url: "
-      @{link_generate_variable_defaults}
+      @{link_build_variable_defaults}
       {% assign link = link_generator._link %}
-      {% assign filters_mapping = '@{link_otc_shared_filters}' | strip_new_lines | append: '||across_sales_and_billing_summary_xvw.order_status|Order Status||deliveries.is_blocked|Is Blocked' %}
+      {% assign filters_mapping = '@{link_map_otc_sales_orders_to_order_details}' | strip_new_lines | append: '||across_sales_and_billing_summary_xvw.order_status|Order Status||deliveries.is_blocked|Is Blocked' %}
 
       {% assign model = _model._name %}
       {% assign target_dashboard = _model._name | append: '::otc_order_details' %}
 
       {% assign default_filters_override = false %}
 
-      @{link_generate_dashboard_url}
+      @{link_build_dashboard_url}
       "
     }
   }
@@ -292,7 +292,7 @@ view: +sales_orders_v2 {
 
   # {% assign default_filters = ''%}
 
-# constant: link_otc_shared_filters {
+# constant: link_map_otc_sales_orders_to_order_details {
 #   value: "Order+Date|sales_orders_v2.creation_date_erdat_date ||
 #       Division|divisions_md.division_name_vtext ||
 #       Country|countries_md.country_name_landx ||

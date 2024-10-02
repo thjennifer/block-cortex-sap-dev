@@ -10,7 +10,7 @@
 # If no match is found, English is used.
 #
 # SOURCE
-# Table `@{GCP_PROJECT}.@{REPORTING_DATASET}.Languages_T002`
+# Table `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.Languages_T002`
 #
 # REFERENCED BY
 # Explore balance_sheet
@@ -69,12 +69,12 @@ view: language_map_sdt {
          {% assign explore = _explore._name | replace: 'balance_sheet','BalanceSheet' | replace: 'profit_and_loss','ProfitAndLoss' %}
         SELECT LanguageKey_SPRAS AS Language_SPRAS,
                1 as rnk
-        FROM `@{GCP_PROJECT}.@{REPORTING_DATASET}.Languages_T002`
+        FROM `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.Languages_T002`
         WHERE TwoCharacterSapLanguageCode_LAISO = '{{locale[0]}}'
         {% if explore == 'ProfitAndLoss' or explore == 'BalanceSheet' %}
         AND LanguageKey_SPRAS IN (
             SELECT DISTINCT languageKey_SPRAS
-            FROM `@{GCP_PROJECT}.@{REPORTING_DATASET}.{{explore}}`)
+            FROM `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.{{explore}}`)
         {% endif %}
         UNION ALL
         SELECT 'E' as LanguageKey_SPRAS, 2 as rnk

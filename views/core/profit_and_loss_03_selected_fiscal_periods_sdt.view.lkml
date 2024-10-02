@@ -266,7 +266,7 @@ view: profit_and_loss_03_selected_fiscal_periods_sdt {
     sql: ${profit_and_loss.amount_in_target_currency} ;;
     filters: [fiscal_reporting_group: "Reporting"]
     value_format_name: decimal_0
-    html: @{negative_format} ;;
+    html: @{html_format_negative} ;;
   }
 
   measure: comparison_amount {
@@ -279,7 +279,7 @@ view: profit_and_loss_03_selected_fiscal_periods_sdt {
     sql: {% if profit_and_loss.parameter_compare_to._parameter_value != 'none' %}${profit_and_loss.amount_in_target_currency}{%else%}NULL{%endif%} ;;
     filters: [fiscal_reporting_group: "Comparison"]
     value_format_name: decimal_0
-    html: {% if profit_and_loss.parameter_compare_to._parameter_value != 'none' %}@{negative_format}{%else%} {%endif%} ;;
+    html: {% if profit_and_loss.parameter_compare_to._parameter_value != 'none' %}@{html_format_negative}{%else%} {%endif%} ;;
   }
 
   measure: difference_value {
@@ -289,7 +289,7 @@ view: profit_and_loss_03_selected_fiscal_periods_sdt {
     description: "Reporting Amount - Comparison Amount"
     sql: {% if profit_and_loss.parameter_compare_to._parameter_value != 'none' %}${reporting_amount} - ${comparison_amount}{%else%}NULL{%endif%} ;;
     value_format_name: decimal_0
-    html: {% if profit_and_loss.parameter_compare_to._parameter_value != 'none' %}@{negative_format}{%else%} {%endif%} ;;
+    html: {% if profit_and_loss.parameter_compare_to._parameter_value != 'none' %}@{html_format_negative}{%else%} {%endif%} ;;
   }
 
   measure: difference_percent {
@@ -299,7 +299,7 @@ view: profit_and_loss_03_selected_fiscal_periods_sdt {
     description: "Percent difference between Reporting Amount and Comparison Amount."
     sql: SAFE_DIVIDE( (${reporting_amount} - ${comparison_amount}),ABS(${comparison_amount})) ;;
     value_format_name: percent_1
-    html: {% if profit_and_loss.parameter_compare_to._parameter_value != 'none' %}@{negative_format}{%else%} {%endif%} ;;
+    html: {% if profit_and_loss.parameter_compare_to._parameter_value != 'none' %}@{html_format_negative}{%else%} {%endif%} ;;
   }
 
   measure: any_timeframe_is_partial {

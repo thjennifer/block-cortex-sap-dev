@@ -34,13 +34,13 @@
     fields: [sales_orders_v2.count_orders]
     listen:
       # " Order Status": sales_orders.sales_order_status
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-      Sold to: customers_md.customer_name
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
     note_text: "The number of sales orders (document category type = C)."
@@ -62,13 +62,13 @@
     #     bold: false, italic: false, strikethrough: false, fields: !!null ''}]
     listen:
       # " Order Status": sales_orders_v2.sales_order_status
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-      Sold to: customers_md.customer_name
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
     note_text: "The number of sales orders blocked for delivery reasons (such as customers exceeding credit limit or insufficient stock)."
@@ -143,13 +143,13 @@
     title_hidden: true
     listen:
       # " Order Status": sales_orders_v2.sales_order_status
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-      Sold to: customers_md.customer_name
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
     row: 2
     col: 10
     width: 14
@@ -243,15 +243,15 @@
       <font size="-2">Limited to 50 Order Items. To see more, select "Explore from Here" option and adjust row limit setting.
       </font>
     listen:
-      Order Status: across_sales_and_billing_summary_xvw.order_status
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
-      Target Currency: currency_conversion_sdt.select_target_currency
-      Sold to: customers_md.customer_name
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
+      target_currency: currency_conversion_sdt.select_target_currency
+      order_status: across_sales_and_billing_summary_xvw.order_status
     row: 7
     col: 0
     width: 24
@@ -260,7 +260,7 @@
 
   filters:
 
-  - name: "Order Status"
+  - name: order_status
     title: "Order Status"
     type: field_filter
     default_value: 'Cancelled'

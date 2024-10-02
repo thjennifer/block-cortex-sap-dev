@@ -165,8 +165,7 @@ view: accounting_documents_receivable_pdt {
 
   dimension: is_account_receivables {
     type: yesno
-    sql: @{default_target_date}
-        ${posting_date_in_the_document_budat} < DATE('{{td}}') AND
+    sql:${posting_date_in_the_document_budat} < DATE(@{default_target_date}) AND
         ${clearing_date_augdt} IS NULL
     ;;
 
@@ -175,9 +174,9 @@ view: accounting_documents_receivable_pdt {
 
   dimension: is_open_and_overdue {
     type: yesno
-    sql: @{default_target_date}
-        ${posting_date_in_the_document_budat} < DATE('{{td}}') AND
-        ${net_due_date} < DATE('{{td}}') AND
+    sql:
+        ${posting_date_in_the_document_budat} < DATE(@{default_target_date}) AND
+        ${net_due_date} < DATE(@{default_target_date}) AND
         ${clearing_date_augdt} IS NULL
     ;;
     # IF(BKPF.BUDAT < CURRENT_DATE() AND `{{ project_id_tgt }}.{{ dataset_reporting_tgt }}.NetDueDateCalc`(BSEG.KOART, BSEG.ZFBDT, BKPF.BLDAT, BSEG.SHKZG, BSEG.REBZG, BSEG.ZBD3T, BSEG.ZBD2T, BSEG.ZBD1T) < CURRENT_DATE()
@@ -186,9 +185,8 @@ view: accounting_documents_receivable_pdt {
 
   dimension: is_doubtful {
     type: yesno
-    sql: @{default_target_date}
-          ${posting_date_in_the_document_budat} < DATE('{{td}}') AND
-          DATE_DIFF(DATE('{{td}}'),${net_due_date},DAY) > 90 AND
+    sql:  ${posting_date_in_the_document_budat} < DATE(@{default_target_date}) AND
+          DATE_DIFF(DATE(@{default_target_date}),${net_due_date},DAY) > 90 AND
           ${clearing_date_augdt} IS NULL
       ;;
       # IF(BKPF.BUDAT < CURRENT_DATE() AND (DATE_DIFF(`{{ project_id_tgt }}.{{ dataset_reporting_tgt }}.NetDueDateCalc`(BSEG.KOART, BSEG.ZFBDT, BKPF.BLDAT, BSEG.SHKZG, BSEG.REBZG, BSEG.ZBD3T, BSEG.ZBD2T, BSEG.ZBD1T), CURRENT_DATE(), DAY) > 90 )
@@ -197,7 +195,7 @@ view: accounting_documents_receivable_pdt {
 
   measure: total_accounts_receivable_amount_target_currency {
     type: sum
-    label: "@{derive_currency_label}Total Accounts Receivable ({{currency}})"
+    label: "@{label_currency}Total Accounts Receivable ({{currency}})"
     sql: ${amount_in_target_currency_dmbtr} ;;
     filters: [is_account_receivables: "Yes"]
     value_format_name: "format_large_numbers_d1"
@@ -211,7 +209,7 @@ view: accounting_documents_receivable_pdt {
 
   measure: total_open_and_overdue_amount_target_currency {
     type: sum
-    label: "@{derive_currency_label}Total Overdue Receivable({{currency}})"
+    label: "@{label_currency}Total Overdue Receivable({{currency}})"
     sql: ${amount_in_target_currency_dmbtr} ;;
     filters: [is_open_and_overdue: "Yes"]
     value_format_name: "format_large_numbers_d1"
@@ -219,7 +217,7 @@ view: accounting_documents_receivable_pdt {
 
   measure: total_doubtful_amount_target_currency {
     type: sum
-    label: "@{derive_currency_label}Total Doubtful Receivable({{currency}})"
+    label: "@{label_currency}Total Doubtful Receivable({{currency}})"
     sql: ${amount_in_target_currency_dmbtr} ;;
     filters: [is_doubtful: "Yes"]
     value_format_name: "format_large_numbers_d1"

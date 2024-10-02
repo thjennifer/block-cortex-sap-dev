@@ -10,6 +10,32 @@
   # if using navigation_focus_page parameter for active dashboard update navigation tile to use the correct filter
   extends: otc_template
 
+  filters:
+  - name: order_status
+    title: Order Status
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: button_group
+      display: popover
+    explore: sales_orders_v2
+    field: across_sales_and_billing_summary_xvw.order_status
+
+  - name: is_blocked
+    title: Is Blocked
+    type: field_filter
+    default_value: 'No'
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: button_toggles
+      display: inline
+    explore: sales_orders_v2
+    listens_to_filters: []
+    field: deliveries.is_blocked
+
   elements:
 
   - title: navigation
@@ -240,45 +266,17 @@
       <font size="-2">Limited to 50 Order Items. To see more, select "Explore from Here" option and adjust row limit setting.
       </font>
     listen:
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Sold to: customers_md.customer_name
-      Product: materials_md.material_text_maktx
-      Target Currency: currency_conversion_sdt.select_target_currency
-      Order Status: across_sales_and_billing_summary_xvw.order_status
-      Is Blocked: deliveries.is_blocked
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
+      target_currency: currency_conversion_sdt.select_target_currency
+      order_status: across_sales_and_billing_summary_xvw.order_status
+      is_blocked: deliveries.is_blocked
     row: 7
     col: 0
     width: 24
     height: 9
-
-
-  filters:
-
-  - name: Order Status
-    title: Order Status
-    type: field_filter
-    default_value: ''
-    allow_multiple_values: true
-    required: false
-    ui_config:
-      type: button_group
-      display: popover
-    explore: sales_orders_v2
-    field: across_sales_and_billing_summary_xvw.order_status
-
-  - name: Is Blocked
-    title: Is Blocked
-    type: field_filter
-    default_value: 'No'
-    allow_multiple_values: true
-    required: false
-    ui_config:
-      type: button_toggles
-      display: inline
-    explore: sales_orders_v2
-    listens_to_filters: []
-    field: deliveries.is_blocked

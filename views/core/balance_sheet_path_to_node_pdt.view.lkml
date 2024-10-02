@@ -6,7 +6,7 @@
 #     Assets-->Current Assets-->Cash & Equivalents
 #
 # SOURCE
-# Table `@{GCP_PROJECT}.@{REPORTING_DATASET}.BalanceSheet`
+# Table `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.BalanceSheet`
 #
 # REFERENCED BY
 # View balance_sheet_hierarchy_selection_sdt
@@ -36,7 +36,7 @@ view: balance_sheet_path_to_node_pdt {
           COALESCE(REGEXP_REPLACE(NodeText,'Non[- ]Current','Noncurrent'),Node) AS NodeText,
           IsLeafNode
         FROM
-          `@{GCP_PROJECT}.@{REPORTING_DATASET}.BalanceSheet`
+          `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.BalanceSheet`
         GROUP BY
           Client,
           ChartOfAccounts,

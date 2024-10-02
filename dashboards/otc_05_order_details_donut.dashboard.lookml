@@ -34,12 +34,13 @@
     fields: [sales_orders_v2.count_orders]
     listen:
       # " Order Status": sales_orders.sales_order_status
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
     row: 2
     col: 0
     width: 5
@@ -58,12 +59,13 @@
     #     bold: false, italic: false, strikethrough: false, fields: !!null ''}]
     listen:
       # " Order Status": sales_orders_v2.sales_order_status
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
     row: 4
     col: 0
     width: 5
@@ -200,12 +202,13 @@
     title_hidden: true
     listen:
       # " Order Status": sales_orders_v2.sales_order_status
-      Order Date: sales_orders_v2.creation_date_erdat_date
-      Division: divisions_md.division_name_vtext
-      Country: countries_md.country_name_landx
-      Sales Org: sales_organizations_md.sales_org_name_vtext
-      Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-      Product: materials_md.material_text_maktx
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
     row: 2
     col: 5
     width: 10

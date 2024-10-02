@@ -117,7 +117,7 @@ view: sales_order_pricing_sdt {
 
   dimension: intercompany_price_target_curr {
     type: number
-    label: "@{derive_currency_label}Intercompany Price ({{currency}})"
+    label: "@{label_currency}Intercompany Price ({{currency}})"
     # label: "{% assign currency = currency_conversion_sdt.select_target_currency._parameter_value | remove: \"'\" %}Intercompany Price ({{currency}})"
     description: "Price at which goods are transferred between different company codes (Target Currency)"
     sql: ${inter_company_price} * ${currency_conversion_sdt.exchange_rate_ukurs} ;;
@@ -134,7 +134,7 @@ view: sales_order_pricing_sdt {
   measure: avg_list_price_target {
     hidden: no
     type: average
-    label: "@{derive_currency_label}Average List Price ({{currency}})"
+    label: "@{label_currency}Average List Price ({{currency}})"
     # label: "{% assign currency = currency_conversion_sdt.select_target_currency._parameter_value | remove: \"'\" %}Average List Price ({{currency}})"
     sql: ${list_price_target} ;;
     value_format_name: format_large_numbers_d1
@@ -143,7 +143,7 @@ view: sales_order_pricing_sdt {
   measure: avg_adjusted_price_target_curr {
     hidden: no
     type: average
-    label: "@{derive_currency_label}Average Adjusted Price ({{currency}})"
+    label: "@{label_currency}Average Adjusted Price ({{currency}})"
     sql: ${adjusted_price_target_curr} ;;
     value_format_name: format_large_numbers_d1
   }
@@ -167,7 +167,7 @@ view: sales_order_pricing_sdt {
   measure: avg_intercompany_price_target_curr {
     hidden: no
     type: average
-    label: "@{derive_currency_label}Average Intercompany Price ({{currency}})"
+    label: "@{label_currency}Average Intercompany Price ({{currency}})"
     sql: ${intercompany_price_target_curr} ;;
     value_format_name: format_large_numbers_d1
   }
