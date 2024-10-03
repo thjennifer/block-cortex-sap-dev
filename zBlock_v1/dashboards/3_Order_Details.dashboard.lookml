@@ -19,7 +19,7 @@
     
     explore: sales_orders
     type: single_value
-    fields: [sales_orders.count_blocked_orders]
+    fields: [sales_orders.blocked_sales_order_count]
     limit: 500
     dynamic_fields: [{measure: count_of_blocked_orders, based_on: sales_orders.blocked_orders,
         expression: '', label: Count of Blocked Orders, type: count_distinct, _kind_hint: measure,

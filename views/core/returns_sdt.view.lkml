@@ -133,7 +133,7 @@ view: returns_sdt {
     sql: ${reference_sales_document_vbeln} is not null;;
   }
 
-  # measure: count_returns {
+  # measure: has_return_sales_order_count {
   #   type: count_distinct
   #   sql: ${reference_sales_document_vbeln} ;;
   # }

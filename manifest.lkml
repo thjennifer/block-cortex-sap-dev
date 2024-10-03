@@ -283,10 +283,10 @@ constant: label_sap_code {
 #--> label_currency
 # captures and formats selected Target Currency for use in 'labels' property
 # example use:
-#   measure: total_net_value_target {
+#   measure: total_sales_amount_target_currency {
 #     type: sum
 #     label: "@{label_currency}Total Sales ({{currency}})"
-#     sql: ${item_net_value_target_netwr} ;;
+#     sql: ${item_net_value_target_currency_netwr} ;;
 #     }
 #
 constant: label_currency {
@@ -343,10 +343,10 @@ constant: label_currency {
 #--> label_currency
 # captures and formats selected Target Currency for use in 'labels' property
 # example use:
-#   measure: total_net_value_target {
+#   measure: total_sales_amount_target_currency {
 #     type: sum
 #     label: "@{label_currency}Total Sales ({{currency}})"
-#     sql: ${item_net_value_target_netwr} ;;
+#     sql: ${item_net_value_target_currency_netwr} ;;
 #     }
 #
 constant: label_currency {

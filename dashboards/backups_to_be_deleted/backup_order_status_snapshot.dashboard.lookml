@@ -188,7 +188,7 @@
     name: One Touch Order
     explore: sales_orders_v2
     type: single_value
-    fields: [one_touch_order.percent_one_touch_orders]
+    fields: [one_touch_order.one_touch_sales_order_percent]
     limit: 500
     custom_color_enabled: true
     show_single_value_title: true

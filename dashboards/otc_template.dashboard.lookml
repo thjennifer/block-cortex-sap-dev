@@ -7,6 +7,14 @@
 - dashboard: otc_template
   extension: required
 
+  title: OTC Template with Core Filters and Elements
+
+  layout: newspaper
+  preferred_viewer: dashboards-next
+  crossfilter_enabled: false
+  filters_location_top: false
+  description: "Template which defines core filters and elements used in all OTC dashboards. Extendable and customizable."
+
   filters:
   - name: date
     title: Order Date

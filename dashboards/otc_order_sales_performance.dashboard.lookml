@@ -1,103 +1,279 @@
+#########################################################{
+# Order Sales Performance dashboard provides insights into
+# top sales performers including items, categories, customers,
+# business units, and order sources.
+#
+# Extends otc_template_orders and modifies to:
+#   add filters item_language and product_level
+#   update dashboard_navigation to:
+#       listen to item_language
+#       set parameter_navigation_focus_page: '2'
+#
+# Visualization Elements:
+#   top_products_by_sales - bar chart
+#   top_products_by_avg_sales - bar chart
+#   top_customers_by_sales - bar chart
+#   top_customers_by_avg_sales - bar chart
+#   sales_by_order_source - donut chart (looker_pie)
+#   top_business_units_by_sales - bar chart
+#
+# To handle order_category_code of MIXED, amount KPIs use chart filters for both
+#   order_category_code <> 'RETURN'
+#   line_category_code = 'ORDER'
+#
+#########################################################}
+
+
 - dashboard: otc_order_sales_performance
   title: Sales Performance
-  layout: newspaper
-  preferred_viewer: dashboards-next
-  crossfilter_enabled: true
-  description: ''
+  description: "Gain insights into top sales performers including items, categories, customers, business units, and order sources."
 
-  # pull navigation bar and filters from template
-  # if using navigation_focus_page parameter for active dashboard update navigation tile to use the correct filter
   extends: otc_template
 
-  elements:
+  # filters:
+  # - name: item_language
+  #   title: Language of Item Description
+  #   type: field_filter
+  #   default_value: "{{ _user_attributes['cortex_oracle_ebs_default_language'] }}"
+  #   allow_multiple_values: false
+  #   required: false
+  #   ui_config:
+  #     type: dropdown_menu
+  #     display: inline
+  #     options: []
+  #   explore: item_md
+  #   field: item_md__item_descriptions.language_code
 
+  # - name: product_level
+  #   title: Product Level to Display
+  #   type: field_filter
+  #   default_value: "Category"
+  #   allow_multiple_values: false
+  #   required: false
+  #   ui_config:
+  #     type: button_toggles
+  #     display: inline
+  #   explore: sales_orders_v2
+  #   field: sales_orders__lines.parameter_display_product_level
+
+
+
+  elements:
   - name: dashboard_navigation
     filters:
       otc_dashboard_navigation_ext.parameter_navigation_focus_page: '2'
-
-  - name: Top Products by Sales
+    # listen:
+    #   date: otc_dashboard_navigation_ext.filter1
+    #   business_unit: otc_dashboard_navigation_ext.filter2
+    #   customer_type: otc_dashboard_navigation_ext.filter3
+    #   customer_country: otc_dashboard_navigation_ext.filter4
+    #   customer_name: otc_dashboard_navigation_ext.filter5
+    #   target_currency: otc_dashboard_navigation_ext.filter6
+    #   order_source: otc_dashboard_navigation_ext.filter7
+    #   item_category: otc_dashboard_navigation_ext.filter8
+    #   item_language: otc_dashboard_navigation_ext.filter9
+#####################################################################################################
+  - name: top_products_by_sales
     title: Top Products by Sales
     explore: sales_orders_v2
     type: looker_bar
-    fields: [materials_md.material_number_matnr, materials_md.material_text_maktx, across_sales_and_currency_conversion_xvw.total_net_value_target]
-    sorts: [across_sales_and_currency_conversion_xvw.total_net_value_target desc]
+    fields: [materials_md.material_number_matnr,
+             materials_md.material_text_maktx,
+             sales_orders_v2.total_sales_amount_target_currency_formatted]
+    sorts: [sales_orders_v2.total_sales_amount_target_currency_formatted desc]
+    hidden_fields: [materials_md.material_number_matnr]
+    filters:
+      sales_orders_v2.document_category_vbtyp: 'C'
     limit: 10
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_y_axis_labels: false
-    show_y_axis_ticks: true
-    show_x_axis_label: false
-    show_x_axis_ticks: true
-    limit_displayed_rows: false
+    show_value_labels: true
+    series_colors:
+      sales_orders_v2.total_sales_amount_target_currency_formatted: "#74A09F"
+    y_axes: [{label: '', orientation: bottom,
+              series: [{axisId: sales_orders_v2.total_sales_amount_target_currency_formatted,
+                            id: sales_orders_v2.total_sales_amount_target_currency_formatted
+                      }], showLabels: true, showValues: false,
+        }]
+    advanced_vis_config: |-
+      {
+        tooltip: {
+          backgroundColor: '#FFFFFF',
+          shadow: true,
+          format: '<table><th style="font-size: 1.8em;text-align: left;color: #808080; ">{key}</th></table><table>{#each points}<tr><th style="text-align: left;color:{point.color};">{series.name}:&nbsp;&nbsp;&nbsp;</th><td style="text-align: right;color:{point.color};" >{point.y:,.0f}</td></tr>{/each}',
+          footerFormat: '</table>',
+          useHTML: true,
+          shared: true,
+        },
+      }
+    note_display: hover
+    note_text: |-
+      <div style="text-align: left;">
+      Top items or categories ranked in descending order by Total Sales.
+      </br></br>Use the dashboard parameter <span style="color:#AECBFA;">Product Level to Display</span> to show either items or categories.
+      </br></br>If Item is displayed, use the <span style="color:#AECBFA;">Language of Item Description</span> dashboard parameter to modify the description language.
+      </br></br>Limited to 10 items or categories.
+      To change:
+      </br>1. Click the three-dot menu at the top right of tile
+      and select 'Explore from here'.
+      </br></br>2. In the Data pane, change the row limit to desired value.
+      </div>
+    listen:
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
+    row: 2
+    col: 0
+    width: 12
+    height: 10
+#####################################################################################################
+  - name: top_products_by_avg_sales
+    title: Top Products by Average Sales
+    explore: sales_orders_v2
+    type: looker_bar
+    fields: [materials_md.material_number_matnr,
+             materials_md.material_text_maktx,
+             sales_orders_v2.avg_sales_per_order_target_currency_formatted]
+    sorts: [sales_orders_v2.avg_sales_per_order_target_currency_formatted desc]
+    hidden_fields: [materials_md.material_number_matnr]
+    filters:
+      sales_orders_v2.document_category_vbtyp: 'C'
+    limit: 10
+    show_value_labels: true
+    series_colors:
+      sales_orders_v2.avg_sales_per_order_target_currency_formatted: "#53575E"
+    y_axes: [{label: '', orientation: bottom,
+              series: [{axisId: sales_orders_v2.avg_sales_per_order_target_currency_formatted,
+                            id: sales_orders_v2.avg_sales_per_order_target_currency_formatted,
+                            name: Avg Sales per Order}], showLabels: true, showValues: false,
+      }]
+    advanced_vis_config: |-
+      {
+        tooltip: {
+          backgroundColor: '#FFFFFF',
+          shadow: true,
+          format: '<table><th style="font-size: 1.8em;text-align: left;color: #808080; ">{key}</th></table><table>{#each points}<tr><th style="text-align: left;color:{point.color};">{series.name}:&nbsp;&nbsp;&nbsp;</th><td style="text-align: right;color:{point.color};" >{point.y:,.0f}</td></tr>{/each}',
+            footerFormat: '</table>',
+            useHTML: true,
+            shared: true,
+          },
+        }
+    note_display: hover
+    note_text: |-
+      <div style="text-align: left;">
+      Top items or categories ranked in descending order by Average Sales per Order.
+      </br></br>Use the dashboard parameter <span style="color:#AECBFA;">Product Level to Display</span> to show either items or categories.
+
+      </br></br>If Item is displayed, use the <span style="color:#AECBFA;">Language of Item Description</span> dashboard parameter to modify the description language.
+
+      </br></br>Limited to 10 items or categories.
+      To change:
+      </br>1. Click the three-dot menu at the top right of tile
+      and select 'Explore from here'.
+      </br></br>2. In the Data pane, change the row limit to desired value.
+      </div>
+    listen:
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
+    row: 2
+    col: 12
+    width: 12
+    height: 10
+#####################################################################################################
+  - name: top_customers_by_sales
+    title: Top Customers by Sales
+    explore: sales_orders_v2
+    type: looker_bar
+    fields: [ sales_orders_v2.sold_to_party_kunnr,
+              customers_md.customer_name,
+              sales_orders_v2.total_sales_amount_target_currency_formatted,
+              sales_orders_v2.total_sales_amount_target_currency,
+              sales_orders_v2.cumulative_sales_amount_target_currency]
+    sorts: [sales_orders_v2.total_sales_amount_target_currency_formatted desc]
+    hidden_fields: [sales_orders_v2.sold_to_party_kunnr,
+                    sales_orders_v2.cumulative_sales_amount_target_currency,
+                    sales_orders_v2.total_sales_amount_target_currency]
+    filters:
+      sales_orders_v2.document_category_vbtyp: 'C'
+    limit: 10
+    total: true
+    dynamic_fields:
+    - category: table_calculation
+      expression: "(${sales_orders_v2.cumulative_sales_amount_target_currency}\
+        \ / ${sales_orders_v2.total_sales_amount_target_currency:total})*100"
+      label: Cumulative Percent of Total Sales
+      value_format_name: decimal_1
+      _kind_hint: measure
+      table_calculation: cumulative_percent_of_total_sales
+      _type_hint: number
     legend_position: center
     point_style: circle
     show_value_labels: true
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
+    y_axes: [{label: '', orientation: bottom,
+              series: [{axisId: sales_orders_v2.total_sales_amount_target_currency_formatted,
+                            id: sales_orders_v2.total_sales_amount_target_currency_formatted,
+                          name: Total Sales Amount}],
+                          showLabels: false, showValues: false,},
+            {label: '', orientation: bottom,
+              series: [{axisId: cumulative_percent_of_total_sales,
+                            id: cumulative_percent_of_total_sales,
+                            name: Cumulative Percent of Total Sales}],
+                            showLabels: false, showValues: false, }]
+    series_types:
+      cumulative_percent_of_total_sales: line
     series_colors:
-      {across_sales_and_currency_conversion_xvw.total_net_value_target: "#74A09F"}
-
-    y_axes: [{label: '', orientation: bottom, series: [{axisId: across_sales_and_currency_conversion_xvw.total_net_value_target,
-            id: across_sales_and_currency_conversion_xvw.total_net_value_target
-            }], showLabels: true, showValues: false,
-        unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear}]
-
-    x_axis_zoom: true
-    y_axis_zoom: true
-    hidden_fields: [materials_md.material_number_matnr]
-
-    listen:
-      date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
-      sales_org: sales_organizations_md.sales_org_name_vtext
-      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
-      sold_to: customers_md.customer_name
-      target_currency: otc_common_parameters_xvw.parameter_target_currency
-    # note_state: expanded
+      sales_orders_v2.total_sales_amount_target_currency_formatted: "#74A09F"
+      cumulative_percent_of_total_sales: "#000000"
+    advanced_vis_config: |-
+      {
+        series: [
+          {
+          tooltip: {
+            headerFormat: '<table><th style="font-size: 1.8em;text-align: left;color: #808080;">{point.key}</th>',
+            pointFormat: '<tr><th style="text-align: left;color:{point.color};">{series.name}:&nbsp;&nbsp;</th><td style="text-align: right;color:{point.color};" >{point.y:,.0f}</td></tr>',
+            footerFormat: '</table>',
+          },
+          },
+          {
+          tooltip: {
+            headerFormat: '<table><th style="font-size: 1.8em;text-align: left;color: #808080;">{point.key}</th>',
+            pointFormat: '<tr><th style="text-align: left;color:{point.color};">{series.name}:&nbsp;&nbsp;</th><td style="text-align: right;color:{point.color};" >{point.y:,.1f}%</td></tr>',
+            footerFormat: '</table>',
+          },
+          dataLabels: {
+            format: '{y:.0f}%',
+            color: '#000000',
+            align: 'left',
+            allowOverlap: false,
+          },
+          },
+        ],
+        tooltip: {
+          backgroundColor: '#FFFFFF',
+          shared: true,
+          formatter: null,
+          shadow: true,
+        },
+      }
     note_display: hover
     note_text: |-
-      <font size="-2">Limited to 10 Products. To change this row limit, select "Explore from Here" option and adjust the row limit.
-      </font>
-    row: 2
-    col: 0
-    width: 10
-    height: 10
+      <div style="text-align: left;">
+      Top customers ranked in descending order by Total Sales. The black line reflects a customer's Cumulative Percent of Total Sales.
+      </br></br>Use the dashboard parameter <span style="color:#AECBFA;">Customer Type</span> to show either Bill To or Sold To Customers.
 
-  - name: Top Products by Avg Sales
-    title: Top Products by Avg Sales
-    explore: sales_orders_v2
-    type: looker_bar
-    fields: [materials_md.material_number_matnr, materials_md.material_text_maktx, across_sales_and_currency_conversion_xvw.avg_net_value_per_order_target]
-    sorts: [across_sales_and_currency_conversion_xvw.avg_net_value_per_order_target desc]
-    # filters:
-    #   sales_orders_v2.count_orders: ">=10"
-    limit: 10
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_y_axis_labels: false
-    show_y_axis_ticks: true
-    show_x_axis_label: false
-    show_x_axis_ticks: true
-    limit_displayed_rows: false
-    legend_position: center
-    point_style: none
-    show_value_labels: true
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
-    series_colors:
-      {across_sales_and_currency_conversion_xvw.avg_net_value_per_order_target: "#53575E"}
-
-    y_axes: [{label: '', orientation: bottom, series: [{axisId: across_sales_and_currency_conversion_xvw.total_net_value_target,
-            id: across_sales_and_currency_conversion_xvw.avg_net_value_per_order_target, name: Avg Sales per Order (Target Currency 'USD')}], showLabels: true, showValues: false,
-        unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear}]
-    x_axis_zoom: true
-    y_axis_zoom: true
-    hidden_fields: [materials_md.material_number_matnr]
-
+      </br></br>Limited to 10 customers.
+      To change:
+      </br>1. Click the three-dot menu at the top right of tile
+      and select 'Explore from here'.
+      </br></br>2. In the Data pane, change the row limit to desired value.
+      </div>
     listen:
       date: sales_orders_v2.creation_date_erdat_date
       country: countries_md.country_name_landx
@@ -106,96 +282,40 @@
       product: materials_md.material_text_maktx
       division: divisions_md.division_name_vtext
       sold_to: customers_md.customer_name
-      target_currency: otc_common_parameters_xvw.parameter_target_currency
-    # note_state: expanded
-    note_display: hover
-    note_text: |-
-      <font size="-2">Average Sales per Order (Target Currency).<br>Limited to 10 Products. To change this row limit, select "Explore from Here" option and adjust the row limit.
-      </font>
-    row: 2
-    col: 11
-    width: 10
-    height: 10
-
-  - name: Top Sales Organizations by Sales
-    title: Top Sales Organizations by Sales
-    explore: sales_orders_v2
-    type: looker_bar
-    fields: [sales_orders_v2.sales_organization_vkorg,sales_organizations_md.sales_org_name_vtext,across_sales_and_currency_conversion_xvw.total_net_value_target]
-    sorts: [across_sales_and_currency_conversion_xvw.total_net_value_target desc]
-    limit: 10
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_y_axis_labels: false
-    show_y_axis_ticks: true
-    show_x_axis_label: false
-    show_x_axis_ticks: true
-    limit_displayed_rows: false
-    legend_position: center
-    point_style: none
-    show_value_labels: true
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
-    series_colors:
-      {across_sales_and_currency_conversion_xvw.total_net_value_target: "#74A09F"}
-
-    y_axes: [{label: '', orientation: bottom, series: [{axisId: across_sales_and_currency_conversion_xvw.total_net_value_target,
-            id: across_sales_and_currency_conversion_xvw.total_net_value_target, name: Total
-              Net Value}], showLabels: true, showValues: false,
-        unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear}]
-    x_axis_zoom: true
-    y_axis_zoom: true
-    hidden_fields: [sales_orders_v2.sales_organization_vkorg]
-
-    listen:
-      date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
-      sales_org: sales_organizations_md.sales_org_name_vtext
-      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
-      sold_to: customers_md.customer_name
-      target_currency: otc_common_parameters_xvw.parameter_target_currency
     row: 20
     col: 0
-    width: 10
+    width: 12
     height: 10
-
-  - name: Top Customers by Avg Sales
-    title: Top Customers by Avg Sales
+# #####################################################################################################
+  - name: top_customers_by_avg_sales
+    title: Top Customers by Average Sales
     explore: sales_orders_v2
     type: looker_bar
-    fields: [sales_orders_v2.sold_to_party_kunnr, customers_md.customer_name, across_sales_and_currency_conversion_xvw.avg_net_value_per_order_target]
-    sorts: [across_sales_and_currency_conversion_xvw.avg_net_value_per_order_target desc]
-    # filters:
-    #   sales_orders_v2.count_orders: ">=10"
-    limit: 10
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_y_axis_labels: false
-    show_y_axis_ticks: true
-    show_x_axis_label: false
-    show_x_axis_ticks: true
-    limit_displayed_rows: false
-    legend_position: center
-    point_style: none
-    show_value_labels: true
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
-    series_colors:
-      {across_sales_and_currency_conversion_xvw.avg_net_value_per_order_target: "#53575E"}
-
-    y_axes: [{label: '', orientation: bottom, series: [{axisId: across_sales_and_currency_conversion_xvw.total_net_value_target,
-            id: across_sales_and_currency_conversion_xvw.avg_net_value_per_order_target
-            # , name: Avg Sales per Order (Target Currency 'USD')
-    }], showLabels: true, showValues: false,
-        unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear}]
-    x_axis_zoom: true
-    y_axis_zoom: true
+    fields: [sales_orders_v2.sold_to_party_kunnr,
+             customers_md.customer_name,
+             sales_orders_v2.avg_sales_per_order_target_currency_formatted]
+    sorts: [sales_orders_v2.avg_sales_per_order_target_currency_formatted desc]
     hidden_fields: [sales_orders_v2.sold_to_party_kunnr]
-
+    filters:
+      sales_orders_v2.document_category_vbtyp: 'C'
+    limit: 10
+    show_value_labels: true
+    series_colors:
+      sales_orders_v2.avg_sales_per_order_target_currency_formatted: "#53575E"
+    y_axes: [{label: '', orientation: bottom,
+              series: [{axisId: sales_orders_v2.avg_sales_per_order_target_currency_formatted,
+                            id: sales_orders_v2.avg_sales_per_order_target_currency_formatted}], showLabels: true, showValues: false,}]
+    advanced_vis_config: |-
+      {
+        tooltip: {
+          backgroundColor: '#FFFFFF',
+          shadow: true,
+          format: '<table><th style="font-size: 1.8em;text-align: left;color: #808080; ">{key}</th></table><table>{#each points}<tr><th style="text-align: left;color:{point.color};">{series.name}:&nbsp;&nbsp;&nbsp;</th><td style="text-align: right;color:{point.color};" >{point.y:,.0f}</td></tr>{/each}',
+            footerFormat: '</table>',
+            useHTML: true,
+            shared: true,
+          },
+        }
     listen:
       date: sales_orders_v2.creation_date_erdat_date
       country: countries_md.country_name_landx
@@ -204,26 +324,98 @@
       product: materials_md.material_text_maktx
       division: divisions_md.division_name_vtext
       sold_to: customers_md.customer_name
-      target_currency: otc_common_parameters_xvw.parameter_target_currency
-    # note_state: expanded
     note_display: hover
     note_text: |-
-      <font size="-2">Average Sales per Order (Target Currency).<br>Limited to 10 Sold to customers. To change this row limit, select "Explore from Here" option and adjust the row limit.
-      </font>
-    row: 20
-    col: 11
-    width: 10
-    height: 10
+      <div style="text-align: left;">
+      Top customers ranked in descending order by Average Sales per Order.
+      </br></br>Use the dashboard parameter <span style="color:#AECBFA;">Customer Type</span> to show either Bill To or Sold To Customers.
 
-  - name: Sales by Distribution Channel
+      </br></br>Limited to 10 customers.
+      To change:
+      </br>1. Click the three-dot menu at the top right of tile
+      and select 'Explore from here'.
+      </br></br>2. In the Data pane, change the row limit to desired value.
+      </div>
+    row: 20
+    col: 12
+    width: 12
+    height: 10
+#####################################################################################################
+  - name: top_sales_organization_by_sales
+    title: Top Sales Organization by Sales
+    explore: sales_orders_v2
+    type: looker_bar
+    fields: [sales_orders_v2.sales_organization_vkorg,
+             sales_organizations_md.sales_org_name_vtext,
+             sales_orders_v2.total_sales_amount_target_currency_formatted]
+    sorts: [sales_orders_v2.total_sales_amount_target_currency_formatted desc]
+    filters:
+      sales_orders_v2.document_category_vbtyp: 'C'
+    limit: 10
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_y_axis_labels: false
+    show_y_axis_ticks: true
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    legend_position: center
+    point_style: none
+    show_value_labels: true
+    series_colors:
+      sales_orders_v2.total_sales_amount_target_currency_formatted: "#74A09F"
+    y_axes: [{label: '', orientation: bottom,
+              series: [{axisId: sales_orders_v2.total_sales_amount_target_currency_formatted,
+                            id: sales_orders_v2.total_sales_amount_target_currency_formatted,
+                          name: Total Sales}],
+          showLabels: true, showValues: false,
+              }]
+    advanced_vis_config: |-
+      {
+        tooltip: {
+          backgroundColor: '#FFFFFF',
+          shadow: true,
+          format: '<table><th style="font-size: 1.8em;text-align: left;color: #808080; ">{key}</th></table><table>{#each points}<tr><th style="text-align: left;color:{point.color};">{series.name}:&nbsp;&nbsp;&nbsp;</th><td style="text-align: right;color:{point.color};" >{point.y:,.0f}</td></tr>{/each}',
+            footerFormat: '</table>',
+            useHTML: true,
+            shared: true,
+          },
+        }
+    note_display: hover
+    note_text: |-
+      <div style="text-align: left;">
+      Top business units ranked in descending order by Average Sales per Order.
+
+      </br></br>Limited to 10 business units.
+      To change:
+      </br>1. Click the three-dot menu at the top right of tile
+      and select 'Explore from here'.
+      </br></br>2. In the Data pane, change the row limit to desired value.
+      </div>
+    listen:
+      date: sales_orders_v2.creation_date_erdat_date
+      country: countries_md.country_name_landx
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      product: materials_md.material_text_maktx
+      division: divisions_md.division_name_vtext
+      sold_to: customers_md.customer_name
+    row: 21
+    col: 0
+    width: 12
+    height: 10
+#####################################################################################################
+  - name: sales_by_distribution_channel
     title: Sales by Distribution Channel
     explore: sales_orders_v2
     type: looker_pie
-    fields: [across_sales_and_currency_conversion_xvw.total_net_value_target, sales_orders_v2.distribution_channel_vtweg,
-      distribution_channels_md.distribution_channel_name_vtext]
-    sorts: [across_sales_and_currency_conversion_xvw.total_net_value_target desc 0]
-    limit: 50
-    column_limit: 50
+    fields: [ sales_orders_v2.distribution_channel_vtweg,
+              distribution_channels_md.distribution_channel_name_vtext,
+              sales_orders_v2.total_sales_amount_target_currency_formatted]
+    sorts: [sales_orders_v2.total_sales_amount_target_currency_formatted desc 0]
+    hidden_fields: [sales_orders_v2.distribution_channel_vtweg]
+    filters:
+      sales_orders_v2.document_category_vbtyp: 'C'
+    limit: 10
     value_labels: labels
     label_type: labVal
     inner_radius: 50
@@ -233,125 +425,31 @@
       options:
         steps: 5
         reverse: true
-    series_colors: {}
     advanced_vis_config: |-
       {
+        tooltip: {
+          enabled: false,
+        },
         plotOptions: {
           pie: {
             dataLabels: {
-              style: {
-                fontSize: '100%'
-               },
               enabled: true,
               format: '<b>{key}</b><span style="font-size: 80%; font-weight: normal"> <br>{percentage:.1f}%<br>{point.rendered}</span>',
             }
           }
         },
         title: {
-          text: 'Distribution<br>Channel',
-          verticalAlign: 'middle',
+          text: '<br>Distribution<br>Channel',
           align: 'center',
-          y: 10,
-          x: -5,
+          verticalAlign: 'middle',
           style: {
-                fontSize: '120%',
+                fontSize: '150%',
                 fontWeight: 'bold',
-               },
+              },
         }
       }
-    # x_axis_gridlines: false
-    # y_axis_gridlines: true
-    # show_view_names: false
-    # show_y_axis_labels: false
-    # show_y_axis_ticks: true
-    # y_axis_tick_density: default
-    # y_axis_tick_density_custom: 5
-    # show_x_axis_label: false
-    # show_x_axis_ticks: true
-    # y_axis_scale_mode: linear
-    # x_axis_reversed: false
-    # y_axis_reversed: false
-    # plot_size_by_field: false
-    # trellis: ''
-    # stacking: normal
-    # limit_displayed_rows: false
-    # legend_position: center
-    # point_style: none
     show_value_labels: true
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    # y_axes: [{label: '', orientation: bottom, series: [{axisId: across_sales_and_currency_conversion_xvw.total_net_value_target,
-    #         id: across_sales_and_currency_conversion_xvw.total_net_value_target, __FILE: block-revamp-sap-dev/dashboards/otc_03_sales_performance.dashboard.lookml,
-    #         __LINE_NUM: 197}], showLabels: true, showValues: false, unpinAxis: false,
-    #     tickDensity: default, tickDensityCustom: 5, type: linear, __FILE: block-revamp-sap-dev/dashboards/otc_03_sales_performance.dashboard.lookml,
-    #     __LINE_NUM: 197}]
-    x_axis_zoom: true
-    y_axis_zoom: true
-    hidden_fields: [sales_orders_v2.distribution_channel_vtweg]
-    defaults_version: 1
-    hidden_pivots: {}
     title_hidden: true
-
-    # type: looker_bar
-    # fields: [across_sales_and_currency_conversion_xvw.total_net_value_target, sales_orders_v2.distribution_channel_vtweg,
-    #   distribution_channels_md.distribution_channel_name_vtext, across_sales_and_currency_conversion_xvw.percent_of_total_net_value_target]
-    # sorts: [across_sales_and_currency_conversion_xvw.total_net_value_target desc 0]
-    # x_axis_gridlines: false
-    # y_axis_gridlines: true
-    # show_view_names: false
-    # show_y_axis_labels: false
-    # show_y_axis_ticks: true
-    # y_axis_tick_density: default
-    # y_axis_tick_density_custom: 5
-    # show_x_axis_label: false
-    # show_x_axis_ticks: true
-    # y_axis_scale_mode: linear
-    # x_axis_reversed: false
-    # y_axis_reversed: false
-    # plot_size_by_field: false
-    # trellis: ''
-    # stacking: normal
-    # limit_displayed_rows: false
-    # legend_position: center
-    # point_style: none
-    # show_value_labels: true
-    # label_density: 25
-    # x_axis_scale: auto
-    # y_axis_combined: true
-    # ordering: none
-    # show_null_labels: false
-    # show_totals_labels: false
-    # show_silhouette: false
-    # totals_color: "#808080"
-    # y_axes: [{label: '', orientation: bottom, series: [{axisId: across_sales_and_currency_conversion_xvw.total_net_value_target,
-    #         id: across_sales_and_currency_conversion_xvw.total_net_value_target}], showLabels: true, showValues: false, unpinAxis: false,
-    #     tickDensity: default, tickDensityCustom: 5, type: linear}]
-    # x_axis_zoom: true
-    # y_axis_zoom: true
-    # series_colors:
-    #   across_sales_and_currency_conversion_xvw.total_net_value_target: "#74A09F"
-    #   across_sales_and_currency_conversion_xvw.percent_of_total_net_value_target: transparent
-    # advanced_vis_config: "{\n  series: [{\n  \n      dataLabels: {\n        enabled:\
-    #   \ true,\n        align: 'right',\n        verticalAlign: 'top',\n        style:\
-    #   \ {\n          fontSize: '12px',\n          fontWeight: 'bold',\n          textOutline:\
-    #   \ 'none',\n        },\n      },\n\n    },\n    {\n\n      dataLabels: {\n    \
-    #   \    enabled: true,\n        inside: true,\n        overlap: true,\n        align:\
-    #   \ 'right',\n        verticalAlign: 'bottom',\n\n        style: {\n          fontSize:\
-    #   \ '12px',\n          fontWeight: 'bold',\n          textOutline: 'none',\n   \
-    #   \     },\n      },\n\n      showInLegend: false,\n\n    },\n  ],\n  xAxis: {\n\
-    #   \    labels: {\n      enabled: true,\n      data: [],\n      events: {},\n   \
-    #   \   autoRotationLimit: 150,\n      style: {\n        cursor: 'pointer',\n    \
-    #   \    fontSize: '12px',\n        textAlign: 'right',\n        color: 'inherit',\n\
-    #   \        textOverflow: 'ellipsis',\n      },\n  \
-    #   \    useHTML: true,\n    },\n  },\n}"
-    # hidden_fields: [sales_orders_v2.distribution_channel_vtweg]
-
     listen:
       date: sales_orders_v2.creation_date_erdat_date
       country: countries_md.country_name_landx
@@ -360,78 +458,7 @@
       product: materials_md.material_text_maktx
       division: divisions_md.division_name_vtext
       sold_to: customers_md.customer_name
-      target_currency: otc_common_parameters_xvw.parameter_target_currency
-    row: 12
-    col: 0
-    width: 10
-    height: 7
-
-  - name: Sales by Division
-    title: Sales by Division
-    explore: sales_orders_v2
-    type: looker_bar
-    fields: [across_sales_and_currency_conversion_xvw.total_net_value_target, sales_orders_v2.division_hdr_spart, divisions_md.division_name_vtext, across_sales_and_currency_conversion_xvw.percent_of_total_net_value_target]
-    sorts: [across_sales_and_currency_conversion_xvw.total_net_value_target desc 0]
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_view_names: false
-    show_y_axis_labels: false
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: false
-    show_x_axis_ticks: true
-    y_axis_scale_mode: linear
-    x_axis_reversed: false
-    y_axis_reversed: false
-    plot_size_by_field: false
-    trellis: ''
-    stacking: normal
-    limit_displayed_rows: false
-    legend_position: center
-    point_style: none
-    show_value_labels: true
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    y_axes: [{label: '', orientation: bottom, series: [{axisId: across_sales_and_currency_conversion_xvw.total_net_value_target,
-                id: across_sales_and_currency_conversion_xvw.total_net_value_target }], showLabels: true, showValues: false, unpinAxis: false,
-        tickDensity: default, tickDensityCustom: 5, type: linear}]
-    x_axis_zoom: true
-    y_axis_zoom: true
-    series_colors:
-      across_sales_and_currency_conversion_xvw.total_net_value_target: "#74A09F"
-      across_sales_and_currency_conversion_xvw.percent_of_total_net_value_target: transparent
-    advanced_vis_config: "{\n  series: [{\n  \n      dataLabels: {\n        enabled:\
-      \ true,\n        align: 'right',\n        verticalAlign: 'top',\n        style:\
-      \ {\n          fontSize: '12px',\n          fontWeight: 'bold',\n          textOutline:\
-      \ 'none',\n        },\n      },\n\n    },\n    {\n\n      dataLabels: {\n    \
-      \    enabled: true,\n        inside: true,\n        overlap: true,\n        align:\
-      \ 'right',\n        verticalAlign: 'bottom',\n\n        style: {\n          fontSize:\
-      \ '12px',\n          fontWeight: 'bold',\n          textOutline: 'none',\n   \
-      \     },\n      },\n\n      showInLegend: false,\n\n    },\n  ],\n  xAxis: {\n\
-      \    labels: {\n      enabled: true,\n      data: [],\n      events: {},\n   \
-      \   autoRotationLimit: 150,\n      style: {\n        cursor: 'pointer',\n    \
-      \    fontSize: '12px',\n        textAlign: 'right',\n        color: 'inherit',\n\
-      \        textOverflow: 'ellipsis',\n      },\n  \
-      \    useHTML: true,\n    },\n  },\n}"
-    hidden_fields: [sales_orders_v2.division_hdr_spart]
-
-    listen:
-      date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
-      sales_org: sales_organizations_md.sales_org_name_vtext
-      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
-      sold_to: customers_md.customer_name
-      target_currency: otc_common_parameters_xvw.parameter_target_currency
-    row: 12
-    col: 11
-    width: 10
-    height: 7
+    row: 21
+    col: 12
+    width: 12
+    height: 10

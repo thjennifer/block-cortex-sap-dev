@@ -86,11 +86,11 @@ view: across_sales_and_deliveries_xvw {
     value_format_name: percent_1
   }
 
-  measure: count_blocked_orders {
+  measure: blocked_sales_order_count {
     hidden: no
     type: count_distinct
     sql:  ${sales_orders_v2.sales_document_vbeln};;
-    filters: [deliveries.is_blocked: "Yes"]
+    filters: [deliveries.is_blocked: "Yes",sales_orders_v2.document_category_vbtyp: "C"]
   }
 
   measure: count_blocked_order_items {

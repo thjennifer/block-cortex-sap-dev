@@ -31,7 +31,7 @@
     name: Total Orders
     explore: sales_orders_v2
     type: single_value
-    fields: [sales_orders_v2.count_orders]
+    fields: [sales_orders_v2.sales_order_count]
     listen:
       # " Order Status": sales_orders.sales_order_status
       date: sales_orders_v2.creation_date_erdat_date
@@ -50,7 +50,7 @@
     name: Blocked Orders
     explore: sales_orders_v2
     type: single_value
-    fields: [across_sales_and_deliveries_xvw.count_blocked_orders]
+    fields: [across_sales_and_deliveries_xvw.blocked_sales_order_count]
     # enable_conditional_formatting: true
     # conditional_formatting_include_totals: false
     # conditional_formatting_include_nulls: false
@@ -75,7 +75,7 @@
   #   name: Order Status Bar
   #   explore: sales_orders_v2
   #   type: looker_bar
-  #   fields: [across_sales_and_billing_summary_xvw.order_status, sales_orders_v2.count_orders]
+  #   fields: [across_sales_and_billing_summary_xvw.order_status, sales_orders_v2.sales_order_count]
   #   pivots: [across_sales_and_billing_summary_xvw.order_status]
   #   filters:
   #     across_sales_and_billing_summary_xvw.order_status: "-NULL"
@@ -109,20 +109,20 @@
   #   show_totals_labels: false
   #   show_silhouette: false
   #   totals_color: "#808080"
-  #   y_axes: [{label: '', orientation: bottom, series: [{axisId: Open - sales_orders_v2.count_orders,
-  #           id: Open - sales_orders_v2.count_orders, name: Open}, {axisId: Closed
-  #             - sales_orders_v2.count_orders, id: Closed - sales_orders_v2.count_orders,
-  #           name: Closed}, {axisId: Cancelled - sales_orders_v2.count_orders, id: Cancelled
-  #             - sales_orders_v2.count_orders, name: Cancelled}], showLabels: false,
+  #   y_axes: [{label: '', orientation: bottom, series: [{axisId: Open - sales_orders_v2.sales_order_count,
+  #           id: Open - sales_orders_v2.sales_order_count, name: Open}, {axisId: Closed
+  #             - sales_orders_v2.sales_order_count, id: Closed - sales_orders_v2.sales_order_count,
+  #           name: Closed}, {axisId: Cancelled - sales_orders_v2.sales_order_count, id: Cancelled
+  #             - sales_orders_v2.sales_order_count, name: Cancelled}], showLabels: false,
   #       showValues: false, unpinAxis: false, tickDensity: default, tickDensityCustom: 5,
   #       type: linear}]
   #   x_axis_zoom: true
   #   y_axis_zoom: true
   #   hide_legend: true
   #   series_colors:
-  #     Open - sales_orders_v2.count_orders: "#D1FAFF"
-  #     Closed - sales_orders_v2.count_orders: "#98B6B1"
-  #     Cancelled - sales_orders_v2.count_orders: "#Eb9486"
+  #     Open - sales_orders_v2.sales_order_count: "#D1FAFF"
+  #     Closed - sales_orders_v2.sales_order_count: "#98B6B1"
+  #     Cancelled - sales_orders_v2.sales_order_count: "#Eb9486"
   #   advanced_vis_config: "{\n  title: {\n    text: \"Order Status\",\n    verticalAlign:\
   #     \ 'bottom',\n    \n    \n  },\n  plotOptions: {\n    series: {\n      dataLabels:\
   #     \ {\n        enabled: true,\n        align: 'center',\n        inside: true,\n\
@@ -152,7 +152,7 @@
   #   name: Order Status donut
   #   explore: sales_orders_v2
   #   type: looker_pie
-  #   fields: [across_sales_and_billing_summary_xvw.order_status, sales_orders_v2.count_orders]
+  #   fields: [across_sales_and_billing_summary_xvw.order_status, sales_orders_v2.sales_order_count]
   #   filters:
   #     across_sales_and_billing_summary_xvw.order_status: "-NULL"
   #   sorts: [across_sales_and_billing_summary_xvw.order_status desc]
@@ -217,7 +217,7 @@
     title: Order Status semi-circle
     explore: sales_orders_v2
     type: looker_pie
-    fields: [across_sales_and_billing_summary_xvw.order_status, sales_orders_v2.count_orders]
+    fields: [across_sales_and_billing_summary_xvw.order_status, sales_orders_v2.sales_order_count]
     filters:
       across_sales_and_billing_summary_xvw.order_status: "-NULL"
     sorts: [across_sales_and_billing_summary_xvw.order_status desc]

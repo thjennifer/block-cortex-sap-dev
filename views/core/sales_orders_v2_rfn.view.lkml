@@ -3,7 +3,7 @@
 # provides Sales Order Line Items (both Header and Line Items)
 #
 # SOURCE
-# Refines View sales_orders_v2 (defined in file /views/base/sales_orders_v2.view)
+# Refines view sales_orders_v2
 #
 # REFERENCED BY
 # Explore sales_orders_v2
@@ -12,7 +12,7 @@
 # creation_timestamp
 #
 # KEYS TO USING
-#   - Fields are hidden by default so must change "hidden: " property to "no" to include field in an Explore
+#   - Fields are hidden by default so must change "hidden" property to "no" to include field in an Explore
 #   - This refinement view only includes fields added or edited. Full list of fields available are found in the base view
 #   - Header-level dimensions and measures shown in Explore under view Label Sales Orders
 #   - Item-level dimensions and measures shown in Explore under view label Sales Orders Items
@@ -160,23 +160,35 @@ view: +sales_orders_v2 {
   #}
 
 
-
-  ## don't think this is needed---Total for Sales Order but does not apply Currency Decimal fix like item-level NETWR
-  dimension: net_value_of_the_sales_order_in_document_currency_netwr {
-    hidden: yes
-    label: "Net Value of Sales Order@{label_sap_code}"
-    description: "Net Value of Sales Order in Document Currency"
-  }
-
-
 #### Item Net Price, Quantity and Total Sales Value
 # {
   dimension: net_price_netpr {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "Price of Item@{label_sap_code}"
+    label: "Item Price (Document Currency)@{label_sap_code}"
     description: "Net Price of Item (Document Currency)"
     value_format_name: decimal_2
+  }
+
+  dimension: item_net_price_target_currency_netpr {
+    hidden: no
+    type: number
+    view_label: "Sales Orders Items"
+    label: "Item Price (Target Currency) NETPR"
+    description: "Net Price of Item (Target Currency)"
+    sql: ${sales_orders_v2.net_price_netpr} * ${currency_conversion_sdt.exchange_rate_ukurs} ;;
+    value_format_name: decimal_2
+  }
+
+  dimension: item_net_value_target_currency_netwr {
+    hidden: no
+    type: number
+    view_label: "Sales Orders Items"
+    label: "Item Sales (Target Currency) NETWR"
+    description: "Item Qty * Net Price (Target Currency)"
+    sql:  ${item_net_price_target_currency_netpr} * ${cumulative_order_quantity_kwmeng};;
+    value_format_name: decimal_2
+
   }
 
   dimension: cumulative_order_quantity_kwmeng {
@@ -234,25 +246,24 @@ view: +sales_orders_v2 {
 
 # }
 
-  measure: count {
+  measure: order_line_count {
     hidden: no
     label: "Count Document Line Items"
-    description: "Count of Documents & Items"
+    description: "Count of Order Documents & Items"
     }
 
-  measure: count_orders {
+  measure: sales_order_count {
     hidden: no
     type: count_distinct
-    label: "Count Orders"
     description: "Distinct count of Sales Document VBELN when Document Category VBTYP = C"
     sql: ${sales_document_vbeln} ;;
     filters: [document_category_vbtyp: "C"]
   }
 
-  measure: count_orders_with_link {
+  measure: sales_order_count_formatted {
     hidden: yes
     type: number
-    sql: ${count_orders} ;;
+    sql: ${sales_order_count} ;;
     #  url: "{%assign model = _model._name %}/dashboards/{{model}}::otc_order_details?Order+Date=+2022%2F01%2F01+to+2022%2F12%2F31&Country={{_filters['countries_md.country_name_landx'] | url_encode}}&Sales+Org={{_filters['sales_organizations_md.sales_org_name_vtext'] | url_encode}}&Distribution+Channel={{_filters['distribution_channels_md.distribution_channel_name_vtext'] | url_encode}}&Division={{_filters['divisions_md.division_name_vtext'] | url_encode}}&Product={{_filters['materials_md.material_text_maktx'] | url_encode}}&Target+Currency={{_filters['currency_conversion_sdt.select_target_currency'] | url_encode}}
  # url: "/dashboards/cortex_sap_operational_v2::otc_order_details?Order+Status={{across_sales_and_billing_summary_xvw.order_status._value))"
 
@@ -351,8 +362,117 @@ view: +sales_orders_v2 {
   measure: percent_orders_with_cancellation {
     hidden: no
     type: number
-    sql: safe_divide(${count_orders_with_cancellation}, ${count_orders});;
+    sql: safe_divide(${count_orders_with_cancellation}, ${sales_order_count});;
     value_format_name: percent_1
+  }
+
+
+
+
+
+  measure: total_sales_amount_target_currency {
+    hidden: no
+    type: sum
+    view_label: "Sales Orders"
+    label: "@{label_currency}Total Sales ({{currency}})"
+    sql: ${item_net_value_target_currency_netwr} ;;
+    filters: [sales_orders_v2.document_category_vbtyp: "C"]
+    value_format_name: decimal_2
+    # sql_distinct_key: ${sales_orders_v2.key};;
+    # link: {
+    #   label: "Show Orders"
+    #   url: "{{ dummy_set_details_sales_performance._link}}"
+    #   # &f[sales_order_item_delivery_summary_ndt.is_order_late]=Yes"
+    # }
+  }
+
+  measure: total_sales_amount_target_currency_formatted {
+    hidden: no
+    type: number
+    view_label: "Sales Orders"
+    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
+    # label: "@{label_currency}Total Sales ({{currency}}) Formatted"
+    sql: ${total_sales_amount_target_currency} ;;
+    value_format_name: format_large_numbers_d1
+    # sql_distinct_key: ${sales_orders_v2.key};;
+    # link: {
+    #   label: "Show Orders"
+    #   url: "{{ dummy_set_details_sales_performance._link}}"
+    #   # &f[sales_order_item_delivery_summary_ndt.is_order_late]=Yes"
+    # }
+  }
+
+  measure: cumulative_sales_amount_target_currency {
+    hidden: no
+    type: running_total
+    group_label: "Sales Orders"
+    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
+    description: "Cumulative sum of sales amount in target currency"
+    sql: ${total_sales_amount_target_currency} ;;
+    direction: "column"
+    value_format_name: decimal_2
+  }
+
+  measure: avg_sales_per_order_target_currency {
+    hidden: no
+    type: number
+    view_label: "Sales Orders"
+    label: "@{label_currency}Average Sales per Order ({{currency}})"
+    sql: safe_divide(${total_sales_amount_target_currency},${sales_orders_v2.sales_order_count});;
+    # sql_distinct_key: ${sales_orders_v2.key};;
+    value_format_name: decimal_2
+    }
+
+  measure: avg_sales_per_order_target_currency_formatted {
+    hidden: no
+    type: number
+    view_label: "Sales Orders"
+    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
+    # label: "@{label_currency}Average Sales per Order ({{currency}}) Formatted"
+    sql: ${avg_sales_per_order_target_currency};;
+    value_format_name: format_large_numbers_d1
+  }
+    # link: {
+    #   label: "Show Orders"
+    #   url: "{{ dummy_set_details_sales_performance._link}}"
+    #   # &f[sales_order_item_delivery_summary_ndt.is_order_late]=Yes"
+    # }
+
+    ## dynamic capture of filters with link
+    # link: {
+    #   label: "Open Order Details Dashboard"
+    #   icon_url: "/favicon.ico"
+    #   url: "
+    #   @{link_build_variable_defaults}
+    #   {% assign link = link_generator._link %}
+    #   {% assign filters_mapping = '@{link_map_otc_sales_orders_to_order_details}' | append: '||across_sales_and_billing_summary_xvw.order_status|Order Status||deliveries.is_blocked|Is Blocked' %}
+
+    #   {% assign model = _model._name %}
+    #   {% assign target_dashboard = _model._name | append: '::otc_order_details' %}
+
+    #   {% assign default_filters_override = false %}
+
+    #   @{link_build_dashboard_url}
+    #   "
+    # }
+
+  # }
+
+  # measure: test_avg {
+  #   hidden: no
+  #   type: average_distinct
+  #   view_label: "Sales Orders"
+  #   sql: ${item_net_price_target_currency_netpr} ;;
+  #   sql_distinct_key: ${sales_orders_v2.key};;
+  # }
+
+  measure: percent_of_total_sales_amount_target_currency {
+    hidden: no
+    view_label: "Sales Orders"
+    label: "Percent of Total Sales (Target Currency)"
+    type: percent_of_total
+    sql: ${total_sales_amount_target_currency} ;;
+    # sql_distinct_key: ${sales_orders_v2.key};;
   }
 
 

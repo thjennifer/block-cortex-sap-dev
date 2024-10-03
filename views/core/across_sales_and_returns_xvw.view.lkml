@@ -8,7 +8,7 @@ view: across_sales_and_returns_xvw {
 
   label: "Sales Orders Items"
 
-  measure: count_returns {
+  measure: has_return_sales_order_count {
     type: count_distinct
     sql: ${returns_sdt.reference_sales_document_vbeln};;
     filters: [sales_orders_v2.document_category_vbtyp: "C"]
@@ -16,11 +16,11 @@ view: across_sales_and_returns_xvw {
 
 
 
-  measure: percent_orders_with_return {
+  measure: has_return_sales_order_percent {
     hidden: no
-    description: "Percent of Orders with at least 1 item returned"
+    description: "Percent of Sales Orders with at least 1 item returned"
     type: number
-    sql:  safe_divide(${count_returns},${sales_orders_v2.count_orders});;
+    sql:  safe_divide(${has_return_sales_order_count},${sales_orders_v2.sales_order_count});;
     value_format_name: percent_1
     link: {
       label: "Show Top 10 products with highest Return Rate"
@@ -69,7 +69,7 @@ view: across_sales_and_returns_xvw {
 
   measure: dummy_set_product_with_return {
     hidden:yes
-    drill_fields: [set_product*,percent_orders_with_return]
+    drill_fields: [set_product*,has_return_sales_order_percent]
     sql: 1=1 ;;
   }
 

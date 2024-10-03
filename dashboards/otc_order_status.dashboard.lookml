@@ -1,11 +1,33 @@
+#########################################################{
+# Order Status dashboard provides an overview of order-related metrics,
+# including order volume, a breakdown of the order flow status from booking to billing,
+# and an analysis of order status categories (open, closed, and cancelled).
+#
+# Extends otc_template_orders and modifies:
+#   dashboard_navigation to set parameter_navigation_focus_page: '1'
+#
+# Visualization Elements:
+#   total_orders - single-value viz
+#   return_sales_order_percent - single-value viz
+#   one_touch_orders_percent - single-value viz
+#   blocked_orders - single-value viz
+#   bbb_funnel - looker_funnel
+#   order_status_donut - looker_pie
+#
+# Order Counts and Percents apply chart filter order_category_code <> 'RETURN'
+# Not equal to return is used in case there is a category code like MIXED
+# which includes lines for orders and returns.
+#
+# To handle order_category_code of MIXED, amount KPIs use chart filters for both
+#   order_category_code <> 'RETURN'
+#   line_category_code = 'ORDER'
+#
+#########################################################}
+
 - dashboard: otc_order_status
   title: Order Status
-  layout: newspaper
-  preferred_viewer: dashboards-next
-  description: ''
+  description: "Provides an overview of order-related metrics, including order volume, a breakdown of the order flow status from booking to billing, and an analysis of order status categories (open, closed, and cancelled)."
 
-  # pull navigation bar and filters from template
-  # if using navigation_focus_page parameter for active dashboard update navigation tile to use the correct filter
   extends: otc_template
 
   elements:
@@ -13,151 +35,20 @@
   - name: dashboard_navigation
     filters:
       otc_dashboard_navigation_ext.parameter_navigation_focus_page: '1'
-
-  - title: Total Orders
-    name: Total Orders
+#####################################################################################################
+  - name: total_sales_orders
+    title: Total Sales Orders
     explore: sales_orders_v2
     type: single_value
-    fields: [sales_orders_v2.count_orders]
-    listen:
-      # " Order Status": sales_orders.sales_order_status
-      date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
-      sales_org: sales_organizations_md.sales_org_name_vtext
-      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
-      sold_to: customers_md.customer_name
-    note_state: collapsed
-    note_display: hover
-    note_text: "The number of sales orders (document category type = C)."
-    row: 2
-    col: 0
-    width: 4
-    height: 3
-
-  - name: Order Status
-    title: Order Status
-    explore: sales_orders_v2
-    type: looker_column
-    # fields: [across_sales_and_billing_summary_xvw.order_status, sales_orders_v2.count_orders]
-    fields: [across_sales_and_billing_summary_xvw.order_status, sales_orders_v2.count_orders_with_link, across_sales_and_billing_summary_xvw.max_order_status]
-    pivots: [across_sales_and_billing_summary_xvw.order_status]
-    hidden_fields: [across_sales_and_billing_summary_xvw.max_order_status]
+    fields: [ sales_orders_v2.sales_order_count,
+              across_sales_and_returns_xvw.has_return_sales_order_percent,
+              one_touch_order.one_touch_sales_order_percent,
+              across_sales_and_deliveries_xvw.blocked_sales_order_count]
+    hidden_fields: [across_sales_and_returns_xvw.has_return_sales_order_percent,
+                    one_touch_order.one_touch_sales_order_percent,
+                    across_sales_and_deliveries_xvw.blocked_sales_order_count]
     filters:
-      across_sales_and_billing_summary_xvw.order_status: "-NULL"
-    sorts: [across_sales_and_billing_summary_xvw.order_status]
-    limit: 500
-    column_limit: 50
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_view_names: false
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: false
-    y_axis_scale_mode: linear
-    x_axis_reversed: false
-    y_axis_reversed: false
-    plot_size_by_field: false
-    trellis: ''
-    stacking: percent
-    limit_displayed_rows: false
-    legend_position: center
-    point_style: none
-    show_value_labels: false
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    # y_axes: [{label: '', orientation: bottom, series: [{axisId: Open - sales_orders_v2.count_orders,
-    #         id: Open - sales_orders_v2.count_orders, name: Open, __FILE: block-revamp-sap-dev/dashboards/otc_03_order_details.dashboard.lookml,
-    #         __LINE_NUM: 116}, {axisId: Closed - sales_orders_v2.count_orders, id: Closed
-    #           - sales_orders_v2.count_orders, name: Closed, __FILE: block-revamp-sap-dev/dashboards/otc_03_order_details.dashboard.lookml,
-    #         __LINE_NUM: 117}, {axisId: Cancelled - sales_orders_v2.count_orders, id: Cancelled
-    #           - sales_orders_v2.count_orders, name: Cancelled, __FILE: block-revamp-sap-dev/dashboards/otc_03_order_details.dashboard.lookml,
-    #         __LINE_NUM: 119}], showLabels: false, showValues: false, unpinAxis: false,
-    #     tickDensity: default, tickDensityCustom: 5, type: linear, __FILE: block-revamp-sap-dev/dashboards/otc_03_order_details.dashboard.lookml,
-    #     __LINE_NUM: 116}]
-    y_axes: [{label: '', orientation: bottom, series: [{axisId: Open - sales_orders_v2.count_orders_with_link,
-            id: Open - sales_orders_v2.count_orders_with_link, name: Open, }, {axisId: Closed - sales_orders_v2.count_orders, id: Closed
-              - sales_orders_v2.count_orders_with_link, name: Closed, }, {axisId: Cancelled - sales_orders_v2.count_orders_with_link, id: Cancelled
-              - sales_orders_v2.count_orders_with_link, name: Cancelled, }], showLabels: false, showValues: false, unpinAxis: false,
-        tickDensity: default, tickDensityCustom: 5, type: linear, }]
-
-
-
-    x_axis_zoom: true
-    y_axis_zoom: true
-    hide_legend: true
-    # series_colors:
-    #   Open - sales_orders_v2.count_orders: "#98B6B1"
-    #   Closed - sales_orders_v2.count_orders: "#BFBDC1"
-    #   Cancelled - sales_orders_v2.count_orders: "#Eb9486"
-    series_colors:
-      Open - sales_orders_v2.count_orders_with_link: "#98B6B1"
-      Closed - sales_orders_v2.count_orders_with_link: "#BFBDC1"
-      Cancelled - sales_orders_v2.count_orders_with_link: "#Eb9486"
-    advanced_vis_config: |-
-      {
-        plotOptions: {
-          series: {
-            dataLabels: {
-              enabled: true,
-              align: 'center',
-              inside: true,
-              use_html: true,
-              format: '<span style="font-size:140%"<b>{series.name}</b></span><span style="font-weight: normal; font-size:100%; "><br><br>{point.y: ,.0f}  ({percentage:.1f}%)</span>',
-            },
-          },
-        },
-        series: [{
-          name: 'Cancelled',
-          dataLabels: {
-            enabled: true,
-            inside: true,
-          },
-        }, {
-          name: 'Closed',
-          dataLabels: {
-            enabled: true,
-            inside: true,
-          },
-        }, {
-          name: 'Open',
-          dataLabels: {
-            enabled: true,
-            inside: true,
-
-          },
-        }]
-      }
-    listen:
-      date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
-      sales_org: sales_organizations_md.sales_org_name_vtext
-      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
-      sold_to: customers_md.customer_name
-    row: 5
-    col: 0
-    width: 4
-    height: 9
-
-  - title: Blocked Orders
-    name: Blocked Orders
-    explore: sales_orders_v2
-    type: single_value
-    fields: [sales_orders_v2.count_orders_with_link]
-    filters:
-      deliveries.is_blocked: 'Yes'
+      sales_orders_v2.document_category_vbtyp: 'C'
     listen:
       date: sales_orders_v2.creation_date_erdat_date
       country: countries_md.country_name_landx
@@ -168,17 +59,25 @@
       sold_to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
-    note_text: "The number of sales orders blocked for delivery reasons (such as customers exceeding credit limit or insufficient stock)."
+    note_text: "The number of sales orders."
     row: 2
-    col: 4
-    width: 4
-    height: 3
-
-  - title: Return Orders
-    name: Return Orders
+    col: 0
+    width: 6
+    height: 2
+# #####################################################################################################
+  - name: return_sales_order_percent
+    title: Return Orders
     explore: sales_orders_v2
     type: single_value
-    fields: [across_sales_and_returns_xvw.percent_orders_with_return]
+    fields: [ sales_orders_v2.sales_order_count,
+              across_sales_and_returns_xvw.has_return_sales_order_percent,
+              one_touch_order.one_touch_sales_order_percent,
+              across_sales_and_deliveries_xvw.blocked_sales_order_count]
+    hidden_fields: [sales_orders_v2.sales_order_count,
+                    one_touch_order.one_touch_sales_order_percent,
+                    across_sales_and_deliveries_xvw.blocked_sales_order_count]
+    filters:
+      sales_orders_v2.document_category_vbtyp: 'C'
     listen:
       date: sales_orders_v2.creation_date_erdat_date
       country: countries_md.country_name_landx
@@ -190,16 +89,24 @@
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders with a product return."
-    row: 5
-    col: 4
-    width: 4
-    height: 3
-
-  - title: One Touch Orders
-    name: One Touch Orders
+    row: 2
+    col: 6
+    width: 6
+    height: 2
+# #####################################################################################################
+  - name: no_holds_sales_order_percent
+    title: One Touch Orders
     explore: sales_orders_v2
     type: single_value
-    fields: [one_touch_order.percent_one_touch_orders]
+    fields: [ sales_orders_v2.sales_order_count,
+              across_sales_and_returns_xvw.has_return_sales_order_percent,
+              one_touch_order.one_touch_sales_order_percent,
+              across_sales_and_deliveries_xvw.blocked_sales_order_count]
+    hidden_fields: [sales_orders_v2.sales_order_count,
+                    across_sales_and_returns_xvw.has_return_sales_order_percent,
+                    across_sales_and_deliveries_xvw.blocked_sales_order_count]
+    filters:
+      sales_orders_v2.document_category_vbtyp: 'C'
     listen:
       date: sales_orders_v2.creation_date_erdat_date
       country: countries_md.country_name_landx
@@ -210,17 +117,25 @@
       sold_to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
-    note_text: "The percentage of sales orders processed without manual touches or interventions during order entry, scheduling, shipping and invoicing."
-    row: 8
-    col: 4
-    width: 4
-    height: 3
-
-  - title: Fill Rate %
-    name: Fill Rate %
+    note_text: "The percentage of sales orders processed without any holds."
+    row: 2
+    col: 12
+    width: 6
+    height: 2
+# #####################################################################################################
+  - name: blocked_orders
+    title: Blocked Orders
     explore: sales_orders_v2
     type: single_value
-    fields: [sales_order_schedule_line_sdt.avg_fill_rate_item]
+    fields: [ sales_orders_v2.sales_order_count,
+              across_sales_and_returns_xvw.has_return_sales_order_percent,
+              one_touch_order.one_touch_sales_order_percent,
+              across_sales_and_deliveries_xvw.blocked_sales_order_count]
+    hidden_fields: [sales_orders_v2.sales_order_count,
+                    across_sales_and_returns_xvw.has_return_sales_order_percent,
+                    one_touch_order.one_touch_sales_order_percent]
+    filters:
+      sales_orders_v2.document_category_vbtyp: 'C'
     listen:
       date: sales_orders_v2.creation_date_erdat_date
       country: countries_md.country_name_landx
@@ -231,101 +146,111 @@
       sold_to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
-    note_text: "The percentage of sales orders that can be fulfilled immediately by available inventory."
-    row: 11
-    col: 4
-    width: 4
-    height: 3
-
-
-
-
-
-  - title: Order vs Delivery Quantity
-    name: Order vs Delivery Quantity
+    note_text: "The number of sales orders blocked (is on hold or has backorder)."
+    row: 2
+    col: 18
+    width: 6
+    height: 2
+# #####################################################################################################
+#   - name: bbb_funnel
+#     title: Booking to Billing
+#     explore: sales_orders_daily_agg
+#     type: looker_funnel
+#     fields: [sales_orders_daily_agg__lines.total_ordered_amount_target_currency_formatted,
+#             sales_orders_daily_agg__lines.total_booking_amount_target_currency_formatted,
+#             sales_orders_daily_agg__lines.total_backlog_amount_target_currency_formatted,
+#             sales_orders_daily_agg__lines.total_shipped_amount_target_currency_formatted,
+#             sales_orders_daily_agg__lines.total_invoiced_amount_target_currency_formatted]
+#     filters:
+#       sales_orders_daily_agg__lines.line_category_code: "ORDER"
+#       sales_orders_daily_agg.order_category_code: "-RETURN"
+#     leftAxisLabelVisible: false
+#     leftAxisLabel: ''
+#     rightAxisLabelVisible: false
+#     rightAxisLabel: ''
+#     smoothedBars: false
+#     orientation: rows
+#     labelPosition: left
+#     percentType: total
+#     percentPosition: inline
+#     valuePosition: inline
+#     color_application:
+#       collection_id: 1bc1f1d8-7461-4bfd-8c3b-424b924287b5
+#       custom:
+#         id: 92e66b84-021e-3146-39de-2f52135eba51
+#         label: Custom
+#         type: continuous
+#         stops:
+#         - color: "#468FAF"
+#           offset: 0
+#         - color: "#013A63"
+#           offset: 100
+#       options:
+#         steps: 5
+#         reverse: true
+#     isStepped: true
+#     labelOverlap: false
+#     note_state: collapsed
+#     note_display: hover
+#     note_text: |-
+#       Beginning with Total Sales Ordered Amount, this funnel depicts the flow of amounts across the stages of a line item:
+#       </br>Booking
+#       </br>Backlog
+#       </br>Shipping
+#       </br>Billing
+#     listen:
+#       date: sales_orders_daily_agg.ordered_date
+#       business_unit: sales_orders_daily_agg.business_unit_name
+#       customer_type: sales_orders_daily_agg.parameter_customer_type
+#       customer_country: sales_orders_daily_agg.selected_customer_country
+#       customer_name: sales_orders_daily_agg.selected_customer_name
+#       target_currency: otc_common_parameters_xvw.parameter_target_currency
+#       order_source: sales_orders_daily_agg.order_source_name
+#       item_category: sales_orders_daily_agg__lines.category_description
+#     row: 4
+#     col: 0
+#     width: 12
+#     height: 8
+# #####################################################################################################
+  - name: order_status_donut
+    title: Order Status
     explore: sales_orders_v2
-    type: looker_line
-    fields: [materials_md.material_number_matnr, materials_md.material_text_maktx, across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty,
-      sales_orders_v2.total_quantity_ordered, deliveries.total_quantity_delivered, across_sales_and_deliveries_xvw.difference_delivery_qty_order_qty,
-      across_sales_and_deliveries_xvw.percent_difference_order_qty_delivery_qty]
-    sorts: [across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty desc]
-    limit: 500
-    column_limit: 50
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_view_names: false
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: false
-    show_x_axis_ticks: true
-    limit_displayed_rows: true
-    legend_position: center
-    point_style: circle
-    show_value_labels: true
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
-    show_null_points: true
-    interpolation: step
-    y_axes: [{label: '', orientation: left, series: [{axisId: sales_orders_v2.total_quantity_ordered,
-          id: sales_orders_v2.total_quantity_ordered, name: Total Order Quantity}, {axisId: deliveries.total_quantity_delivered,
-          id: deliveries.total_quantity_delivered, name: Total Quantity Delivered},
-        {axisId: across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty,
-          id: across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty,
-          name: Difference Order Quantity Delivery Quantity}], showLabels: true, showValues: true,
-      unpinAxis: false, tickDensity: default, type: linear}]
-    x_axis_label: Product
-    x_axis_zoom: true
-    y_axis_zoom: true
-    limit_displayed_rows_values:
-      show_hide: show
-      first_last: first
-      num_rows: '10'
-    hidden_series: []
-    series_types:
-      sales_orders_v2.total_quantity_ordered: column
-      deliveries.total_quantity_delivered: column
+    type: looker_pie
+    fields: [across_sales_and_billing_summary_xvw.order_status, sales_orders_v2.sales_order_count_formatted]
+    filters:
+      sales_orders_v2.document_category_vbtyp: 'C'
+      across_sales_and_billing_summary_xvw.order_status: "-NULL"
+    sorts: [across_sales_and_billing_summary_xvw.order_status desc]
+    title_hidden: true
+    value_labels: labels
+    label_type: labVal
+    inner_radius: 60
+    start_angle:
+    end_angle:
     series_colors:
-      sales_orders_v2.total_quantity_ordered: "#12B5CB"
-      deliveries.total_quantity_delivered: "#A6CFD5"
-      across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty: "#596157"
-    series_labels:
-      sales_orders_v2.total_quantity_ordered: Total Quantity Ordered
-      deliveries.total_quantity_delivered: Total Quantity Delivered
-    label_color: []
-    reference_lines: []
-    x_axis_label_rotation: 0
+      Open: "#98B6B1"
+      Closed: "#BFBDC1"
+      Cancelled: "#EB9486"
     advanced_vis_config: |-
       {
-        chart: {},
-        series: [{
-          name: 'Difference'
-        }, {
-          name: 'Total Quantity Ordered',
-          dataLabels: {
-            enabled: false,
+        plotOptions: {
+          pie: {
+            dataLabels: {
+              format: '<b>{key}</b><span style="font-weight: normal"> - <br>{percentage:.1f}%<br>{point.rendered}</span>',
+            }
           }
-        }, {
-          name: 'Total Quantity Delivered',
-          dataLabels: {
-            enabled: false,
-          }
-        }]
+        },
+        title: {
+          text: 'Order<br>Status',
+          verticalAlign: 'middle',
+        },
+        tooltip: {
+          enabled: false,
+        },
       }
-    ordering: none
-    show_null_labels: false
-    show_dropoff: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    defaults_version: 1
     note_state: collapsed
-    note_display: above
-    note_text: Top 10 Products with Largest Difference between Quantity Ordered and Delivered
-    hidden_fields: [materials_md.material_number_matnr, across_sales_and_deliveries_xvw.difference_delivery_qty_order_qty,
-      across_sales_and_deliveries_xvw.percent_difference_order_qty_delivery_qty]
+    note_display: hover
+    note_text: "Percent of Sales Orders by Status: Open, Cancelled, or Closed."
     listen:
       date: sales_orders_v2.creation_date_erdat_date
       country: countries_md.country_name_landx
@@ -334,85 +259,7 @@
       product: materials_md.material_text_maktx
       division: divisions_md.division_name_vtext
       sold_to: customers_md.customer_name
-    row: 2
-    col: 8
-    width: 15
-    height: 12
-
-
-
-
-  # - title: Order vs Delivery Efficiency
-  #   name: Order vs Delivery Efficiency
-  #   explore: sales_orders_v2
-  #   type: looker_bar
-  #   fields: [materials_md.material_text_maktx, deliveries.count_delivery_line_items,
-  #     sales_orders_v2.count]
-  #   sorts: [sales_orders_v2.count desc]
-  #   limit: 500
-  #   column_limit: 50
-  #   x_axis_gridlines: false
-  #   y_axis_gridlines: true
-  #   show_view_names: false
-  #   show_y_axis_labels: true
-  #   show_y_axis_ticks: true
-  #   y_axis_tick_density: default
-  #   y_axis_tick_density_custom: 5
-  #   show_x_axis_label: false
-  #   show_x_axis_ticks: true
-  #   y_axis_scale_mode: linear
-  #   x_axis_reversed: false
-  #   y_axis_reversed: false
-  #   plot_size_by_field: false
-  #   trellis: ''
-  #   stacking: ''
-  #   limit_displayed_rows: true
-  #   legend_position: center
-  #   point_style: circle
-  #   show_value_labels: false
-  #   label_density: 25
-  #   x_axis_scale: auto
-  #   y_axis_combined: true
-  #   ordering: none
-  #   show_null_labels: false
-  #   show_totals_labels: false
-  #   show_silhouette: false
-  #   totals_color: "#808080"
-  #   y_axes: [{label: '', orientation: bottom, series: [{axisId: deliveries.count_delivery_line_items,
-  #           id: deliveries.count_delivery_line_items, name: Total Delivery Line Item},
-  #         {axisId: sales_orders_v2.count, id: sales_orders_v2.count,
-  #           name: Total Sales Order Line Item}], showLabels: true, showValues: true,
-  #       unpinAxis: false, tickDensity: default, type: linear}]
-  #   x_axis_label: Product
-  #   x_axis_zoom: true
-  #   y_axis_zoom: true
-  #   limit_displayed_rows_values:
-  #     show_hide: show
-  #     first_last: first
-  #     num_rows: '10'
-  #   hidden_series: []
-  #   series_types:
-  #     deliveries.count: scatter
-  #   series_colors:
-  #     sales_orders_v2.count: "#A6CFD5"
-  #     deliveries.count: "#000"
-  #   series_labels:
-  #     sales_orders_v2.count: Total Sales Order Line Item
-  #     deliveries.count_delivery_line_items: Total Delivery Line Item
-  #   series_point_styles: {}
-  #   defaults_version: 1
-  #   note_state: collapsed
-  #   note_display: above
-  #   note_text: Top 10 Products by Total Sales Order Line Items
-  #   listen:
-  # date: sales_orders_v2.creation_date_erdat_date
-  # country: countries_md.country_name_landx
-  # sales_org: sales_organizations_md.sales_org_name_vtext
-  # distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-  # product: materials_md.material_text_maktx
-  # division: divisions_md.division_name_vtext
-  # sold_to: customers_md.customer_name
-  #   row: 3
-  #   col: 7
-  #   width: 17
-  #   height: 12
+    row: 4
+    col: 12
+    width: 12
+    height: 8

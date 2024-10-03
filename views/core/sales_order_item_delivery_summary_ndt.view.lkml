@@ -345,7 +345,7 @@ view: sales_order_item_delivery_summary_ndt {
     view_label: "Deliveries"
     description: "% of orders delivered on time"
     type: number
-    sql: safe_divide(${count_orders_delivered_on_time}, ${sales_orders_v2.count_orders}) ;;
+    sql: safe_divide(${count_orders_delivered_on_time}, ${sales_orders_v2.sales_order_count}) ;;
     value_format_name: percent_1
   }
 
@@ -354,7 +354,7 @@ view: sales_order_item_delivery_summary_ndt {
     view_label: "Deliveries"
     description: "% of orders delivered late"
     type: number
-    sql: safe_divide(${count_orders_delivered_late}, ${sales_orders_v2.count_orders}) ;;
+    sql: safe_divide(${count_orders_delivered_late}, ${sales_orders_v2.sales_order_count}) ;;
     value_format_name: percent_1
     # drill_fields: [material_number_matnr, materials_md.material_text_maktx , percent_orders_delivered_late]
     link: {
@@ -373,7 +373,7 @@ view: sales_order_item_delivery_summary_ndt {
     view_label: "Deliveries"
     description: "% of orders delivered in full (delivered quantity equals ordered quantity for all items in order)"
     type: number
-    sql: safe_divide(${count_orders_delivered_in_full}, ${sales_orders_v2.count_orders}) ;;
+    sql: safe_divide(${count_orders_delivered_in_full}, ${sales_orders_v2.sales_order_count}) ;;
     value_format_name: percent_1
   }
 
@@ -383,7 +383,7 @@ view: sales_order_item_delivery_summary_ndt {
     label: "Percent Orders Delivered OTIF"
     description: "% of orders delivered in full (delivered quantity equals ordered quantity for all items in order)"
     type: number
-    sql: safe_divide(${count_orders_delivered_otif}, ${sales_orders_v2.count_orders}) ;;
+    sql: safe_divide(${count_orders_delivered_otif}, ${sales_orders_v2.sales_order_count}) ;;
     value_format_name: percent_1
   }
 
