@@ -85,5 +85,4 @@
       display: inline
       options: []
     explore: accounting_documents_receivable_pdt
-    listens_to_filters: []
-    field: currency_conversion_sdt.select_target_currency
+    field: otc_common_parameters_xvw.parameter_target_currency

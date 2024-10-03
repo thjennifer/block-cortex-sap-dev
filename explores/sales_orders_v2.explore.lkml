@@ -23,13 +23,14 @@ include: "/views/core/customers_md_rfn.view"
 include: "/views/core/countries_md_rfn.view"
 
 # field-only views
+include: "/views/core/otc_common_parameters_xvw.view"
 include: "/views/core/across_sales_and_currency_conversion_xvw.view"
 include: "/views/core/across_sales_and_deliveries_xvw.view"
 include: "/views/core/across_sales_and_returns_xvw.view"
 include: "/views/core/across_sales_and_billing_summary_xvw.view"
 
 # dashboard navigation
-include: "/views/core/navigation_otc_ext.view"
+include: "/views/core/otc_dashboard_navigation_ext.view"
 
 explore: sales_orders_v2 {
   label: "Sales Orders"
@@ -51,6 +52,16 @@ explore: sales_orders_v2 {
   #     ${currency_conversion_sdt.conv_date} >= date_sub(current_date,interval 10 YEAR)
   #     {% else %} 1=1
   #     {% endif %}
+
+  join: otc_dashboard_navigation_ext {
+    relationship: one_to_one
+    sql:  ;;
+  }
+
+  join: otc_common_parameters_xvw {
+    relationship: one_to_one
+    sql:  ;;
+}
 
   join: language_map_sdt {
     type: cross
@@ -234,11 +245,7 @@ explore: sales_orders_v2 {
     sql:  ;;
   }
 
-  join: navigation_otc_ext {
-    view_label: "🔍 Filters & 🛠 Tools"
-    relationship: one_to_one
-    sql:  ;;
-  }
+
 
 
 

@@ -10,7 +10,7 @@
 #
 ######################
 
-view: target_currency_list_pdt {
+view: otc_target_currencies_pdt {
     derived_table: {
       datagroup_trigger: monthly_on_day_1
 

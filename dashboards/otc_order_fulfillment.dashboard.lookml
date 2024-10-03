@@ -10,10 +10,9 @@
 
   elements:
 
-  - title: navigation
-    name: navigation
+  - name: dashboard_navigation
     filters:
-      navigation_otc_ext.navigation_focus_page: '1'
+      otc_dashboard_navigation_ext.parameter_navigation_focus_page: '3'
 
   - title: In Full %
     name: In Full %

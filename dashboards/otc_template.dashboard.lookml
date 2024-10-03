@@ -112,29 +112,30 @@
       type: dropdown_menu
       display: inline
       options: []
-    explore: target_currency_list_pdt
-    listens_to_filters: []
-    field: target_currency_list_pdt.to_currency_tcurr
+    explore: otc_target_currencies_pdt
+    field: otc_target_currencies_pdt.to_currency_tcurr
 
   elements:
-    - title: navigation
-      name: navigation
+    - name: dashboard_navigation
+      title: Dashboard Navigation
       explore: sales_orders_v2
       type: single_value
-      fields: [navigation_otc_ext.navigation]
+      fields: [otc_dashboard_navigation_ext.navigation_links]
       filters:
-        navigation_otc_ext.navigation_focus_page: '1'
-        navigation_otc_ext.navigation_style: 'tabs'
+        otc_dashboard_navigation_ext.parameter_navigation_focus_page: '1'
+        otc_dashboard_navigation_ext.parameter_navigation_style: 'buttons'
+        otc_dashboard_navigation_ext.parameter_navigation_subject: 'orders'
       show_single_value_title: false
       show_comparison: false
       listen:
-        date: navigation_otc_ext.filter1
-        country: navigation_otc_ext.filter2
-        sales_org: navigation_otc_ext.filter3
-        distribution_channel: navigation_otc_ext.filter4
-        division: navigation_otc_ext.filter5
-        product: navigation_otc_ext.filter6
-        sold_to: navigation_otc_ext.filter7
+        date: otc_dashboard_navigation_ext.filter1
+        country: otc_dashboard_navigation_ext.filter2
+        sales_org: otc_dashboard_navigation_ext.filter3
+        distribution_channel: otc_dashboard_navigation_ext.filter4
+        division: otc_dashboard_navigation_ext.filter5
+        product: otc_dashboard_navigation_ext.filter6
+        sold_to: otc_dashboard_navigation_ext.filter7
+        target_currency: otc_dashboard_navigation_ext.filter8
       row: 0
       col: 0
       width: 24

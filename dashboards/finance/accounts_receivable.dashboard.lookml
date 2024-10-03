@@ -15,7 +15,7 @@
     show_comparison: false
     enable_conditional_formatting: false
     listen:
-      Target Currency: currency_conversion_sdt.select_target_currency
+      Target Currency: otc_common_paramters_xvw.parameter_target_currency
       Company Code: companies_md.company_code_text
       Sold To: customers_md.customer_name
     row: 2
@@ -36,7 +36,7 @@
     note_display: hover
     note_text: "Overdue means past the net due date."
     listen:
-      Target Currency: currency_conversion_sdt.select_target_currency
+      Target Currency: otc_common_paramters_xvw.parameter_target_currency
       Company Code: companies_md.company_code_text
       Sold To: customers_md.customer_name
     row: 2
@@ -57,7 +57,7 @@
     note_display: hover
     note_text: "Doubtful means greater than 90 days past the net due date."
     listen:
-      Target Currency: currency_conversion_sdt.select_target_currency
+      Target Currency: otc_common_paramters_xvw.parameter_target_currency
       Company Code: companies_md.company_code_text
       Sold To: customers_md.customer_name
     row: 2
@@ -104,7 +104,7 @@
     y_axis_zoom: true
     # hidden_fields: [accounting_documents_receivable_pdt.total_accounts_receivable_amount_target_currency]
     listen:
-      Target Currency: currency_conversion_sdt.select_target_currency
+      Target Currency: otc_common_paramters_xvw.parameter_target_currency
       Company Code: companies_md.company_code_text
       Sold To: customers_md.customer_name
     row: 5

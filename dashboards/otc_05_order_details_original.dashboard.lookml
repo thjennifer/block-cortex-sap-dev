@@ -13,9 +13,9 @@
   elements:
 
   - title: navigation
-    name: navigation
+    name: dashboard_navigation
     filters:
-      navigation_otc_ext.navigation_focus_page: '5'
+      otc_dashboard_navigation_ext.parameter_navigation_focus_page: '5'
 
 
   # - name: header_order_status
@@ -250,7 +250,7 @@
       product: materials_md.material_text_maktx
       division: divisions_md.division_name_vtext
       sold_to: customers_md.customer_name
-      target_currency: currency_conversion_sdt.select_target_currency
+      target_currency: otc_common_parameters_xvw.parameter_target_currency
       order_status: across_sales_and_billing_summary_xvw.order_status
     row: 7
     col: 0

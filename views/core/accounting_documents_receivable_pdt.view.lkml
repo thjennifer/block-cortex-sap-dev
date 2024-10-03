@@ -29,7 +29,7 @@ view: accounting_documents_receivable_pdt {
         Sk1DtCalc AS CashDiscount1Date,
         Sk2DtCalc AS CashDiscount2Date
 
-      FROM `thjennifer3.CORTEX_SAP_REPORTING.AccountingDocuments`
+      FROM `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.AccountingDocuments`
       WHERE
          AccountType_KOART = "D"
           ;;

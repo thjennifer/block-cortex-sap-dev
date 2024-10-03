@@ -118,7 +118,7 @@ view: sales_order_pricing_sdt {
   dimension: intercompany_price_target_curr {
     type: number
     label: "@{label_currency}Intercompany Price ({{currency}})"
-    # label: "{% assign currency = currency_conversion_sdt.select_target_currency._parameter_value | remove: \"'\" %}Intercompany Price ({{currency}})"
+    # label: "{% assign currency = otc_common_parameters_xvw.parameter_target_currency._parameter_value | remove: \"'\" %}Intercompany Price ({{currency}})"
     description: "Price at which goods are transferred between different company codes (Target Currency)"
     sql: ${inter_company_price} * ${currency_conversion_sdt.exchange_rate_ukurs} ;;
     value_format_name: decimal_2
@@ -135,7 +135,7 @@ view: sales_order_pricing_sdt {
     hidden: no
     type: average
     label: "@{label_currency}Average List Price ({{currency}})"
-    # label: "{% assign currency = currency_conversion_sdt.select_target_currency._parameter_value | remove: \"'\" %}Average List Price ({{currency}})"
+    # label: "{% assign currency = otc_common_parameters_xvw.parameter_target_currency._parameter_value | remove: \"'\" %}Average List Price ({{currency}})"
     sql: ${list_price_target} ;;
     value_format_name: format_large_numbers_d1
   }

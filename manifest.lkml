@@ -1,15 +1,15 @@
 constant: CONNECTION_NAME {
-  value: "qa-thjennifer3"
+  value: "qa-thjennifer1"
   export: override_required
 }
 
 constant: GCP_PROJECT_ID {
-  value: "thjennifer3"
+  value: "thjennifer1"
   export: override_required
 }
 
 constant: REPORTING_DATASET {
-  value: "CORTEX_SAP_REPORTING"
+  value: "CORTEX_ECC_REPORTING"
   export: override_required
 }
 
@@ -17,11 +17,6 @@ constant: CLIENT_ID {
   value: "100"
   export: override_required
 }
-
-# constant: USE_DEMO_DATA {
-#   value: "Yes"
-#   export: override_required
-# }
 
 # Revenue is generally displayed in general ledger as a negative number, which indicates a credit.
 # By setting Sign Change value to 'yes', it's displayed as a positive number in income statement reports.
@@ -295,7 +290,7 @@ constant: label_sap_code {
 #     }
 #
 constant: label_currency {
-  value: "{% assign currency = currency_conversion_sdt.select_target_currency._parameter_value | remove: \"'\" %}"
+  value: "{% assign currency = otc_common_parameters_xvw.parameter_target_currency._parameter_value | remove: \"'\" %}"
 }
 
 #} end constants for field labels
@@ -355,7 +350,7 @@ constant: label_currency {
 #     }
 #
 constant: label_currency {
-  value: "{% assign currency = currency_conversion_sdt.select_target_currency._parameter_value | remove: \"'\" %}"
+  value: "{% assign currency = otc_common_parameters_xvw.parameter_target_currency._parameter_value | remove: \"'\" %}"
 }
 
 #--> label_currency_defaults
@@ -524,7 +519,7 @@ constant: link_style_dashboard_navigation {
 
 
 # constant: link_otc_shared_filters {
-  # value: "sales_orders_v2.creation_date_erdat_date|Order Date||divisions_md.division_name_vtext|Division||countries_md.country_name_landx|Country||materials_md.material_text_maktx|Product||sales_organizations_md.sales_org_name_vtext|Sales Org||distribution_channels_md.distribution_channel_name_vtext|Distribution Channel||currency_conversion_sdt.select_target_currency|Target Currency||customers_md.|Sold to"
+  # value: "sales_orders_v2.creation_date_erdat_date|Order Date||divisions_md.division_name_vtext|Division||countries_md.country_name_landx|Country||materials_md.material_text_maktx|Product||sales_organizations_md.sales_org_name_vtext|Sales Org||distribution_channels_md.distribution_channel_name_vtext|Distribution Channel||otc_common_parameters_xvw.parameter_target_currency|Target Currency||customers_md.|Sold to"
 # }
 
 #--> link_map_otc_sales_orders_to_order_details
@@ -532,7 +527,7 @@ constant: link_style_dashboard_navigation {
 #  to filters on dashboard otc_order_line_item_details
 #}
 constant: link_map_otc_sales_orders_to_order_details {
-  value: "sales_orders_v2.creation_date_erdat_date|Order Date||divisions_md.division_name_vtext|Division||countries_md.country_name_landx|Country||materials_md.material_text_maktx|Product||sales_organizations_md.sales_org_name_vtext|Sales Org||distribution_channels_md.distribution_channel_name_vtext|Distribution Channel||currency_conversion_sdt.select_target_currency|Target Currency||customers_md.|Sold to"
+  value: "sales_orders_v2.creation_date_erdat_date|Order Date||divisions_md.division_name_vtext|Division||countries_md.country_name_landx|Country||materials_md.material_text_maktx|Product||sales_organizations_md.sales_org_name_vtext|Sales Org||distribution_channels_md.distribution_channel_name_vtext|Distribution Channel||otc_common_parameters_xvw.parameter_target_currency|Target Currency||customers_md.|Sold to"
 }
 
 #--> link_map_otc_sales_invoices_to_invoice_details
@@ -601,28 +596,28 @@ constant: link_map_otc_dash_bindings_order_status {
 }
 
 constant: link_map_otc_dash_bindings_order_sales_performance {
-  value: "otc_order_sales_performance|Sales Performance|1,2,3,4,5,6,7,8,9"
+  value: "otc_order_sales_performance|Sales Performance|1,2,3,4,5,6,7,8"
 }
 
 constant: link_map_otc_dash_bindings_order_fulfillment {
-  value: "otc_order_fulfillment|Order Fulfillment|1,2,3,4,5,6,7,8,9"
+  value: "otc_order_fulfillment|Order Fulfillment|1,2,3,4,5,6,7,8"
+}
+
+constant: link_map_otc_dash_bindings_billing_and_pricing {
+  value: "otc_billing_and_pricing|Billing and Pricing|1,2,3,4,5,6,7,8"
 }
 
 constant: link_map_otc_dash_bindings_order_details {
-  value: "otc_order_line_item_details|Orders with Line Details|1,2,3,4,5,6,7,8,9"
+  value: "otc_order_details|Orders Details|1,2,3,4,5,6,7,8"
 }
 
-constant: link_map_otc_dash_bindings_billing_and_invoicing {
-  value: "otc_billing_and_invoicing|Billing and Invoicing|1,2,3,4,5,6,7,8"
-}
+# constant: link_map_otc_dash_bindings_billing_accounts_receivable {
+#   value: "otc_billing_accounts_receivable|Accounts Receivable|1,2,3,4,5,6"
+# }
 
-constant: link_map_otc_dash_bindings_billing_accounts_receivable {
-  value: "otc_billing_accounts_receivable|Accounts Receivable|1,2,3,4,5,6"
-}
-
-constant: link_map_otc_dash_bindings_billing_invoice_details {
-  value: "otc_billing_invoice_line_details|Invoice Details|1,2,3,4,5,6,7,8,9"
-}
+# constant: link_map_otc_dash_bindings_billing_invoice_details {
+#   value: "otc_billing_invoice_line_details|Invoice Details|1,2,3,4,5,6,7,8,9"
+# }
 
 
 #--> link_map_clean_target_dashboard
@@ -663,10 +658,10 @@ constant: link_map_otc_target_dash_id_order_details {
   @{link_map_clean_target_dashboard}"
 }
 
-constant: link_map_otc_target_dash_id_invoice_details {
-  value: "{% assign target_dashboard = '@{link_map_otc_dash_bindings_billing_invoice_details}' | split: '|' | first %}
-  @{link_map_clean_target_dashboard}"
-}
+# constant: link_map_otc_target_dash_id_invoice_details {
+#   value: "{% assign target_dashboard = '@{link_map_otc_dash_bindings_billing_invoice_details}' | split: '|' | first %}
+#   @{link_map_clean_target_dashboard}"
+# }
 
 
 #--> link_map_filters_from_navigation_dash_bindings

@@ -1,8 +1,14 @@
 include: "/views/core/accounting_documents_receivable_rfn.view"
+include: "/views/core/otc_common_parameters_xvw.view"
 include: "/views/core/currency_conversion_sdt.view"
 
 explore: accounting_documents_receivable {
   sql_always_where: ${client_mandt} = '@{CLIENT_ID}' ;;
+
+  join: otc_common_parameters_xvw {
+    relationship: one_to_one
+    sql:  ;;
+  }
 
   join: currency_conversion_sdt {
     view_label: "🔍 Filters & 🛠 Tools"

@@ -1,4 +1,4 @@
-- dashboard: otc_order_snapshot
+- dashboard: otc_order_status
   title: Order Status
   layout: newspaper
   preferred_viewer: dashboards-next
@@ -10,10 +10,9 @@
 
   elements:
 
-  - title: navigation
-    name: navigation
+  - name: dashboard_navigation
     filters:
-      navigation_otc_ext.navigation_focus_page: '2'
+      otc_dashboard_navigation_ext.parameter_navigation_focus_page: '1'
 
   - title: Total Orders
     name: Total Orders

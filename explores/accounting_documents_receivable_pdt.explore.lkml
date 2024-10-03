@@ -1,4 +1,5 @@
 include: "/views/core/accounting_documents_receivable_pdt.view"
+include: "/views/core/otc_common_parameters_xvw.view"
 include: "/views/core/currency_conversion_sdt.view"
 include: "/views/core/language_map_sdt.view"
 include: "/views/core/companies_md_rfn.view"
@@ -6,6 +7,11 @@ include: "/views/core/customers_md_rfn.view"
 
 explore: accounting_documents_receivable_pdt {
   sql_always_where: ${client_mandt} = '@{CLIENT_ID}' ;;
+
+  join: otc_common_parameters_xvw {
+    relationship: one_to_one
+    sql:  ;;
+  }
 
   join: language_map_sdt {
     type: cross

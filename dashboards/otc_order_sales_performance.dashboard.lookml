@@ -1,4 +1,4 @@
-- dashboard: otc_sales_performance
+- dashboard: otc_order_sales_performance
   title: Sales Performance
   layout: newspaper
   preferred_viewer: dashboards-next
@@ -11,10 +11,9 @@
 
   elements:
 
-  - title: navigation
-    name: navigation
+  - name: dashboard_navigation
     filters:
-      navigation_otc_ext.navigation_focus_page: '3'
+      otc_dashboard_navigation_ext.parameter_navigation_focus_page: '2'
 
   - name: Top Products by Sales
     title: Top Products by Sales
@@ -56,7 +55,7 @@
       product: materials_md.material_text_maktx
       division: divisions_md.division_name_vtext
       sold_to: customers_md.customer_name
-      target_currency: currency_conversion_sdt.select_target_currency
+      target_currency: otc_common_parameters_xvw.parameter_target_currency
     # note_state: expanded
     note_display: hover
     note_text: |-
@@ -107,7 +106,7 @@
       product: materials_md.material_text_maktx
       division: divisions_md.division_name_vtext
       sold_to: customers_md.customer_name
-      target_currency: currency_conversion_sdt.select_target_currency
+      target_currency: otc_common_parameters_xvw.parameter_target_currency
     # note_state: expanded
     note_display: hover
     note_text: |-
@@ -157,7 +156,7 @@
       product: materials_md.material_text_maktx
       division: divisions_md.division_name_vtext
       sold_to: customers_md.customer_name
-      target_currency: currency_conversion_sdt.select_target_currency
+      target_currency: otc_common_parameters_xvw.parameter_target_currency
     row: 20
     col: 0
     width: 10
@@ -205,7 +204,7 @@
       product: materials_md.material_text_maktx
       division: divisions_md.division_name_vtext
       sold_to: customers_md.customer_name
-      target_currency: currency_conversion_sdt.select_target_currency
+      target_currency: otc_common_parameters_xvw.parameter_target_currency
     # note_state: expanded
     note_display: hover
     note_text: |-
@@ -361,7 +360,7 @@
       product: materials_md.material_text_maktx
       division: divisions_md.division_name_vtext
       sold_to: customers_md.customer_name
-      target_currency: currency_conversion_sdt.select_target_currency
+      target_currency: otc_common_parameters_xvw.parameter_target_currency
     row: 12
     col: 0
     width: 10
@@ -431,7 +430,7 @@
       product: materials_md.material_text_maktx
       division: divisions_md.division_name_vtext
       sold_to: customers_md.customer_name
-      target_currency: currency_conversion_sdt.select_target_currency
+      target_currency: otc_common_parameters_xvw.parameter_target_currency
     row: 12
     col: 11
     width: 10

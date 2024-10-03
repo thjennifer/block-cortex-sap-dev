@@ -10,6 +10,20 @@ view: currency_conversion_sdt {
   label: "Currency Conversion"
   fields_hidden_by_default: yes
 
+  # view: currency_conversion_sdt {
+  #   derived_table: {
+  #     sql: SELECT
+  #         CONVERSION_DATE,
+  #         FROM_CURRENCY,
+  #         TO_CURRENCY,
+  #         CONVERSION_RATE
+  #       FROM
+  #         `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.CurrencyRateMD`
+  #       WHERE
+  #           TO_CURRENCY = {% parameter otc_common_parameters_xvw.parameter_target_currency %}
+  #       ;;
+  #   }
+
   derived_table: {
     sql: select  Client_MANDT
                 ,ConvDate
@@ -21,18 +35,22 @@ view: currency_conversion_sdt {
                 ,ToCurrency_TCURR
       from `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.CurrencyConversion`
       where Client_MANDT = '@{CLIENT_ID}'
-      and ExchangeRateType_KURST = {% parameter select_exchange_rate_type_kurst %}
-      and ToCurrency_TCURR = {% parameter select_target_currency %}
-      --and {% condition select_target_currency %} ToCurrency_TCURR {% endcondition %}
-      and
-        {% if _explore._name == 'sales_orders_v2' %}
-            {% condition sales_orders_v2.date_filter %} timestamp(ConvDate) {% endcondition %}
-        {% else %}
-
-          {% condition partition_date_filter %} timestamp(ConvDate) {% endcondition %}
-        {% endif %}
-      ;;
+      and ExchangeRateType_KURST = {% parameter otc_common_parameters_xvw.parameter_exchange_rate_type %}
+      and ToCurrency_TCURR = {% parameter otc_common_parameters_xvw.parameter_target_currency %}
+    ;;
   }
+
+    # --and ExchangeRateType_KURST = {% parameter select_exchange_rate_type_kurst %}
+    #   --and ToCurrency_TCURR = {% parameter select_target_currency %}
+    #   --and {% condition select_target_currency %} ToCurrency_TCURR {% endcondition %}
+    # -- and
+    # --   {% if _explore._name == 'sales_orders_v2' %}
+    # --       {% condition sales_orders_v2.date_filter %} timestamp(ConvDate) {% endcondition %}
+    # --   {% else %}
+
+    # --      {% condition partition_date_filter %} timestamp(ConvDate) {% endcondition %}
+    # --    {% endif %}
+    #   ;;
 
   dimension: key {
     hidden: yes
@@ -40,27 +58,27 @@ view: currency_conversion_sdt {
     sql: concat(${client_mandt},${exchange_rate_type_kurst},${from_currency_fcurr}, ${to_currency_tcurr},${conv_date} ;;
   }
 
-  filter: partition_date_filter {
-    type: date
-  }
+  # filter: partition_date_filter {
+  #   type: date
+  # }
 
-  parameter: select_target_currency {
-    hidden: no
-    type: string
-    # default_value: "USD" default will be populated by dashboard filter using user_attribute sap_default_target_currency
-    suggest_explore: target_currency_list_pdt
-    suggest_dimension: to_currency_tcurr
-    default_value: "USD"
-  }
+  # parameter: select_target_currency {
+  #   hidden: no
+  #   type: string
+  #   # default_value: "USD" default will be populated by dashboard filter using user_attribute sap_default_target_currency
+  #   suggest_explore: otc_target_currencies_pdt
+  #   suggest_dimension: to_currency_tcurr
+  #   default_value: "USD"
+  # }
 
-  parameter: select_exchange_rate_type_kurst {
-    hidden: no
-    type: string
-    label: "Select Exchange Rate Type KURST"
-    default_value: "M"
-    suggest_explore: target_currency_list_pdt
-    suggest_dimension: exchange_rate_type_kurst
-  }
+  # parameter: select_exchange_rate_type_kurst {
+  #   hidden: no
+  #   type: string
+  #   label: "Select Exchange Rate Type KURST"
+  #   default_value: "M"
+  #   suggest_explore: otc_target_currencies_pdt
+  #   suggest_dimension: exchange_rate_type_kurst
+  # }
 
   dimension: client_mandt {
     label: "Client MANDT"
