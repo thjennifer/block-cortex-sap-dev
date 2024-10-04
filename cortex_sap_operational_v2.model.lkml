@@ -21,5 +21,5 @@ persist_with: cortex_default_datagroup
 # }
 
 
-include: "/views/core/sales_order_header_status_rfn.view"
-explore: sales_order_header_status {}
+# include: "/views/core/sales_order_header_status_rfn.view"
+# explore: sales_order_header_status {}

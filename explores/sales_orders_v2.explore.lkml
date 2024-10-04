@@ -24,7 +24,7 @@ include: "/views/core/countries_md_rfn.view"
 
 # field-only views
 include: "/views/core/otc_common_parameters_xvw.view"
-include: "/views/core/across_sales_and_currency_conversion_xvw.view"
+include: "/views/core/across_sales_and_md_lookups_xvw.view"
 include: "/views/core/across_sales_and_deliveries_xvw.view"
 include: "/views/core/across_sales_and_returns_xvw.view"
 include: "/views/core/across_sales_and_billing_summary_xvw.view"
@@ -230,7 +230,7 @@ explore: sales_orders_v2 {
     sql:  ;;
   }
 
-  join: across_sales_and_currency_conversion_xvw {
+  join: across_sales_and_md_lookups_xvw {
     relationship: one_to_one
     sql:  ;;
   }

@@ -16,7 +16,7 @@ view: sales_order_item_delivery_summary_ndt {
       # column: creation_date_erdat_date {field: sales_orders_v2.creation_date_erdat_date}
       column: creation_timestamp { field: sales_orders_v2.creation_timestamp }
       column: requested_delivery_date_vdatu { field: sales_orders_v2.requested_delivery_date_vdatu_raw }
-      column: total_quantity_ordered { field: sales_orders_v2.total_quantity_ordered }
+      column: total_ordered_quantity { field: sales_orders_v2.total_ordered_quantity }
       column: total_quantity_delivered { field: deliveries.total_quantity_delivered }
       column: min_delivery_date_lfdat { field: deliveries.min_delivery_date_lfdat }
       column: max_proof_of_delivery_date_podat { field: deliveries.max_proof_of_delivery_date_podat }
@@ -24,7 +24,7 @@ view: sales_order_item_delivery_summary_ndt {
       column: min_actual_goods_movement_date_wadat_ist { field: deliveries.min_actual_goods_movement_date_wadat_ist }
 
       derived_column: is_order_delivered_in_full {
-        sql: min(total_quantity_ordered = total_quantity_delivered) over (partition by  client_mandt, sales_document_vbeln)  ;;
+        sql: min(total_ordered_quantity = total_quantity_delivered) over (partition by  client_mandt, sales_document_vbeln)  ;;
       }
       derived_column: is_order_on_time {
         sql: min(if(max_proof_of_delivery_date_podat is null,null, max_proof_of_delivery_date_podat <= requested_delivery_date_vdatu)) over (partition by  client_mandt, sales_document_vbeln) ;;
@@ -106,7 +106,7 @@ view: sales_order_item_delivery_summary_ndt {
     hidden: no
   }
 
-  dimension: total_quantity_ordered {
+  dimension: total_ordered_quantity {
     label: "Total Quantity Ordered"
     description: "Line Item Quantity Ordered"
     type: number
@@ -155,7 +155,7 @@ view: sales_order_item_delivery_summary_ndt {
 
   # dimension: is_item_in_full {
   #   type: yesno
-  #   sql: ${total_quantity_delivered} = ${total_quantity_ordered} ;;
+  #   sql: ${total_quantity_delivered} = ${total_ordered_quantity} ;;
   # }
 
   # dimension: is_item_on_time {
@@ -274,6 +274,7 @@ view: sales_order_item_delivery_summary_ndt {
   }
 
   measure: count_orders_delivered {
+    hidden: no
     type: count_distinct
     view_label: "Deliveries"
     sql: ${sales_document_vbeln} ;;
@@ -281,6 +282,7 @@ view: sales_order_item_delivery_summary_ndt {
   }
 
   measure: count_orders_delivered_on_time {
+    hidden: no
     type: count_distinct
     view_label: "Deliveries"
     sql: ${sales_document_vbeln} ;;
@@ -288,6 +290,7 @@ view: sales_order_item_delivery_summary_ndt {
   }
 
   measure: count_orders_delivered_late {
+    hidden: no
     type: count_distinct
     view_label: "Deliveries"
     sql: ${sales_document_vbeln} ;;
@@ -385,6 +388,33 @@ view: sales_order_item_delivery_summary_ndt {
     type: number
     sql: safe_divide(${count_orders_delivered_otif}, ${sales_orders_v2.sales_order_count}) ;;
     value_format_name: percent_1
+  }
+
+  measure: percent_orders_delivered_on_time_formatted {
+    hidden: yes
+    view_label: "Deliveries"
+    description: "% of orders delivered on time"
+    type: number
+    sql: ${percent_orders_delivered_on_time} * 100 ;;
+    value_format_name: decimal_1
+  }
+
+  measure: percent_orders_delivered_in_full_formatted {
+    hidden: yes
+    view_label: "Deliveries"
+    description: "% of orders delivered in full (delivered quantity equals ordered quantity for all items in order)"
+    type: number
+    sql: ${percent_orders_delivered_in_full} * 100 ;;
+    value_format_name: decimal_1
+  }
+
+  measure: percent_orders_delivered_otif_formatted {
+    hidden: yes
+    view_label: "Deliveries"
+    description: "% of orders delivered in full (delivered quantity equals ordered quantity for all items in order)"
+    type: number
+    sql: ${percent_orders_delivered_otif} * 100 ;;
+    value_format_name: decimal_1
   }
 
 

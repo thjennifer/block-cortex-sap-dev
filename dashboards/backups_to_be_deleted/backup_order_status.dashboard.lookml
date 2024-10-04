@@ -246,7 +246,7 @@
     explore: sales_orders_v2
     type: looker_line
     fields: [materials_md.material_number_matnr, materials_md.material_text_maktx, across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty,
-      sales_orders_v2.total_quantity_ordered, deliveries.total_quantity_delivered, across_sales_and_deliveries_xvw.difference_delivery_qty_order_qty,
+      sales_orders_v2.total_ordered_quantity, deliveries.total_quantity_delivered, across_sales_and_deliveries_xvw.difference_delivery_qty_order_qty,
       across_sales_and_deliveries_xvw.percent_difference_order_qty_delivery_qty]
     sorts: [across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty desc]
     limit: 500
@@ -269,8 +269,8 @@
     y_axis_combined: true
     show_null_points: true
     interpolation: step
-    y_axes: [{label: '', orientation: left, series: [{axisId: sales_orders_v2.total_quantity_ordered,
-          id: sales_orders_v2.total_quantity_ordered, name: Total Order Quantity}, {axisId: deliveries.total_quantity_delivered,
+    y_axes: [{label: '', orientation: left, series: [{axisId: sales_orders_v2.total_ordered_quantity,
+          id: sales_orders_v2.total_ordered_quantity, name: Total Order Quantity}, {axisId: deliveries.total_quantity_delivered,
           id: deliveries.total_quantity_delivered, name: Total Quantity Delivered},
         {axisId: across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty,
           id: across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty,
@@ -285,14 +285,14 @@
       num_rows: '10'
     hidden_series: []
     series_types:
-      sales_orders_v2.total_quantity_ordered: column
+      sales_orders_v2.total_ordered_quantity: column
       deliveries.total_quantity_delivered: column
     series_colors:
-      sales_orders_v2.total_quantity_ordered: "#12B5CB"
+      sales_orders_v2.total_ordered_quantity: "#12B5CB"
       deliveries.total_quantity_delivered: "#A6CFD5"
       across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty: "#596157"
     series_labels:
-      sales_orders_v2.total_quantity_ordered: Total Quantity Ordered
+      sales_orders_v2.total_ordered_quantity: Total Quantity Ordered
       deliveries.total_quantity_delivered: Total Quantity Delivered
     label_color: []
     reference_lines: []

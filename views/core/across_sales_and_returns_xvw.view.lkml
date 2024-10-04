@@ -45,7 +45,7 @@ view: across_sales_and_returns_xvw {
              returns_sdt.is_return,
              returns_sdt.return_sales_document_vbeln,
              returns_sdt.return_order_date_as_string,
-             sales_orders_v2.total_quantity_ordered,
+             sales_orders_v2.total_ordered_quantity,
              returns_sdt.total_quantity_returned
              ]
   }

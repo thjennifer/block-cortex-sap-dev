@@ -82,7 +82,7 @@ view: across_sales_and_deliveries_xvw {
 
   measure: fill_rate_using_deliveries {
     type: number
-    sql: safe_divide(${deliveries.total_quantity_delivered},${sales_orders_v2.total_quantity_ordered}) ;;
+    sql: safe_divide(${deliveries.total_quantity_delivered},${sales_orders_v2.total_ordered_quantity}) ;;
     value_format_name: percent_1
   }
 
@@ -102,19 +102,19 @@ view: across_sales_and_deliveries_xvw {
 
   measure: difference_order_qty_delivery_qty {
     type: number
-    sql: ${sales_orders_v2.total_quantity_ordered} - ${deliveries.total_quantity_delivered};;
+    sql: ${sales_orders_v2.total_ordered_quantity} - ${deliveries.total_quantity_delivered};;
     value_format_name: decimal_0
   }
 
   measure: difference_delivery_qty_order_qty {
     type: number
-    sql:  ${deliveries.total_quantity_delivered} - ${sales_orders_v2.total_quantity_ordered};;
+    sql:  ${deliveries.total_quantity_delivered} - ${sales_orders_v2.total_ordered_quantity};;
     value_format_name: decimal_0
   }
 
   measure: percent_difference_order_qty_delivery_qty {
     type: number
-    sql: 1 - safe_divide(${deliveries.total_quantity_delivered},${sales_orders_v2.total_quantity_ordered});;
+    sql: 1 - safe_divide(${deliveries.total_quantity_delivered},${sales_orders_v2.total_ordered_quantity});;
     value_format_name: percent_1
   }
 

@@ -32,6 +32,25 @@ view: +sales_orders_v2 {
     sql: CONCAT(${client_mandt},${sales_document_vbeln},${item_posnr});;
   }
 
+#########################################################
+# PARAMETERS
+#{
+# parameter_display_product_level to show either Item or Categories in visualization
+#    used in dimensions selected_product_dimension_id and selected_product_dimension_description
+
+  parameter: parameter_display_product_level {
+    hidden: no
+    type: unquoted
+    view_label: "@{label_view_for_filters}"
+    label: "Display Sales Divisions or Items"
+    description: "Select whether to display sales divisions or items in report. Use with dimensions Selected Product Dimension ID and Selected Product Dimension Description"
+    allowed_value: {label: "Division" value: "Division"}
+    allowed_value: {label: "Item" value: "Item"}
+    default_value: "Item"
+  }
+
+#} end parameters
+
 #### ID fields
 # {
 
@@ -45,14 +64,43 @@ view: +sales_orders_v2 {
     description: "Sales Order Number"
     }
 
-  dimension: item_posnr {
-    hidden: no
-    view_label: "Sales Orders Items"
-    label: "Item@{label_sap_code}"
-    description: "Item Number"
-  }
+
 
 #}
+
+#########################################################
+# DIMENSIONS: Item & Division
+#{
+# values for item_description, language_code, category_description, category_id, category_name_code are:
+# - extended into this view from otc_common_item_descriptions_ext and otc_common_item_categories
+# - pulled from the Repeated Struct fields ITEM_CATEGORIES and ITEM_DESCRIPTIONS
+
+dimension: item_posnr {
+  hidden: no
+  view_label: "Sales Orders Items"
+  label: "Item@{label_sap_code}"
+  description: "Item Number"
+}
+
+dimension: division_hdr_spart {
+  hidden: no
+  label: "Division@{label_sap_code}"
+}
+
+dimension: selected_product_dimension_id {
+  hidden: no
+  type: number
+  # group_label: "Item Categories & Descriptions"
+  label: "{%- if _field._is_selected -%}
+            {%- if parameter_display_product_level._parameter_value == 'Item' -%}Item ID{%- else -%}Division ID{%- endif -%}
+          {%- else -%}Selected Product Dimension ID{%- endif -%}"
+  description: "Values are either Item ID or Division ID based on user selection for Parameter Display Product Level"
+  sql: {% if parameter_display_product_level._parameter_value == 'Item' %}${item_posnr}{%else%}${division_hdr_spart}{%endif%} ;;
+  can_filter: yes
+  value_format_name: id
+}
+
+#} end item dimensions
 
 #### Filters & Parameters
 #{
@@ -331,7 +379,7 @@ view: +sales_orders_v2 {
     value_format_name: "format_large_numbers_d1"
   }
 
-  measure: total_quantity_ordered {
+  measure: total_ordered_quantity {
     hidden: no
     type: sum
     sql: ${cumulative_order_quantity_kwmeng} ;;

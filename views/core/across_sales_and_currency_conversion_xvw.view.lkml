@@ -123,7 +123,7 @@ view: across_sales_and_currency_conversion_xvw {
   #           distribution_channels_md.distribution_channel_name_vtext,
   #           divisions_md.division_name_vtext,
   #           sales_orders_v2.order_date_as_string,
-  #           sales_orders_v2.total_quantity_ordered,
+  #           sales_orders_v2.total_ordered_quantity,
   #           total_sales_amount_target_currency,
   #           sales_orders_v2.base_unit_of_measure_meins
 

@@ -114,7 +114,7 @@ view: sales_order_schedule_line_sdt {
     type: number
     view_label: "Sales Orders Items"
     description: "Fill Rate computed as Total Quantity Confirmed / Total Quantity Ordered"
-    sql: safe_divide(${sales_order_schedule_line_sdt.total_quantity_confirmed},${sales_orders_v2.total_quantity_ordered}) ;;
+    sql: safe_divide(${sales_order_schedule_line_sdt.total_quantity_confirmed},${sales_orders_v2.total_ordered_quantity}) ;;
     value_format_name: percent_1
   }
 

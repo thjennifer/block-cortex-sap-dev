@@ -30,7 +30,7 @@
 
   extends: otc_template
 
-  # filters:
+  filters:
   # - name: item_language
   #   title: Language of Item Description
   #   type: field_filter
@@ -44,17 +44,17 @@
   #   explore: item_md
   #   field: item_md__item_descriptions.language_code
 
-  # - name: product_level
-  #   title: Product Level to Display
-  #   type: field_filter
-  #   default_value: "Category"
-  #   allow_multiple_values: false
-  #   required: false
-  #   ui_config:
-  #     type: button_toggles
-  #     display: inline
-  #   explore: sales_orders_v2
-  #   field: sales_orders__lines.parameter_display_product_level
+  - name: product_level
+    title: Product Level to Display
+    type: field_filter
+    default_value: "Item"
+    allow_multiple_values: false
+    required: false
+    ui_config:
+      type: button_toggles
+      display: inline
+    explore: sales_orders_v2
+    field: sales_orders_v2.parameter_display_product_level
 
 
 
@@ -77,17 +77,20 @@
     title: Top Products by Sales
     explore: sales_orders_v2
     type: looker_bar
-    fields: [materials_md.material_number_matnr,
-             materials_md.material_text_maktx,
-             sales_orders_v2.total_sales_amount_target_currency_formatted]
+    fields: [sales_orders_v2.selected_product_dimension_id,
+             across_sales_and_md_lookups_xvw.selected_product_dimension_description,
+             sales_orders_v2.total_sales_amount_target_currency_formatted,
+            # sales_orders_v2.percent_of_total_sales_amount_target_currency
+             ]
     sorts: [sales_orders_v2.total_sales_amount_target_currency_formatted desc]
-    hidden_fields: [materials_md.material_number_matnr]
+    hidden_fields: [sales_orders_v2.selected_product_dimension_id]
     filters:
       sales_orders_v2.document_category_vbtyp: 'C'
     limit: 10
     show_value_labels: true
     series_colors:
       sales_orders_v2.total_sales_amount_target_currency_formatted: "#74A09F"
+      sales_orders_v2.percent_of_total_sales_amount_target_currency: "transparent"
     y_axes: [{label: '', orientation: bottom,
               series: [{axisId: sales_orders_v2.total_sales_amount_target_currency_formatted,
                             id: sales_orders_v2.total_sales_amount_target_currency_formatted
@@ -98,7 +101,7 @@
         tooltip: {
           backgroundColor: '#FFFFFF',
           shadow: true,
-          format: '<table><th style="font-size: 1.8em;text-align: left;color: #808080; ">{key}</th></table><table>{#each points}<tr><th style="text-align: left;color:{point.color};">{series.name}:&nbsp;&nbsp;&nbsp;</th><td style="text-align: right;color:{point.color};" >{point.y:,.0f}</td></tr>{/each}',
+          format: '<table><th style="font-size: 1.8em;text-align: left;color: #808080; ">{key}</th></table><table>{#each points}<tr><th style="text-align: left;color:#74A09F;">{series.name}:&nbsp;&nbsp;&nbsp;</th><td style="text-align: right;color:#74A09F;" >{point.y:,.0f}</td></tr>{/each}',
           footerFormat: '</table>',
           useHTML: true,
           shared: true,
@@ -124,6 +127,7 @@
       product: materials_md.material_text_maktx
       division: divisions_md.division_name_vtext
       sold_to: customers_md.customer_name
+      product_level: sales_orders_v2.parameter_display_product_level
     row: 2
     col: 0
     width: 12
@@ -133,11 +137,11 @@
     title: Top Products by Average Sales
     explore: sales_orders_v2
     type: looker_bar
-    fields: [materials_md.material_number_matnr,
-             materials_md.material_text_maktx,
+    fields: [sales_orders_v2.selected_product_dimension_id,
+             across_sales_and_md_lookups_xvw.selected_product_dimension_description,
              sales_orders_v2.avg_sales_per_order_target_currency_formatted]
     sorts: [sales_orders_v2.avg_sales_per_order_target_currency_formatted desc]
-    hidden_fields: [materials_md.material_number_matnr]
+    hidden_fields: [sales_orders_v2.selected_product_dimension_id]
     filters:
       sales_orders_v2.document_category_vbtyp: 'C'
     limit: 10
@@ -182,6 +186,7 @@
       product: materials_md.material_text_maktx
       division: divisions_md.division_name_vtext
       sold_to: customers_md.customer_name
+      product_level: sales_orders_v2.parameter_display_product_level
     row: 2
     col: 12
     width: 12
@@ -192,7 +197,7 @@
     explore: sales_orders_v2
     type: looker_bar
     fields: [ sales_orders_v2.sold_to_party_kunnr,
-              customers_md.customer_name,
+              across_sales_and_md_lookups_xvw.customer_name,
               sales_orders_v2.total_sales_amount_target_currency_formatted,
               sales_orders_v2.total_sales_amount_target_currency,
               sales_orders_v2.cumulative_sales_amount_target_currency]
@@ -292,7 +297,7 @@
     explore: sales_orders_v2
     type: looker_bar
     fields: [sales_orders_v2.sold_to_party_kunnr,
-             customers_md.customer_name,
+             across_sales_and_md_lookups_xvw.customer_name,
              sales_orders_v2.avg_sales_per_order_target_currency_formatted]
     sorts: [sales_orders_v2.avg_sales_per_order_target_currency_formatted desc]
     hidden_fields: [sales_orders_v2.sold_to_party_kunnr]
