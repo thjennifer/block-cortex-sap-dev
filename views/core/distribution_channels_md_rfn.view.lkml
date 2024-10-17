@@ -2,7 +2,8 @@ include: "/views/base/distribution_channels_md.view"
 
 view: +distribution_channels_md {
 
-  fields_hidden_by_default: no
+  fields_hidden_by_default: yes
+  label: "Distribution Channels"
 
   dimension: key {
     primary_key: yes
@@ -12,16 +13,16 @@ view: +distribution_channels_md {
 
   dimension: client_mandt {
     hidden: no
-    label: "Client MANDT"
+    label: "@{label_field_name}"
   }
 
   dimension: distribution_channel_vtweg {
     hidden: no
-    label: "Distribution Channel VTWEG"
+    label: "@{label_field_name}"
   }
 
   dimension: distribution_channel_name_vtext {
     hidden: no
-    label: "Distribution Channel Name VTEXT"
+    label: "@{label_field_name}"
     }
   }

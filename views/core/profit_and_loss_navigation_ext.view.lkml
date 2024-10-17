@@ -90,6 +90,7 @@ include: "/views/base/navigation_template.view"
 
 view: profit_and_loss_navigation_ext {
   extends: [navigation_template]
+  label: "@{label_view_for_dashboard_navigation}"
 
   dimension: dash_bindings {
     hidden: yes

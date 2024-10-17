@@ -73,7 +73,6 @@ explore: balance_sheet {
   }
 
   join: balance_sheet_navigation_ext {
-    view_label: "🔍 Filters & 🛠 Tools"
     relationship: one_to_one
     sql:  ;;
 }

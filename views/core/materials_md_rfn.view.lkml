@@ -8,29 +8,29 @@ view: +materials_md {
   fields_hidden_by_default: yes
 
 #temporarily add rows for ES language_SPRAS to allow for testing
-  derived_table: {
-    sql: select Client_MANDT
-                ,MaterialNumber_MATNR
-                ,m.Language_SPRAS
-                ,MaterialText_MAKTX
+  # derived_table: {
+  #   sql: select Client_MANDT
+  #               ,MaterialNumber_MATNR
+  #               ,m.Language_SPRAS
+  #               ,MaterialText_MAKTX
 
-        from
-        (select Client_MANDT
-                ,MaterialNumber_MATNR
-                ,Language_SPRAS
-                ,MaterialText_MAKTX
-        from `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.MaterialsMD`
-        union all
-        select Client_MANDT
-                ,MaterialNumber_MATNR
-                ,'S' Language_SPRAS
-                ,'portatil para jeugos' MaterialText_MAKTX
-        from `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.MaterialsMD`
-        where MaterialNumber_MATNR = 'C0000077') m
-        join ${language_map_sdt.SQL_TABLE_NAME} l on m.Language_SPRAS = l.Language_SPRAS
+  #       from
+  #       (select Client_MANDT
+  #               ,MaterialNumber_MATNR
+  #               ,Language_SPRAS
+  #               ,MaterialText_MAKTX
+  #       from `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.MaterialsMD`
+  #       union all
+  #       select Client_MANDT
+  #               ,MaterialNumber_MATNR
+  #               ,'S' Language_SPRAS
+  #               ,'portatil para jeugos' MaterialText_MAKTX
+  #       from `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.MaterialsMD`
+  #       where MaterialNumber_MATNR = 'C0000077') m
+  #       join ${language_map_sdt.SQL_TABLE_NAME} l on m.Language_SPRAS = l.Language_SPRAS
 
-        ;;
-  }
+  #       ;;
+  # }
 
   dimension: key {
     hidden: yes
@@ -41,22 +41,23 @@ view: +materials_md {
 
   dimension: client_mandt {
     hidden: yes
-    label: "Client MANDT"
+    label: "@{label_field_name}"
   }
 
   dimension: material_number_matnr {
     hidden: no
-    label: "Material Number MATNR"
+    label: "@{label_field_name}"
   }
 
   dimension: language_spras {
     hidden: no
-    label: "Language SPRAS"
+    label: "@{label_field_name}"
   }
 
   dimension: material_text_maktx {
     hidden: no
-    label: "Material Text MAKTX"
+    label: "@{label_field_name}"
+    # sql: COALESCE(${TABLE}.MaterialText_MAKTX,${material_number_matnr}) ;;
   }
 
   }

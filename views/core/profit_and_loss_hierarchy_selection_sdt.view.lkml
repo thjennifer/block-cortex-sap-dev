@@ -103,13 +103,13 @@ view: profit_and_loss_hierarchy_selection_sdt {
 
   # Update with correct suggest explore and dimension (note, must be a string dimension).
   parameter: parameter_pick_start_level {
-    view_label: "🔍 Filters & 🛠 Tools"
+    view_label: "@{label_view_for_filters}"
     suggest_explore: profit_and_loss
     suggest_dimension: profit_and_loss.gllevel_string
   }
 
   parameter: parameter_pick_depth_level {
-    view_label: "🔍 Filters & 🛠 Tools"
+    view_label: "@{label_view_for_filters}"
   }
 
   dimension: client_mandt {

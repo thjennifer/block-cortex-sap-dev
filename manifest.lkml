@@ -26,7 +26,7 @@ constant: SIGN_CHANGE {
 }
 
 #########################################################
-# Sign Change Multiplier and Default Target Date
+# Sign Change Multiplier, User Language, Default Target Date
 #{
 #--> sign_change_multiplier
 #{
@@ -43,21 +43,35 @@ constant: sign_change_multiplier {
   {% if choice == 'yes' %}{% assign multiplier = -1 %}{% else %}{% assign multiplier = 1 %}{% endif %}"
 }
 
+#--> user_language
+#{
+# Assign user language based on value found in user attribute cortex_sap_default_language_key.
+# Example use:
+#   explore: divisions_md {
+#     sql_always_where: ${language_spras} = @{user_language} ;;
+#   }
+#}
+constant: user_language {
+  value:  "{%- assign lang = _user_attributes['cortex_sap_default_language_key'] -%}
+           '{{lang}}'"
+}
+
 #--> default_target_date
 #{
 # If using test data, set target date to '2023-11-30' to match dates in that dataset otherwise use current date.
 # Example use:
 #   dimension: is_account_receivables {
-#   type: yesno
-#   sql:${posting_date_in_the_document_budat} < DATE(@{default_target_date}) AND
-#        ${clearing_date_augdt} IS NULL   ;;
+#     type: yesno
+#     sql:${posting_date_in_the_document_budat} < DATE(@{default_target_date}) AND
+#         ${clearing_date_augdt} IS NULL   ;;
 #   }
 #}
 constant: default_target_date {
-  value:  "{%- assign test_data = _user_attributes['sap_use_demo_data'] | upcase -%}
+  value:  "{%- assign test_data = _user_attributes['cortex_sap_use_test_data'] | upcase -%}
   {%- if test_data == 'YES' -%}
-  {%- assign td = '2023-11-30' -%} {%- else -%}
-  {%- assign td = 'now' | date: '%Y-%m-%d' -%}{%- endif -%}'{{td}}'"
+    {%- assign td = '2023-11-30' -%} {%- else -%}
+    {%- assign td = 'now' | date: '%Y-%m-%d' -%}
+  {%- endif -%}'{{td}}'"
 }
 
 #} end constants for category set and target date
@@ -94,20 +108,20 @@ constant: html_format_negative {
 constant: html_format_big_numbers {
   value: "
   {%- if value < 0 -%}
-  {%- assign abs_value = value | times: -1.0 -%}
-  {%- assign pos_neg = '-' -%}
+    {%- assign abs_value = value | times: -1.0 -%}
+    {%- assign pos_neg = '-' -%}
   {%- else -%}
-  {%- assign abs_value = value | times: 1.0 -%}
-  {%- assign pos_neg = '' -%}
+    {%- assign abs_value = value | times: 1.0 -%}
+    {%- assign pos_neg = '' -%}
   {%- endif -%}
   {%- if abs_value >=1000000000 -%}
-  {{pos_neg}}{{ abs_value | divided_by: 1000000000.0 | round: 1 }}B
+    {{pos_neg}}{{ abs_value | divided_by: 1000000000.0 | round: 1 }}B
   {%- elsif abs_value >=1000000 -%}
-  {{pos_neg}}{{ abs_value | divided_by: 1000000.0 | round: 1 }}M
+    {{pos_neg}}{{ abs_value | divided_by: 1000000.0 | round: 1 }}M
   {%- elsif abs_value >=1000 -%}
-  {{pos_neg}}{{ abs_value | divided_by: 1000.0 | round: 1 }}K
+    {{pos_neg}}{{ abs_value | divided_by: 1000.0 | round: 1 }}K
   {%- else -%}
-  {{pos_neg}}{{ abs_value }}
+    {{pos_neg}}{{ abs_value }}
   {%- endif -%}
 
   "
@@ -272,12 +286,29 @@ constant: label_view_for_dashboard_navigation {
 #   }
 # If sap_show_labels = Yes, then Field Name appears as Sales Document VBELN
 #}
-constant: label_sap_code {
-  value: "{%- assign show = _user_attributes['sap_show_labels'] | upcase -%}
+constant: label_field_name {
+  value: "{%- assign show = _user_attributes['cortex_sap_show_original_sap_field_name'] | upcase -%}
+  {%- assign sap_code = _field._name | split:'_' | last -%}
+  {%- assign fname = _field._name | split: '.' | last | remove: sap_code -%}
+  {%- assign fname_array = fname | split: '_' -%}
+  {%- for word in fname_array -%}
+    {%- assign cap = word | capitalize -%}
+    {%- assign field_name = field_name | append: cap -%}
+    {%- unless forloop.last -%}{%- assign field_name = field_name | append: ' ' -%}{%- endunless -%}
+  {%- endfor -%}
   {%- if show == 'YES' -%}
-  {%- assign sap_label = _field._name | split:'_' | last | upcase -%}
-  {% else %}{% assign sap_label = '' %}
-  {% endif %}{{sap_label}}"
+    {%- assign sap_code = sap_code | upcase | prepend: ' ' -%}
+    {%- assign field_name = field_name | append: sap_code -%}
+  {%- endif -%}
+  {{ field_name }}"
+}
+
+constant: label_append_sap_code {
+ value: "{%- assign show = _user_attributes['cortex_sap_show_original_sap_field_name'] | upcase -%}
+         {%- if show == 'YES' -%}
+            {%- assign sap_label = _field._name | split:'_' | last | upcase | prepend: ' ' -%}
+         {%- else %}{% assign sap_label = '' -%}
+         {%- endif -%}{{sap_label}}"
 }
 
 #--> label_currency
@@ -387,13 +418,13 @@ constant: label_currency_field_name {
   {%- if remove_total_prefix == true -%}{% assign remove_words = remove_words | append: ',total_'-%}{%- endif -%}
   {%- assign remove_words = remove_words | split: ','%}
   {%- for remove_word in remove_words -%}
-  {%- assign fname = fname | remove: remove_word -%}
+    {%- assign fname = fname | remove: remove_word -%}
   {%- endfor -%}
   {%- assign fname_array = fname | split: '_' -%}
   {%- for word in fname_array -%}
-  {%- assign cap = word | capitalize -%}
-  {%- assign field_name = field_name | append: cap -%}
-  {%- unless forloop.last -%}{%- assign field_name = field_name | append: ' ' -%}{%- endunless -%}
+    {%- assign cap = word | capitalize -%}
+    {%- assign field_name = field_name | append: cap -%}
+    {%- unless forloop.last -%}{%- assign field_name = field_name | append: ' ' -%}{%- endunless -%}
   {%- endfor -%}
   "
 }

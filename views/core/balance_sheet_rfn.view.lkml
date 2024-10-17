@@ -81,7 +81,7 @@ view: +balance_sheet {
 
   parameter: select_fiscal_period {
     type: unquoted
-    view_label: "🔍 Filters & 🛠 Tools"
+    view_label: "@{label_view_for_filters}"
     description: "Select a Fiscal Period for Balance Sheet Reporting"
     # suggest_explore: balance_sheet_fiscal_periods_sdt
     suggest_dimension: fiscal_year_period
@@ -89,7 +89,7 @@ view: +balance_sheet {
 
   parameter: select_comparison_type {
     type: unquoted
-    view_label: "🔍 Filters & 🛠 Tools"
+    view_label: "@{label_view_for_filters}"
     description: "When creating a Balance Sheet report, you can choose to compare the selected fiscal period to the previous year, previous fiscal period, or a custom period. If Custom is selected, select a Fiscal Period from the 'Select Custom Comparison Period' parameter."
     allowed_value: {
       label: "None" value: "none"
@@ -108,7 +108,7 @@ view: +balance_sheet {
 
   parameter: select_custom_comparison_period {
     type: unquoted
-    view_label: "🔍 Filters & 🛠 Tools"
+    view_label: "@{label_view_for_filters}"
     description: "When Comparison Type equals Custom, you must select a Comparison Period. If no comparison period selected, previous year will be used."
     # suggest_explore: fiscal_periods_sdt
     suggest_dimension: fiscal_year_period

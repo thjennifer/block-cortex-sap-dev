@@ -130,7 +130,7 @@
     title: Select Fiscal Timeframe
     type: field_filter
     # if using demo data default is 2023.Q4 else find current calendar quarter
-    default_value: "{% if _user_attributes['sap_use_demo_data']=='Yes'%}{% assign qtr = '2023.Q4'%}{%else%}{% assign q = 'now' | date: '%m' | times: 1.0 | divided_by: 3 | ceil %}{% assign qtr = 'now' | date: '%Y' | append: '.Q' | append: q %}{%endif%}{{qtr}}"
+    default_value: "{% if _user_attributes['cortex_sap_use_test_data']=='Yes'%}{% assign qtr = '2023.Q4'%}{%else%}{% assign q = 'now' | date: '%m' | times: 1.0 | divided_by: 3 | ceil %}{% assign qtr = 'now' | date: '%Y' | append: '.Q' | append: q %}{%endif%}{{qtr}}"
     allow_multiple_values: true
     required: false
     ui_config:

@@ -81,6 +81,7 @@ include: "/views/base/navigation_template.view"
 
 view: balance_sheet_navigation_ext {
   extends: [navigation_template]
+  label: "@{label_view_for_dashboard_navigation}"
 
   dimension: dash_bindings {
     hidden: yes

@@ -294,7 +294,7 @@
   - name: Order Date
     title: Order Date
     type: date_filter
-    default_value:  "{% if _user_attributes['sap_use_demo_data'] =='Yes' %}{% assign date_range = '2022/01/01 to 2022/05/01' %}
+    default_value:  "{% if _user_attributes['cortex_sap_use_test_data'] =='Yes' %}{% assign date_range = '2022/01/01 to 2022/05/01' %}
                       {% else %} {% assign date_range = 'last 1 year' %}
                       {% endif %}{{date_range}}"
     allow_multiple_values: true

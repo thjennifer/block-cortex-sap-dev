@@ -77,7 +77,7 @@
   - name: Target Currency
     title: Target Currency
     type: field_filter
-    default_value: "{{ _user_attributes['sap_default_target_currency'] }}"
+    default_value: "{{ _user_attributes['cortex_sap_default_target_currency'] }}"
     allow_multiple_values: true
     required: false
     ui_config:

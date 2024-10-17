@@ -66,11 +66,13 @@ view: language_map_sdt {
 
   derived_table: {
     sql: {% assign locale = _user_attributes['locale'] | replace: 'nb','no' | upcase | split: '_' %}
+         {% assign user_language = _user_attributes['cortex_sap_default_language_key'] %}
          {% assign explore = _explore._name | replace: 'balance_sheet','BalanceSheet' | replace: 'profit_and_loss','ProfitAndLoss' %}
         SELECT LanguageKey_SPRAS AS Language_SPRAS,
                1 as rnk
         FROM `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.Languages_T002`
-        WHERE TwoCharacterSapLanguageCode_LAISO = '{{locale[0]}}'
+        --WHERE TwoCharacterSapLanguageCode_LAISO = '{{locale[0]}}'
+        WHERE LanguageKey_SPRAS = '{{user_language}}'
         {% if explore == 'ProfitAndLoss' or explore == 'BalanceSheet' %}
         AND LanguageKey_SPRAS IN (
             SELECT DISTINCT languageKey_SPRAS

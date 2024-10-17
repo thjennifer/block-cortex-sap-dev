@@ -65,7 +65,7 @@ view: currency_conversion_sdt {
   # parameter: select_target_currency {
   #   hidden: no
   #   type: string
-  #   # default_value: "USD" default will be populated by dashboard filter using user_attribute sap_default_target_currency
+  #   # default_value: "USD" default will be populated by dashboard filter using user_attribute cortex_sap_default_target_currency
   #   suggest_explore: otc_target_currencies_pdt
   #   suggest_dimension: to_currency_tcurr
   #   default_value: "USD"

@@ -78,7 +78,7 @@ view: +profit_and_loss {
 
   parameter: parameter_display_time_dimension {
     type: unquoted
-    view_label: "🔍 Filters & 🛠 Tools"
+    view_label: "@{label_view_for_filters}"
     label: "Display Year, Quarter or Period"
     allowed_value: {label: "Fiscal Period" value: "fp"}
     allowed_value: {label: "Quarter" value: "qtr"}
@@ -92,7 +92,7 @@ view: +profit_and_loss {
   # this filter is applied in view profit_and_loss_hierarchy_selection_sdt (which is joined to this view in the Explore profit_and_loss)
   filter: filter_fiscal_timeframe {
     type: string
-    view_label: "🔍 Filters & 🛠 Tools"
+    view_label: "@{label_view_for_filters}"
     description: "Choose fiscal periods, quarters or years for Income Statement Reporting. To ensure the correct timeframes are listed, add this filter to a dashboard. Add the parameter \'Display Fiscal Period or Quarter\' and select this filter to update when the display parameter changes."
     label: "Select Fiscal Timeframe"
     suggest_dimension: timeframes_list
@@ -100,7 +100,7 @@ view: +profit_and_loss {
 
   parameter: parameter_aggregate {
     type: unquoted
-    view_label: "🔍 Filters & 🛠 Tools"
+    view_label: "@{label_view_for_filters}"
     label: "Combine Selected Timeframes?"
     description: "If multiple timeframes selected, should results be combined or shown for each time period selected?"
     allowed_value: {value: "Yes"}
@@ -110,7 +110,7 @@ view: +profit_and_loss {
 
   parameter: parameter_compare_to {
     type: unquoted
-    view_label: "🔍 Filters & 🛠 Tools"
+    view_label: "@{label_view_for_filters}"
     label: "Select Comparison Type"
     allowed_value: {
       label: "None" value: "none"
@@ -126,7 +126,7 @@ view: +profit_and_loss {
 
   dimension: timeframes_list {
     hidden: yes
-    view_label: "🔍 Filters & 🛠 Tools"
+    view_label: "@{label_view_for_filters}"
     label: "Timeframe"
     description: "Used to populate filter labeled Select Fiscal Timeframe. Timeframes listed depend on whether displaying Fiscal Periods, Quarters or Years in the Income Statement dashboards."
     sql: {% assign display = parameter_display_time_dimension._parameter_value %}

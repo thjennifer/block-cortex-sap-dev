@@ -78,7 +78,6 @@ explore: profit_and_loss {
   }
 
   join: profit_and_loss_navigation_ext {
-    view_label: "🔍 Filters & 🛠 Tools"
     relationship: one_to_one
     sql:  ;;
 }

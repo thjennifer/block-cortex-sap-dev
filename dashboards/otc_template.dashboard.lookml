@@ -19,7 +19,7 @@
   - name: date
     title: Order Date
     type: date_filter
-    default_value:  "{% if _user_attributes['sap_use_demo_data'] =='Yes' %}{% assign date_range = '2022/01/01 to 2022/12/31' %}
+    default_value:  "{% if _user_attributes['cortex_sap_use_test_data'] =='Yes' %}{% assign date_range = '2022/01/01 to 2022/12/31' %}
                      {% else %} {% assign date_range = 'last 1 year' %}
                      {% endif %}{{date_range}}"
     # default_value: "2022/03/02 to 2022/03/03"
@@ -41,8 +41,7 @@
     ui_config:
       type: checkboxes
       display: popover
-    explore: sales_orders_v2
-    listens_to_filters: []
+    explore: countries_md
     field: countries_md.country_name_landx
 
   - name: sales_org
@@ -54,8 +53,7 @@
     ui_config:
       type: checkboxes
       display: popover
-    explore: sales_orders_v2
-    listens_to_filters: []
+    explore: sales_organizations_md
     field: sales_organizations_md.sales_org_name_vtext
 
   - name: distribution_channel
@@ -68,7 +66,7 @@
       type: checkboxes
       display: popover
     explore: sales_orders_v2
-    listens_to_filters: []
+    listens_to_filters: [language_key_spras]
     field: distribution_channels_md.distribution_channel_name_vtext
 
   - name: division
@@ -80,8 +78,7 @@
     ui_config:
       type: checkboxes
       display: popover
-    explore: sales_orders_v2
-    listens_to_filters: []
+    explore: divisions_md
     field: divisions_md.division_name_vtext
 
   - name: sold_to
@@ -93,8 +90,7 @@
     ui_config:
       type: advanced
       display: popover
-    explore: sales_orders_v2
-    listens_to_filters: []
+    explore: customers_md
     field: customers_md.customer_name
 
   - name: product
@@ -106,14 +102,13 @@
     ui_config:
       type: advanced
       display: popover
-    explore: sales_orders_v2
-    listens_to_filters: []
+    explore: materials_md
     field: materials_md.material_text_maktx
 
   - name: target_currency
     title: Target Currency
     type: field_filter
-    default_value: "{{ _user_attributes['sap_default_target_currency'] }}"
+    default_value: "{{ _user_attributes['cortex_sap_default_target_currency'] }}"
     allow_multiple_values: false
     required: false
     ui_config:
@@ -122,6 +117,21 @@
       options: []
     explore: otc_target_currencies_pdt
     field: otc_target_currencies_pdt.to_currency_tcurr
+
+  # the other field filters need {{ _user_attributes['cortex_sap_default_language_key'] }} to display properly (parameter won't work)
+  # if include this parameter and selected value differs from user attribute then applied filters may cause 0 rows
+  # - name: language_key_spras
+  #   title: Language
+  #   type: field_filter
+  #   default_value: "{{ _user_attributes['cortex_sap_default_language_key'] }}"
+  #   allow_multiple_values: false
+  #   required: false
+  #   ui_config:
+  #     type: dropdown_menu
+  #     display: inline
+  #     options: []
+  #   explore: otc_languages_pdt
+  #   field: otc_languages_pdt.language_spras
 
   elements:
     - name: dashboard_navigation

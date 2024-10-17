@@ -56,11 +56,11 @@ view: +sales_orders_v2 {
 
   dimension: client_mandt {
     hidden: yes
-    label: "Client@{label_sap_code}"}
+    label: "@{label_field_name}"}
 
   dimension: sales_document_vbeln {
     hidden: no
-    label: "Sales Document@{label_sap_code}"
+    label: "@{label_field_name}"
     description: "Sales Order Number"
     }
 
@@ -78,19 +78,20 @@ view: +sales_orders_v2 {
 dimension: item_posnr {
   hidden: no
   view_label: "Sales Orders Items"
-  label: "Item@{label_sap_code}"
+  label: "@{label_field_name}"
   description: "Item Number"
 }
 
 dimension: division_hdr_spart {
   hidden: no
-  label: "Division@{label_sap_code}"
+  label: "@{label_field_name}"
 }
 
 dimension: selected_product_dimension_id {
   hidden: no
   type: number
   # group_label: "Item Categories & Descriptions"
+  view_label: "Sales Orders Items"
   label: "{%- if _field._is_selected -%}
             {%- if parameter_display_product_level._parameter_value == 'Item' -%}Item ID{%- else -%}Division ID{%- endif -%}
           {%- else -%}Selected Product Dimension ID{%- endif -%}"
@@ -107,7 +108,7 @@ dimension: selected_product_dimension_id {
 
   filter: date_filter {
     hidden: no
-    view_label: "🔍 Filters & 🛠 Tools"
+    view_label: "@{label_view_for_filters}"
     type: date
     # for tables partitioned by date capture start and end dates and apply as a templated filter
     # in the Explore's sql_always_where statement
@@ -119,7 +120,7 @@ dimension: selected_product_dimension_id {
 #{
   dimension_group: creation_date_erdat {
     hidden: no
-    label: "Creation ERDAT"
+    label: "Creation @{label_append_sap_code}"
     description: "Sales Order Creation Date ERDAT"
   }
 
@@ -132,7 +133,7 @@ dimension: selected_product_dimension_id {
 
   dimension: creation_time_erzet {
     hidden: no
-    label: "Creation Time ERZET"
+    label: "Creation Time @{label_append_sap_code}"
     type: string
     sql: ${TABLE}.CreationTime_ERZET ;;
   }
@@ -144,7 +145,7 @@ dimension: selected_product_dimension_id {
 
   dimension_group: requested_delivery_date_vdatu {
     hidden: no
-    label: "Requested Delivery VDATU"
+    label: "Requested Delivery @{label_append_sap_code}"
     description: "Requested Delivery Date VDATU"
   }
 #} end dates & times
@@ -154,54 +155,67 @@ dimension: selected_product_dimension_id {
 
   dimension: sold_to_party_kunnr {
     hidden: no
-    label: "Sold to Party@{label_sap_code}"
+    label: "@{label_field_name}"
   }
 
   dimension: sales_document_type_auart {
     hidden: no
-    label: "Sales Document Type@{label_sap_code}"
+    label: "@{label_field_name}"
   }
 
   dimension: document_category_vbtyp {
     hidden: no
-    label: "Sales Document Category@{label_sap_code}"
+    label: "Sales @{label_field_name}"
     description: "Document Category (C, M, J, etc)"
   }
 
   dimension: sales_organization_vkorg {
     hidden: no
-    label: "Sales Organization@{label_sap_code}"
+    label: "@{label_field_name}"
   }
 
   dimension: distribution_channel_vtweg {
     hidden: no
-    label: "Distribution Channel@{label_sap_code}"
+    label: "@{label_field_name}"
   }
 
-  dimension: division_hdr_spart {
-    hidden: no
-    label: "Division (header)@{label_sap_code}"
-  }
+  # dimension: division_hdr_spart {
+  #   hidden: no
+  #   label: "Division (header)@{label_sap_code}"
+  # }
 
   dimension: sales_group_vkgrp {
     hidden: no
-    label: "Sales Group@{label_sap_code}"
+    label: "@{label_field_name}"
     }
 
   dimension: sales_office_vkbur {
     hidden: no
-    label: "Sales Office@{label_sap_code}"
+    label: "@{label_field_name}"
   }
 
   dimension: cost_center_hdr_kostl {
     hidden: no
-    label: "Cost Center (header)@{label_sap_code}"
+    label: "Cost Center@{label_append_sap_code}"
   }
 
   dimension: currency_hdr_waerk {
     hidden: no
-    label: "Currency (header)@{label_sap_code}"
+    label: "Currency @{label_append_sap_code} (source)"
     description: "SD Document Currency at header level"
+  }
+
+  dimension: target_currency {
+    hidden: no
+    label: "Currency (Target)"
+    description:  "Code indicating the target currency into which the source currency is converted"
+    sql: {% parameter otc_common_parameters_xvw.parameter_target_currency %} ;;
+  }
+
+  dimension: exchange_rate_ukurs {
+    hidden: no
+    label: "@{label_field_name}"
+    sql: ${currency_conversion_sdt.exchange_rate_ukurs} ;;
   }
 
 
@@ -213,7 +227,7 @@ dimension: selected_product_dimension_id {
   dimension: net_price_netpr {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "Item Price (Document Currency)@{label_sap_code}"
+    label: "Item Price (Document Currency)@{label_append_sap_code}"
     description: "Net Price of Item (Document Currency)"
     value_format_name: decimal_2
   }
@@ -222,7 +236,7 @@ dimension: selected_product_dimension_id {
     hidden: no
     type: number
     view_label: "Sales Orders Items"
-    label: "Item Price (Target Currency) NETPR"
+    label: "Item Price (Target Currency)@{label_append_sap_code}"
     description: "Net Price of Item (Target Currency)"
     sql: ${sales_orders_v2.net_price_netpr} * ${currency_conversion_sdt.exchange_rate_ukurs} ;;
     value_format_name: decimal_2
@@ -232,7 +246,7 @@ dimension: selected_product_dimension_id {
     hidden: no
     type: number
     view_label: "Sales Orders Items"
-    label: "Item Sales (Target Currency) NETWR"
+    label: "Item Sales (Target Currency)@{label_append_sap_code}"
     description: "Item Qty * Net Price (Target Currency)"
     sql:  ${item_net_price_target_currency_netpr} * ${cumulative_order_quantity_kwmeng};;
     value_format_name: decimal_2
@@ -242,20 +256,20 @@ dimension: selected_product_dimension_id {
   dimension: cumulative_order_quantity_kwmeng {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "Order Quantity of Item@{label_sap_code}"
+    label: "Order Quantity of Item@{label_append_sap_code}"
   }
 
   dimension: cumulative_confirmed_quantity_kbmeng {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "Confirmed Quantity of Item@{label_sap_code}"
+    label: "Confirmed Quantity of Item@{label_append_sap_code}"
     description: "Confirmed Quantity of Item in Sale Unit of Measure"
   }
 
   dimension: currency_waerk {
     hidden: yes
     view_label: "Sales Orders Items"
-    label: "Currency (item)"
+    label: "@{label_field_name}(item)"
     description: "Document Currency at item level"
   }
 
@@ -270,19 +284,19 @@ dimension: selected_product_dimension_id {
     hidden: no
     view_label: "Sales Orders Items"
     label: "Base UoM"
-    description: "Base Unit of Measure@{label_sap_code}"
+    description: "Base Unit of Measure@{label_append_sap_code}"
   }
 
   dimension: sales_unit_vrkme {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "Sales Unit@{label_sap_code}"
+    label: "@{label_field_name}"
     }
 
   dimension: rejection_reason_abgru {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "Rejection Reason@{label_sap_code}"
+    label: "@{label_field_name}"
   }
 
   dimension: is_item_cancelled {
@@ -296,7 +310,6 @@ dimension: selected_product_dimension_id {
 
   measure: order_line_count {
     hidden: no
-    label: "Count Document Line Items"
     description: "Count of Order Documents & Items"
     }
 

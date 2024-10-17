@@ -2,6 +2,7 @@ include: "/views/base/customers_md.view"
 
 view: +customers_md {
   fields_hidden_by_default: yes
+  label: "Customers"
 
   dimension: key {
     hidden: yes
@@ -10,18 +11,20 @@ view: +customers_md {
   }
 
   dimension: client_mandt {
-    hidden:  no
-    label: "Client MANDT"
+    hidden:  yes
+    label: "@{label_field_name}"
   }
 
   dimension: customer_number_kunnr {
     hidden: no
-    label: "Customer Number KUNNR"
+    label: "@{label_field_name}"
   }
 
   dimension: language_spras {
     type: string
-    sql: COALESCE(${TABLE}.language_key_spras,'NA') ;;
+    hidden: no
+    label: "@{label_field_name}"
+    sql: COALESCE(${language_key_spras},'NA') ;;
   }
 
   dimension: customer_name  {

@@ -2,6 +2,7 @@ include: "/views/base/sales_organizations_md.view"
 
 view: +sales_organizations_md {
   fields_hidden_by_default: yes
+  label: "Sales Organizations"
 
   dimension: key {
     primary_key: yes
@@ -10,22 +11,22 @@ view: +sales_organizations_md {
 
   dimension: client_mandt {
     hidden: no
-    label: "Client MANDT"
+    label: "@{label_field_name}"
   }
 
   dimension: sales_org_vkorg {
     hidden: no
-    label: "Sales Org VKORG"
+    label: "@{label_field_name}"
   }
 
   dimension: language_spras {
     hidden: no
-    label: "Language SPRAS"
+    label: "@{label_field_name}"
   }
 
   dimension: sales_org_name_vtext {
     hidden: no
-    label: "Sales Org Name VTEXT"
+    label: "@{label_field_name}"
   }
 
  }

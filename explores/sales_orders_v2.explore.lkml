@@ -34,7 +34,7 @@ include: "/views/core/otc_dashboard_navigation_ext.view"
 
 explore: sales_orders_v2 {
   label: "Sales Orders"
-  persist_for: "2 minutes"
+  # persist_for: "2 minutes"
   sql_always_where: ${sales_orders_v2.client_mandt}='@{CLIENT_ID}'
 
   and
@@ -70,30 +70,32 @@ explore: sales_orders_v2 {
   }
 
   join: currency_conversion_sdt {
-    view_label: "🔍 Filters & 🛠 Tools"
     type: inner
     relationship: many_to_one
-    sql_on: ${sales_orders_v2.client_mandt}=${currency_conversion_sdt.client_mandt} and
-            ${sales_orders_v2.currency_waerk}=${currency_conversion_sdt.from_currency_fcurr} and
+    sql_on: ${sales_orders_v2.client_mandt}=${currency_conversion_sdt.client_mandt} AND
+            ${sales_orders_v2.currency_waerk}=${currency_conversion_sdt.from_currency_fcurr} AND
             ${sales_orders_v2.creation_date_erdat_raw} = ${currency_conversion_sdt.conv_date};;
+    fields: []
   }
 
   join: materials_md {
     view_label: "Sales Orders Items"
-    type: inner
+    type: left_outer
     relationship: one_to_many
-    sql_on: ${sales_orders_v2.material_number_matnr}=${materials_md.material_number_matnr} and
-            ${sales_orders_v2.client_mandt}=${materials_md.client_mandt} and
-            ${language_map_sdt.language_spras} = ${materials_md.language_spras};;
+    sql_on: ${sales_orders_v2.material_number_matnr}=${materials_md.material_number_matnr} AND
+            ${sales_orders_v2.client_mandt}=${materials_md.client_mandt} AND
+            ${materials_md.language_spras} = @{user_language}
+             ;;
       }
 
   join: sales_organizations_md {
     view_label: "Sales Orders"
     type: left_outer
     relationship: many_to_one
-    sql_on: ${sales_orders_v2.client_mandt} = ${sales_organizations_md.client_mandt} and
-            ${sales_orders_v2.sales_organization_vkorg} = ${sales_organizations_md.sales_org_vkorg} and
-            ${language_map_sdt.language_spras} = ${sales_organizations_md.language_spras};;
+    sql_on: ${sales_orders_v2.client_mandt} = ${sales_organizations_md.client_mandt} AND
+            ${sales_orders_v2.sales_organization_vkorg} = ${sales_organizations_md.sales_org_vkorg} AND
+            ${sales_organizations_md.language_spras} = @{user_language}
+             ;;
     # required_joins: [language_map_sdt]
     fields: [sales_organizations_md.sales_org_name_vtext]
   }
@@ -102,9 +104,10 @@ explore: sales_orders_v2 {
     view_label: "Sales Orders"
     type: left_outer
     relationship: many_to_one
-    sql_on: ${sales_orders_v2.client_mandt} = ${distribution_channels_md.client_mandt} and
-            ${sales_orders_v2.distribution_channel_vtweg} = ${distribution_channels_md.distribution_channel_vtweg} and
-            ${language_map_sdt.language_spras} = ${distribution_channels_md.language_spras};;
+    sql_on: ${sales_orders_v2.client_mandt} = ${distribution_channels_md.client_mandt} AND
+            ${sales_orders_v2.distribution_channel_vtweg} = ${distribution_channels_md.distribution_channel_vtweg} AND
+            ${distribution_channels_md.language_spras} = @{user_language}
+            ;;
     # required_joins: [language_map_sdt]
       fields: [distribution_channels_md.distribution_channel_name_vtext]
     }
@@ -113,9 +116,10 @@ explore: sales_orders_v2 {
     view_label: "Sales Orders"
     type: left_outer
     relationship: many_to_one
-    sql_on: ${sales_orders_v2.client_mandt} = ${divisions_md.client_mandt} and
-            ${sales_orders_v2.division_spart} = ${divisions_md.division_spart} and
-            ${language_map_sdt.language_spras} = ${divisions_md.language_spras};;
+    sql_on: ${sales_orders_v2.client_mandt} = ${divisions_md.client_mandt} AND
+            ${sales_orders_v2.division_spart} = ${divisions_md.division_spart} AND
+            ${divisions_md.language_spras} = @{user_language}
+            ;;
     # required_joins: [language_map_sdt]
       fields: [divisions_md.division_name_vtext]
     }
@@ -126,7 +130,8 @@ explore: sales_orders_v2 {
     relationship: many_to_one
     sql_on: ${sales_orders_v2.client_mandt} = ${customers_md.client_mandt} AND
             ${sales_orders_v2.sold_to_party_kunnr} = ${customers_md.customer_number_kunnr} AND
-            ${language_map_sdt.language_spras} = ${customers_md.language_key_spras}
+            ${customers_md.language_key_spras} = @{user_language}
+            -- ${customers_md.language_key_spras} = ${language_map_sdt.language_spras}
             ;;
     fields: [customers_md.customer_name]
   }
@@ -135,9 +140,11 @@ explore: sales_orders_v2 {
     view_label: "Sales Orders"
     type: left_outer
     relationship: many_to_one
-    sql_on: ${sales_orders_v2.client_mandt} = ${countries_md.client_mandt} and
-            ${customers_md.country_key_land1} = ${countries_md.country_key_land1} and
-            ${language_map_sdt.language_spras} = ${countries_md.language_spras};;
+    sql_on: ${sales_orders_v2.client_mandt} = ${countries_md.client_mandt} AND
+            ${customers_md.country_key_land1} = ${countries_md.country_key_land1} AND
+            ${countries_md.language_spras} = @{user_language}
+           --${countries_md.language_spras} = ${language_map_sdt.language_spras}
+            ;;
     fields: [countries_md.country_name_landx]
   }
 

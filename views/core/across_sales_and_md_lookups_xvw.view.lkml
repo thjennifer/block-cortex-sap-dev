@@ -16,8 +16,16 @@ view: across_sales_and_md_lookups_xvw {
             {%- else -%}Selected Product Dimension Description
             {%- endif -%}"
     description: "Values are either Material Text or Division Description based on user selection for Parameter Display Product Level"
-    sql: {% if sales_orders_v2.parameter_display_product_level._parameter_value == 'Item' %}${materials_md.material_text_maktx}{%else%}${divisions_md.division_name_vtext}{%endif%} ;;
+    sql: {% if sales_orders_v2.parameter_display_product_level._parameter_value == 'Item' %}${material_text_maktx}{%else%}${divisions_md.division_name_vtext}{%endif%} ;;
     can_filter: yes
   }
+
+  dimension: material_text_maktx {
+    hidden: no
+    label: "Material Text MAKTX"
+    sql: COALESCE(${materials_md.material_text_maktx},${sales_orders_v2.material_number_matnr}) ;;
+  }
+
+
 
   }

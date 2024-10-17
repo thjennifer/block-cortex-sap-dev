@@ -21,13 +21,13 @@ explore: accounting_documents_receivable_pdt {
 
 
   join: currency_conversion_sdt {
-    view_label: "🔍 Filters & 🛠 Tools"
-    type: inner
+   type: inner
     relationship: many_to_one
     sql_on: ${accounting_documents_receivable_pdt.client_mandt}=${currency_conversion_sdt.client_mandt} AND
             ${accounting_documents_receivable_pdt.local_currency_hwaer}=${currency_conversion_sdt.from_currency_fcurr} AND
            -- ${accounting_documents_receivable_pdt.currency_key_waers}=${currency_conversion_sdt.from_currency_fcurr} AND
             ${accounting_documents_receivable_pdt.posting_date_in_the_document_budat} = ${currency_conversion_sdt.conv_date};;
+    fields: []
   }
 
   join: companies_md {

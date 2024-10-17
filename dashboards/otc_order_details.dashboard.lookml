@@ -182,16 +182,25 @@
     name: Order Details
     explore: sales_orders_v2
     type: looker_grid
-    fields: [across_sales_and_billing_summary_xvw.order_status_with_symbols, deliveries.blocked_status_with_symbol,
-      sales_orders_v2.sales_document_vbeln, sales_orders_v2.item_posnr, materials_md.material_text_maktx,
-      sales_order_item_partner_function_sdt.customer_names_sold_to, sales_order_item_partner_function_sdt.customer_names_ship_to,
-      sales_order_item_partner_function_sdt.customer_names_bill_to, sales_orders_v2.creation_date_erdat_date,
-      sales_orders_v2.requested_delivery_date_vdatu_date, sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat,
-      sales_orders_v2.base_unit_of_measure_meins, currency_conversion_sdt.from_currency_fcurr,
-      currency_conversion_sdt.to_currency_tcurr, currency_conversion_sdt.exchange_rate_ukurs,
-      sales_orders_v2.total_ordered_quantity, sales_order_item_delivery_summary_ndt.sum_total_quantity_delivered,
-      sales_orders_v2.total_net_value, sales_orders_v2.total_sales_amount_target_currency]
-
+    fields: [across_sales_and_billing_summary_xvw.order_status_with_symbols,
+             deliveries.blocked_status_with_symbol,
+             sales_orders_v2.sales_document_vbeln,
+             sales_orders_v2.item_posnr,
+             materials_md.material_text_maktx,
+             sales_order_item_partner_function_sdt.customer_names_sold_to,
+             sales_order_item_partner_function_sdt.customer_names_ship_to,
+             sales_order_item_partner_function_sdt.customer_names_bill_to,
+             sales_orders_v2.creation_date_erdat_date,
+             sales_orders_v2.requested_delivery_date_vdatu_date,
+             sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat,
+             sales_orders_v2.base_unit_of_measure_meins,
+             sales_orders_v2.currency_hdr_waerk,
+             sales_orders_v2.target_currency,
+             sales_orders_v2.exchange_rate_ukurs,
+             sales_orders_v2.total_ordered_quantity,
+             sales_order_item_delivery_summary_ndt.sum_total_quantity_delivered,
+             sales_orders_v2.total_net_value,
+             sales_orders_v2.total_sales_amount_target_currency]
     sorts: [sales_orders_v2.sales_document_vbeln]
     limit: 50
     column_limit: 50
@@ -215,21 +224,21 @@
       deliveries.blocked_status_with_symbol: left
       sales_orders_v2.sales_document_vbeln: left
       sales_orders_v2.item_posnr: left
-    column_order: [across_sales_and_billing_summary_xvw.order_status_with_symbols,
-      deliveries.blocked_status_with_symbol, sales_orders_v2.sales_document_vbeln,
-      sales_orders_v2.item_posnr, materials_md.material_text_maktx, sales_order_item_partner_function_sdt.customer_names_sold_to,
-      sales_order_item_partner_function_sdt.customer_names_ship_to, sales_order_item_partner_function_sdt.customer_names_bill_to,
-      sales_orders_v2.creation_date_erdat_date, sales_orders_v2.requested_delivery_date_vdatu_date,
-      sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat, sales_orders_v2.total_ordered_quantity,
-      sales_orders_v2.base_unit_of_measure_meins, sales_order_item_delivery_summary_ndt.sum_total_quantity_delivered,
-      sales_orders_v2.total_net_value, currency_conversion_sdt.from_currency_fcurr,
-      sales_orders_v2.total_sales_amount_target_currency, currency_conversion_sdt.to_currency_tcurr,
-      currency_conversion_sdt.exchange_rate_ukurs]
+    # column_order: [across_sales_and_billing_summary_xvw.order_status_with_symbols,
+    #   deliveries.blocked_status_with_symbol, sales_orders_v2.sales_document_vbeln,
+    #   sales_orders_v2.item_posnr, materials_md.material_text_maktx, sales_order_item_partner_function_sdt.customer_names_sold_to,
+    #   sales_order_item_partner_function_sdt.customer_names_ship_to, sales_order_item_partner_function_sdt.customer_names_bill_to,
+    #   sales_orders_v2.creation_date_erdat_date, sales_orders_v2.requested_delivery_date_vdatu_date,
+    #   sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat, sales_orders_v2.total_ordered_quantity,
+    #   sales_orders_v2.base_unit_of_measure_meins, sales_order_item_delivery_summary_ndt.sum_total_quantity_delivered,
+    #   sales_orders_v2.total_net_value, currency_conversion_sdt.from_currency_fcurr,
+    #   sales_orders_v2.total_sales_amount_target_currency, currency_conversion_sdt.to_currency_tcurr,
+    #   currency_conversion_sdt.exchange_rate_ukurs]
     truncate_header: false
     minimum_column_width: 75
     series_labels:
       across_sales_and_billing_summary_xvw.order_status_with_symbols: Order Status
-      deliveries.blocked_status_with_symbol: Blocked
+      deliveries.blocked_status_with_symbol: Is Blocked
       sales_order_item_partner_function_sdt.customer_names_sold_to: Sold To
       sales_order_item_partner_function_sdt.customer_names_ship_to: Ship To
       sales_order_item_partner_function_sdt.customer_names_bill_to: Billed To

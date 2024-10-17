@@ -16,13 +16,15 @@ view: +countries_md {
 
   dimension: country_key_land1 {
     hidden: no
-    label: "Country LAND1"
+    label: "@{label_field_name}"
     description: "Country (2-character abbreviation)"
   }
 
   dimension: country_name_landx {
     hidden: no
-    label: "{% if _explore._name == 'sales_orders_v2' %}Sold to Party Region{%else%}Country Name{%endif%} LANDX"
+    label: "{% if _explore._name == 'sales_orders_v2' %}Sold to Party Region{%else%}Country Name{%endif%} @{label_append_sap_code}"
+    full_suggestions: yes
+    suggest_persist_for: "5 minutes"
   }
 
   }

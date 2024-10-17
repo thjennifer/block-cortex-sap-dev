@@ -52,14 +52,14 @@ view: otc_common_parameters_xvw {
   }
 
 
-  # parameter: parameter_language {
+  # parameter: parameter_language_key_spras {
   #   hidden: no
   #   type: string
-  #   label: "Language"
-  #   description: "Select language to display for item descriptions. Default is 'US'"
-  #   suggest_explore: item_md
-  #   suggest_dimension: item_md__item_descriptions.language_code
-  #   default_value: "US"
+  #   label: "SAP Language Key@{label_append_sap_code}"
+  #   description: "Select SAP language key to display for descriptions. Default is 'E'"
+  #   suggest_explore: otc_languages_pdt
+  #   suggest_dimension: otc_languages_pdt.language_spras
+  #   # default_value: "E"
   # }
 
 
