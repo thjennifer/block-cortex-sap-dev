@@ -10,7 +10,7 @@ include: "/dashboards/finance/income_*.dashboard"
 label: "Cortex SAP Operational v2"
 
 
-persist_with: cortex_default_datagroup
+persist_with: cortex_sap_default_datagroup
 
 
 

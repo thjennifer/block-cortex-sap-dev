@@ -14,3 +14,8 @@ named_value_format: millions_d1 {
 named_value_format: millions_d1_m {
   value_format: "#,##0.00,,\"M\";-#,##0.00,,\"M\""
 }
+
+#### to deprecate
+named_value_format: Greek_Number_Format {
+  value_format: "[>=1000000000]0.0,,,\"B\";[>=1000000]0.0,,\"M\";[>=1000]0.0,\"K\";0.0"
+}
