@@ -4,7 +4,7 @@ include: "/views/core/sales_orders_v2_rfn.view"
 # other facts
 include: "/views/core/one_touch_order_rfn.view"
 include: "/views/core/currency_conversion_sdt.view"
-include: "/views/core/language_map_sdt.view"
+# include: "/views/core/language_map_sdt.view"
 include: "/views/core/sales_order_schedule_line_sdt.view"
 include: "/views/core/deliveries_rfn.view"
 include: "/views/core/sales_order_item_delivery_summary_ndt.view"
@@ -63,11 +63,11 @@ explore: sales_orders_v2 {
     sql:  ;;
 }
 
-  join: language_map_sdt {
-    type: cross
-    relationship: many_to_one
-    fields: []
-  }
+  # join: language_map_sdt {
+  #   type: cross
+  #   relationship: many_to_one
+  #   fields: []
+  # }
 
   join: currency_conversion_sdt {
     type: inner
@@ -86,6 +86,7 @@ explore: sales_orders_v2 {
             ${sales_orders_v2.client_mandt}=${materials_md.client_mandt} AND
             ${materials_md.language_spras} = @{user_language}
              ;;
+    fields: []
       }
 
   join: sales_organizations_md {
@@ -121,7 +122,8 @@ explore: sales_orders_v2 {
             ${divisions_md.language_spras} = @{user_language}
             ;;
     # required_joins: [language_map_sdt]
-      fields: [divisions_md.division_name_vtext]
+      # fields: [divisions_md.division_name_vtext]
+    fields: []
     }
 
   join: customers_md {
@@ -131,8 +133,7 @@ explore: sales_orders_v2 {
     sql_on: ${sales_orders_v2.client_mandt} = ${customers_md.client_mandt} AND
             ${sales_orders_v2.sold_to_party_kunnr} = ${customers_md.customer_number_kunnr} AND
             ${customers_md.language_key_spras} = @{user_language}
-            -- ${customers_md.language_key_spras} = ${language_map_sdt.language_spras}
-            ;;
+           ;;
     fields: [customers_md.customer_name]
   }
 
@@ -143,7 +144,6 @@ explore: sales_orders_v2 {
     sql_on: ${sales_orders_v2.client_mandt} = ${countries_md.client_mandt} AND
             ${customers_md.country_key_land1} = ${countries_md.country_key_land1} AND
             ${countries_md.language_spras} = @{user_language}
-           --${countries_md.language_spras} = ${language_map_sdt.language_spras}
             ;;
     fields: [countries_md.country_name_landx]
   }

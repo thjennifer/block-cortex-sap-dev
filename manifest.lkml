@@ -311,19 +311,6 @@ constant: label_append_sap_code {
          {%- endif -%}{{sap_label}}"
 }
 
-#--> label_currency
-# captures and formats selected Target Currency for use in 'labels' property
-# example use:
-#   measure: total_sales_amount_target_currency {
-#     type: sum
-#     label: "@{label_currency}Total Sales ({{currency}})"
-#     sql: ${item_net_value_target_currency_netwr} ;;
-#     }
-#
-constant: label_currency {
-  value: "{% assign currency = otc_common_parameters_xvw.parameter_target_currency._parameter_value | remove: \"'\" %}"
-}
-
 #} end constants for field labels
 
 #########################################################
@@ -377,7 +364,7 @@ constant: label_currency {
 #   measure: total_sales_amount_target_currency {
 #     type: sum
 #     label: "@{label_currency}Total Sales ({{currency}})"
-#     sql: ${item_net_value_target_currency_netwr} ;;
+#     sql: ${item_ordered_amount_target_currency} ;;
 #     }
 #
 constant: label_currency {

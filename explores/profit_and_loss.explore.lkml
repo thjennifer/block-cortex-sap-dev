@@ -23,29 +23,29 @@
 #########################################################}
 
 include: "/views/core/profit_and_loss_rfn.view"
-include: "/views/core/language_map_sdt.view"
+# include: "/views/core/language_map_sdt.view"
 include: "/views/core/universal_ledgers_md_rfn.view"
 include: "/views/core/profit_and_loss_03_selected_fiscal_periods_sdt.view"
 include: "/views/core/profit_and_loss_hierarchy_selection_sdt.view"
 include: "/views/core/profit_and_loss_navigation_ext.view"
 
 explore: profit_and_loss {
-  always_join: [language_map_sdt]
+  # always_join: [language_map_sdt]
 
   label: "Income Statement"
 
   always_filter: {filters:[profit_and_loss.glhierarchy: "",profit_and_loss.company_text: "",profit_and_loss.target_currency_tcurr: ""]}
 
-  sql_always_where: ${profit_and_loss.client_mandt}='@{CLIENT_ID}'
+  sql_always_where: ${profit_and_loss.client_mandt}='@{CLIENT_ID}' AND ${profit_and_loss.language_key_spras} = @{user_language}
 
               ;;
 
-  join: language_map_sdt {
-    type: inner
-    relationship: many_to_one
-    sql_on: ${profit_and_loss.language_key_spras} = ${language_map_sdt.language_spras} ;;
-    fields: []
-  }
+  # join: language_map_sdt {
+  #   type: inner
+  #   relationship: many_to_one
+  #   sql_on: ${profit_and_loss.language_key_spras} = ${language_map_sdt.language_spras} ;;
+  #   fields: []
+  # }
 
   join: universal_ledgers_md {
     view_label: "Income Statement"

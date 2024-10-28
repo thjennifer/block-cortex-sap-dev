@@ -71,8 +71,8 @@
         country: countries_md.country_name_landx
         sales_org: sales_organizations_md.sales_org_name_vtext
         distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-        product: materials_md.material_text_maktx
-        division: divisions_md.division_name_vtext
+        product: sales_orders_v2.material_text_maktx
+        division: sales_orders_v2.division_name_vtext
         sold_to: customers_md.customer_name
         target_currency: otc_common_parameters_xvw.parameter_target_currency
       row: 2
@@ -85,8 +85,10 @@
       model: cortex_sap_operational_v2
       explore: sales_orders_v2
       type: looker_column
-      fields: [sales_order_pricing_sdt.avg_list_price_target, materials_md.material_number_matnr,
-        materials_md.material_text_maktx, sales_order_pricing_sdt.avg_intercompany_price_target_curr]
+      fields: [sales_order_pricing_sdt.avg_list_price_target,
+               sales_orders_v2.material_number_matnr,
+               sales_orders_v2.material_text_maktx,
+               sales_order_pricing_sdt.avg_intercompany_price_target_curr]
       filters:
         sales_order_pricing_sdt.inter_company_price: NOT NULL
       sorts: [sales_order_pricing_sdt.avg_intercompany_price_target_curr desc]
@@ -145,8 +147,8 @@
         country: countries_md.country_name_landx
         sales_org: sales_organizations_md.sales_org_name_vtext
         distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-        product: materials_md.material_text_maktx
-        division: divisions_md.division_name_vtext
+        product: sales_orders_v2.material_text_maktx
+        division: sales_orders_v2.division_name_vtext
         sold_to: customers_md.customer_name
         target_currency: otc_common_parameters_xvw.parameter_target_currency
       row: 13

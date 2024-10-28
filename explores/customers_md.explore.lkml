@@ -4,7 +4,7 @@ include: "/views/core/sales_orders_v2_rfn.view"
 explore: customers_md {
   label: "Customers"
 
-  sql_always_where: ${language_spras} = @{user_language} AND ${client_mandt} = '@{CLIENT_ID}';;
+  sql_always_where: ${client_mandt} = '@{CLIENT_ID}' AND ${language_key_spras} = @{user_language};;
 
   # always_join: [sales_orders_v2]
 

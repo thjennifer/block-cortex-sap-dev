@@ -33,7 +33,7 @@ view: +sales_orders_v2 {
   }
 
 #########################################################
-# PARAMETERS
+# PARAMETERS & FILTERS
 #{
 # parameter_display_product_level to show either Item or Categories in visualization
 #    used in dimensions selected_product_dimension_id and selected_product_dimension_description
@@ -49,63 +49,6 @@ view: +sales_orders_v2 {
     default_value: "Item"
   }
 
-#} end parameters
-
-#### ID fields
-# {
-
-  dimension: client_mandt {
-    hidden: yes
-    label: "@{label_field_name}"}
-
-  dimension: sales_document_vbeln {
-    hidden: no
-    label: "@{label_field_name}"
-    description: "Sales Order Number"
-    }
-
-
-
-#}
-
-#########################################################
-# DIMENSIONS: Item & Division
-#{
-# values for item_description, language_code, category_description, category_id, category_name_code are:
-# - extended into this view from otc_common_item_descriptions_ext and otc_common_item_categories
-# - pulled from the Repeated Struct fields ITEM_CATEGORIES and ITEM_DESCRIPTIONS
-
-dimension: item_posnr {
-  hidden: no
-  view_label: "Sales Orders Items"
-  label: "@{label_field_name}"
-  description: "Item Number"
-}
-
-dimension: division_hdr_spart {
-  hidden: no
-  label: "@{label_field_name}"
-}
-
-dimension: selected_product_dimension_id {
-  hidden: no
-  type: number
-  # group_label: "Item Categories & Descriptions"
-  view_label: "Sales Orders Items"
-  label: "{%- if _field._is_selected -%}
-            {%- if parameter_display_product_level._parameter_value == 'Item' -%}Item ID{%- else -%}Division ID{%- endif -%}
-          {%- else -%}Selected Product Dimension ID{%- endif -%}"
-  description: "Values are either Item ID or Division ID based on user selection for Parameter Display Product Level"
-  sql: {% if parameter_display_product_level._parameter_value == 'Item' %}${item_posnr}{%else%}${division_hdr_spart}{%endif%} ;;
-  can_filter: yes
-  value_format_name: id
-}
-
-#} end item dimensions
-
-#### Filters & Parameters
-#{
-
   filter: date_filter {
     hidden: no
     view_label: "@{label_view_for_filters}"
@@ -114,44 +57,22 @@ dimension: selected_product_dimension_id {
     # in the Explore's sql_always_where statement
   }
 
-#}
+#} end parameters & filters
 
-#### Header Dates & Times
+#########################################################
+# DIMENSIONS: Order Attributes
 #{
-  dimension_group: creation_date_erdat {
-    hidden: no
-    label: "Creation @{label_append_sap_code}"
-    description: "Sales Order Creation Date ERDAT"
-  }
 
-  dimension: order_date_as_string {
-    label: "Order Date"
-    hidden: no
-    type: string
-    sql: STRING(${creation_date_erdat_raw}) ;;
-  }
-
-  dimension: creation_time_erzet {
-    hidden: no
-    label: "Creation Time @{label_append_sap_code}"
-    type: string
-    sql: ${TABLE}.CreationTime_ERZET ;;
-  }
-
-  dimension: creation_timestamp {
+  dimension: client_mandt {
     hidden: yes
-    sql: timestamp(concat(${creation_date_erdat_raw},' ',${creation_time_erzet})) ;;
+    label: "@{label_field_name}"
   }
 
-  dimension_group: requested_delivery_date_vdatu {
+  dimension: sales_document_vbeln {
     hidden: no
-    label: "Requested Delivery @{label_append_sap_code}"
-    description: "Requested Delivery Date VDATU"
+    label: "@{label_field_name}"
+    description: "Sales Order Number"
   }
-#} end dates & times
-
-#### Header Sold to Party, Type, Category, Distribution Channel and other Document Attributes
-#{
 
   dimension: sold_to_party_kunnr {
     hidden: no
@@ -179,15 +100,10 @@ dimension: selected_product_dimension_id {
     label: "@{label_field_name}"
   }
 
-  # dimension: division_hdr_spart {
-  #   hidden: no
-  #   label: "Division (header)@{label_sap_code}"
-  # }
-
   dimension: sales_group_vkgrp {
     hidden: no
     label: "@{label_field_name}"
-    }
+  }
 
   dimension: sales_office_vkbur {
     hidden: no
@@ -199,9 +115,16 @@ dimension: selected_product_dimension_id {
     label: "Cost Center@{label_append_sap_code}"
   }
 
+  #} end order attributes
+
+#########################################################
+# DIMENSIONS: Order Currency Conversion
+#{
+# Requires currency_conversion_sdt to be joined in same Explore
+
   dimension: currency_hdr_waerk {
     hidden: no
-    label: "Currency @{label_append_sap_code} (source)"
+    label: "Currency (Source) @{label_append_sap_code}"
     description: "SD Document Currency at header level"
   }
 
@@ -218,41 +141,196 @@ dimension: selected_product_dimension_id {
     sql: ${currency_conversion_sdt.exchange_rate_ukurs} ;;
   }
 
+#}
 
-  #}
-
-
-#### Item Net Price, Quantity and Total Sales Value
-# {
-  dimension: net_price_netpr {
+#########################################################
+# DIMENSIONS: Order Dates & Times
+#{
+  dimension_group: creation_date_erdat {
     hidden: no
-    view_label: "Sales Orders Items"
-    label: "Item Price (Document Currency)@{label_append_sap_code}"
-    description: "Net Price of Item (Document Currency)"
-    value_format_name: decimal_2
+    label: "Order"
+    description: "Sales Order Creation Date ERDAT"
+    sql: ${TABLE}.CreationDate_ERDAT ;;
   }
 
-  dimension: item_net_price_target_currency_netpr {
+  dimension: week_of_sales_order_creation_date_erdat {
+    hidden: no
+    group_label: "Order Date"
+    group_item_label: "Week Number"
+    description: "Week number of sales order creation date ERDAT"
+  }
+
+  dimension: month_of_sales_order_creation_date_erdat {
+    hidden: no
+    group_label: "Order Date"
+    group_item_label: "Month Number"
+    description: "Month number of sales order creation date ERDAT"
+  }
+
+  dimension: quarter_of_sales_order_creation_date_erdat {
+    hidden: no
+    group_label: "Order Date"
+    group_item_label: "Quarter Number"
+    description: "Quarter number of sales order creation date ERDAT"
+  }
+
+  dimension: year_of_sales_order_creation_date_erdat {
+    hidden: no
+    group_label: "Order Date"
+    group_item_label: "Year Number"
+    description: "Year number of sales order creation date ERDAT"
+    value_format_name: id
+  }
+
+  dimension: order_date_as_string {
+    hidden: yes
+    type: string
+    label: "Order Date"
+    sql: STRING(${creation_date_erdat_raw}) ;;
+  }
+
+  dimension: creation_time_erzet {
+    hidden: no
+    group_label: "Order Date"
+    group_item_label: "Time"
+    sql: FORMAT_TIME('%H:%M:%S',${TABLE}.CreationTime_ERZET) ;;
+  }
+
+  dimension: creation_timestamp {
+    hidden: yes
+    sql: TIMESTAMP(CONCAT(${creation_date_erdat_raw},' ',${creation_time_erzet})) ;;
+  }
+
+  dimension_group: requested_delivery_date_vdatu {
+    hidden: no
+    label: "Requested Delivery"
+    description: "Requested Delivery Date VDATU"
+  }
+
+  dimension: week_of_requested_delivery_date_vdatu {
+    hidden: no
+    group_label: "Requested Delivery Date"
+    group_item_label: "Week Number"
+    description: "Week number of requested delivery date VDATU"
+  }
+
+  dimension: month_of_requested_delivery_date_vdatu {
+    hidden: no
+    group_label: "Requested Delivery Date"
+    group_item_label: "Month Number"
+    description: "Month number of requested delivery date VDATU"
+  }
+
+  dimension: quarter_of_requested_delivery_date_vdatu {
+    hidden: no
+    group_label: "Requested Delivery Date"
+    group_item_label: "Quarter Number"
+    description: "Quarter number of requested delivery date VDATU"
+  }
+
+  dimension: year_of_requested_delivery_date_vdatu {
+    hidden: no
+    group_label: "Requested Delivery Date"
+    group_item_label: "Year Number"
+    description: "Year number of requested delivery date VDATU"
+    value_format_name: id
+  }
+
+#} end dates & times
+
+#########################################################
+# DIMENSIONS: Item Attributes
+#{
+# requires materials_md and divisions_md to be joined in same Explore
+
+  dimension: item_posnr {
+    hidden: no
+    view_label: "Sales Orders Items"
+    label: "@{label_field_name}"
+    description: "Item Number"
+  }
+
+  dimension: material_number_matnr {
+    hidden: no
+    view_label: "Sales Orders Items"
+    description: "Material number"
+    label: "@{label_field_name}"
+  }
+
+#--> cross references materials_md
+  dimension: material_text_maktx {
+    hidden: no
+    view_label: "Sales Orders Items"
+    label: "@{label_field_name}"
+    sql: COALESCE(${materials_md.material_text_maktx},${sales_orders_v2.material_number_matnr}) ;;
+  }
+
+  dimension: division_hdr_spart {
+    hidden: no
+    view_label: "Sales Orders Items"
+    label: "Division @{label_append_sap_code}"
+  }
+
+#--> cross references divsions_md
+  dimension: division_name_vtext {
+    hidden: no
+    view_label: "Sales Orders Items"
+    label: "@{label_field_name}"
+    sql: COALESCE(${divisions_md.division_name_vtext},${division_hdr_spart});;
+  }
+
+#--> cross references materials_md and divisions_md
+  dimension: selected_product_dimension_description {
+    hidden: no
+    # group_label: "Item Categories & Descriptions"
+    view_label: "Sales Orders Items"
+    label: "{%- if _field._is_selected -%}
+    {%- if sales_orders_v2.parameter_display_product_level._parameter_value == 'Item' -%}Material Text{%- else -%}Division{%- endif -%}
+    {%- else -%}Selected Product Dimension Description
+    {%- endif -%}"
+    description: "Values are either Material Text or Division Description based on user selection for Parameter Display Product Level"
+    sql: {% if sales_orders_v2.parameter_display_product_level._parameter_value == 'Item'%}${material_text_maktx}{%else%}${division_name_vtext}{%endif%} ;;
+    can_filter: yes
+  }
+
+  dimension: selected_product_dimension_id {
     hidden: no
     type: number
+    # group_label: "Item Categories & Descriptions"
     view_label: "Sales Orders Items"
-    label: "Item Price (Target Currency)@{label_append_sap_code}"
-    description: "Net Price of Item (Target Currency)"
-    sql: ${sales_orders_v2.net_price_netpr} * ${currency_conversion_sdt.exchange_rate_ukurs} ;;
-    value_format_name: decimal_2
+    label: "{%- if _field._is_selected -%}
+                {%- if parameter_display_product_level._parameter_value == 'Item' -%}Item ID{%- else -%}Division ID{%- endif -%}
+            {%- else -%}Selected Product Dimension ID{%- endif -%}"
+    description: "Values are either Item ID or Division ID based on user selection for Parameter Display Product Level"
+    sql: {% if parameter_display_product_level._parameter_value == 'Item' %}${item_posnr}{%else%}${division_hdr_spart}{%endif%} ;;
+    can_filter: yes
+    value_format_name: id
   }
 
-  dimension: item_net_value_target_currency_netwr {
+#} end item attributes
+
+#########################################################
+# DIMENSIONS: Item Status
+#{
+
+  dimension: rejection_reason_abgru {
     hidden: no
-    type: number
     view_label: "Sales Orders Items"
-    label: "Item Sales (Target Currency)@{label_append_sap_code}"
-    description: "Item Qty * Net Price (Target Currency)"
-    sql:  ${item_net_price_target_currency_netpr} * ${cumulative_order_quantity_kwmeng};;
-    value_format_name: decimal_2
-
+    label: "@{label_field_name}"
   }
 
+  dimension: is_item_cancelled {
+    hidden: no
+    type: yesno
+    view_label: "Sales Orders Items"
+    sql: ${rejection_reason_abgru} is not null and ${rejection_reason_abgru} <> '' ;;
+  }
+
+#} end item status dimensions
+
+#########################################################
+# DIMENSIONS: Item Quantity
+#{
   dimension: cumulative_order_quantity_kwmeng {
     hidden: no
     view_label: "Sales Orders Items"
@@ -264,20 +342,6 @@ dimension: selected_product_dimension_id {
     view_label: "Sales Orders Items"
     label: "Confirmed Quantity of Item@{label_append_sap_code}"
     description: "Confirmed Quantity of Item in Sale Unit of Measure"
-  }
-
-  dimension: currency_waerk {
-    hidden: yes
-    view_label: "Sales Orders Items"
-    label: "@{label_field_name}(item)"
-    description: "Document Currency at item level"
-  }
-
-  dimension: sales_order_value_line_item_source_currency {
-    view_label: "Sales Orders Items"
-    label: "Sales Amount"
-    description: "Item Qty * Net Price (Document/Document Currency)"
-    hidden: no
   }
 
   dimension: base_unit_of_measure_meins {
@@ -293,25 +357,75 @@ dimension: selected_product_dimension_id {
     label: "@{label_field_name}"
     }
 
-  dimension: rejection_reason_abgru {
+# } end item quantity dimensions
+
+#########################################################
+# DIMENSIONS: Item Amounts
+#{
+# Hidden, as measures based on these dimensions will be shown in Explore
+  dimension: net_price_netpr {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "@{label_field_name}"
+    label: "Item Price (Source Currency)@{label_append_sap_code}"
+    description: "Net Price of Item (Source Currency)"
+    value_format_name: decimal_2
   }
 
-  dimension: is_item_cancelled {
+  dimension: item_net_price_target_currency_netpr {
     hidden: no
-    type: yesno
+    type: number
     view_label: "Sales Orders Items"
-    sql: ${rejection_reason_abgru} is not null and ${rejection_reason_abgru} <> '' ;;
+    label: "Item Price (Target Currency)@{label_append_sap_code}"
+    description: "Net Price of Item (Target Currency)"
+    sql: ${sales_orders_v2.net_price_netpr} * ${currency_conversion_sdt.exchange_rate_ukurs} ;;
+    value_format_name: decimal_2
   }
 
-# }
+  dimension: item_ordered_amount {
+    hidden: no
+    view_label: "Sales Orders Items"
+    label: "Item Ordered Amount (Source Currency)"
+    description: "Item Qty * Net Price (Source Currency)"
+    sql: ${sales_order_value_line_item_source_currency} ;;
+  }
 
+  dimension: item_ordered_amount_target_currency {
+    hidden: no
+    type: number
+    view_label: "Sales Orders Items"
+    label: "Item Sales Amount (Target Currency)@{label_append_sap_code}"
+    description: "Item Quantity * Net Price (Target Currency)"
+    sql:  ${item_net_price_target_currency_netpr} * ${cumulative_order_quantity_kwmeng};;
+    value_format_name: decimal_2
+
+  }
+
+#} end item amount dimensions
+
+#########################################################
+# MEASURES: Counts & Percent of Total
+#{
   measure: order_line_count {
     hidden: no
-    description: "Count of Order Documents & Items"
+    type: count
+    view_label: "Sales Orders Items"
+    description: "Count of order lines"
     }
+
+  measure: cancelled_order_line_count {
+    hidden: no
+    type: count
+    view_label: "Sales Orders Items"
+    description: "Count of order items that have been cancelled"
+    filters: [is_item_cancelled: "Yes"]
+  }
+
+  measure: order_count {
+    hidden: no
+    type: count_distinct
+    description: "Distinct count of Sales Document VBELN"
+    sql: ${sales_document_vbeln} ;;
+  }
 
   measure: sales_order_count {
     hidden: no
@@ -321,76 +435,97 @@ dimension: selected_product_dimension_id {
     filters: [document_category_vbtyp: "C"]
   }
 
-  measure: sales_order_count_formatted {
-    hidden: yes
+  measure: sold_to_customer_count {
+    hidden: no
+    type: count_distinct
+    description: "Distinct count of Sold to Party KUNNR"
+    sql: ${sold_to_party_kunnr} ;;
+  }
+
+  measure: cancelled_order_count {
+    hidden: no
+    description: "Count of orders with at least 1 item cancelled"
+    type: count_distinct
+    sql: ${sales_document_vbeln} ;;
+    filters: [is_item_cancelled: "Yes"]
+  }
+
+  measure: cancelled_order_percent {
+    hidden: no
     type: number
+    description: "Percent of orders with at least 1 item cancelled"
+    sql: safe_divide(${cancelled_order_count}, ${order_count});;
+    value_format_name: percent_1
+  }
+
+#} end count and percent measures
+
+#########################################################
+# MEASURES: Counts Formatted for Large Numbers
+#{
+
+  measure: order_count_formatted {
+    hidden: no
+    type: number
+    group_label: "Counts Formatted as Large Numbers"
+    description: "Count of orders formatted for large values (e.g., 2.3M or 75.2K)"
+    sql: ${order_count} ;;
+    value_format_name: format_large_numbers_d1
+  }
+
+  measure: sales_order_count_formatted {
+    hidden: no
+    type: number
+    group_label: "Counts Formatted as Large Numbers"
+    description: "Count of orders with document category VBTYP = C and formatted for large values (e.g., 2.3M or 75.2K)"
     sql: ${sales_order_count} ;;
-    #  url: "{%assign model = _model._name %}/dashboards/{{model}}::otc_order_details?Order+Date=+2022%2F01%2F01+to+2022%2F12%2F31&Country={{_filters['countries_md.country_name_landx'] | url_encode}}&Sales+Org={{_filters['sales_organizations_md.sales_org_name_vtext'] | url_encode}}&Distribution+Channel={{_filters['distribution_channels_md.distribution_channel_name_vtext'] | url_encode}}&Division={{_filters['divisions_md.division_name_vtext'] | url_encode}}&Product={{_filters['materials_md.material_text_maktx'] | url_encode}}&Target+Currency={{_filters['currency_conversion_sdt.select_target_currency'] | url_encode}}
- # url: "/dashboards/cortex_sap_operational_v2::otc_order_details?Order+Status={{across_sales_and_billing_summary_xvw.order_status._value))"
-
-    # link: {
-    #   label: "Show Order Details"
-    #   url: "/dashboards/cortex_sap_operational_v2::otc_order_details?Order+Status={{ across_sales_and_billing_summary_xvw.order_status._value }}"
-
-    #   icon_url: "/favicon.ico"
-    # }
-
-    # ## opens drill modal with the selected filters
-    # link: {
-    #   label: "testing url"
-    #   url: "{{link}}"
-    # }
-    # drill_fields: [sales_document_vbeln]
-
-    ## dynamic capture of filters with link
+    value_format_name: format_large_numbers_d1
     link: {
       label: "Open Order Details Dashboard"
       icon_url: "/favicon.ico"
       url: "
       @{link_build_variable_defaults}
       {% assign link = link_generator._link %}
-      {% assign filters_mapping = '@{link_map_otc_sales_orders_to_order_details}' | strip_new_lines | append: '||across_sales_and_billing_summary_xvw.order_status|Order Status||deliveries.is_blocked|Is Blocked' %}
-
-      {% assign model = _model._name %}
+      {% assign filters_mapping = '@{link_map_otc_sales_orders_to_order_details}' | append: '||across_sales_and_billing_summary_xvw.order_status|Order Status||deliveries.is_blocked|Is Blocked' %}
       {% assign target_dashboard = _model._name | append: '::otc_order_details' %}
-
-      {% assign default_filters_override = false %}
-
       @{link_build_dashboard_url}
       "
     }
   }
-# {% assign filters_mapping = 'sales_orders_v2.creation_date_erdat_date|Order Date||divisions_md.division_name_vtext|Division||countries_md.country_name_landx|Country||materials_md.material_text_maktx|Product||sales_organizations_md.sales_org_name_vtext|Sales Org||distribution_channels_md.distribution_channel_name_vtext|Distribution Channel||currency_conversion_sdt.select_target_currency|Target Currency||across_sales_and_billing_summary_xvw.order_status|Order Status' %}
 
-  # {% assign default_filters = ''%}
+#} end formatted count measures
 
-# constant: link_map_otc_sales_orders_to_order_details {
-#   value: "Order+Date|sales_orders_v2.creation_date_erdat_date ||
-#       Division|divisions_md.division_name_vtext ||
-#       Country|countries_md.country_name_landx ||
-#       Sales+Org|sales_organizations_md.sales_org_name_vtext ||
-#       Distribution+Channel|distribution_channels_md.distribution_channel_name_vtext ||
-#       Product|materials_md.material_text_maktx ||
-#       Target+Currency|currency_conversion_sdt.select_target_currency"
-# }
-  # Division|divisions_md.division_name_vtext||Country|countries_md.country_name_landx||Product|materials_md.material_text_maktx
+#########################################################
+# MEASURES: Amounts in Source Currency
+#{
 
-  measure: count_sales_documents {
-    hidden: no
-    type: count_distinct
-    label: "Count Sales Documents"
-    description: "Distinct count of Sales Document VBELN"
-    sql: ${sales_document_vbeln} ;;
-  }
-
-  measure: total_net_value {
+  measure: total_ordered_amount_in_source_currency {
     hidden: no
     type: sum
-    label: "Total Sales (Document Currency)"
-    description: "Total Sales (Document/Document Currency)"
-    sql: ${sales_order_value_line_item_source_currency} ;;
-    value_format_name: "format_large_numbers_d1"
+    view_label: "Sales Orders Items"
+    group_label: "Amounts in Source Currency"
+    label: "Total Ordered Amount in Source Currency"
+    description: "Sum of ordered amount in source currency. Currency (Source) is required field to avoid summing across multiple currencies. If currency not included, a warning message is returned"
+    sql: {%- if sales_orders_v2.currency_hdr_waerk._is_selected -%}${item_ordered_amount}{%- else -%}NULL{%- endif -%} ;;
+    value_format_name: decimal_2
+    html: {%- if sales_orders_v2.currency_hdr_waerk._is_selected -%}{{rendered_value}}{%- else -%}Add Currency (Source) to query as dimension{%- endif -%} ;;
   }
+
+  measure: total_sales_amount_in_source_currency {
+    hidden: no
+    type: sum
+    view_label: "Sales Orders Items"
+    group_label: "Amounts in Source Currency"
+    label: "Total Sales Amount in Source Currency"
+    description: "Sum of ordered amount where document category type = 'C' in source currency. Currency (Source) is required field to avoid summing across multiple currencies. If currency not included, a warning message is returned"
+    sql: {%- if sales_orders_v2.currency_hdr_waerk._is_selected -%}${item_ordered_amount}{%- else -%}NULL{%- endif -%} ;;
+    filters: [document_category_vbtyp: "C"]
+    value_format_name: decimal_2
+    html: {%- if sales_orders_v2.currency_hdr_waerk._is_selected -%}{{rendered_value}}{%- else -%}Add Currency (Source) to query as dimension{%- endif -%} ;;
+  }
+
+#} end amounts in source currency
+
 
   measure: total_ordered_quantity {
     hidden: no
@@ -398,35 +533,16 @@ dimension: selected_product_dimension_id {
     sql: ${cumulative_order_quantity_kwmeng} ;;
   }
 
-  measure: count_customers {
+
+
+  measure: total_net_value {
     hidden: no
-    type: count_distinct
-    description: "Total Customer Count (distinct count of Sold to Party KUNNR)"
-    sql: ${sold_to_party_kunnr} ;;
+    type: sum
+    label: "Total Sales Amount (Source Currency)"
+    description: "Total Sales (Source Currency)"
+    sql: ${sales_order_value_line_item_source_currency} ;;
+    value_format_name: "format_large_numbers_d1"
   }
-
-  measure: count_items_cancelled {
-    hidden: no
-    type: count
-    filters: [is_item_cancelled: "Yes"]
-  }
-
-  measure: count_orders_with_cancellation {
-    hidden: no
-    description: "Count of Orders with at Least 1 Item Cancelled"
-    type: count_distinct
-    sql: ${sales_document_vbeln} ;;
-    filters: [is_item_cancelled: "Yes", document_category_vbtyp: "C"]
-  }
-
-
-  measure: percent_orders_with_cancellation {
-    hidden: no
-    type: number
-    sql: safe_divide(${count_orders_with_cancellation}, ${sales_order_count});;
-    value_format_name: percent_1
-  }
-
 
 
 
@@ -434,33 +550,22 @@ dimension: selected_product_dimension_id {
   measure: total_sales_amount_target_currency {
     hidden: no
     type: sum
-    view_label: "Sales Orders"
-    label: "@{label_currency}Total Sales ({{currency}})"
-    sql: ${item_net_value_target_currency_netwr} ;;
+    view_label: "Sales Orders Items"
+    # label: "@{label_currency}Total Sales Amount ({{currency}})"
+    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
+    sql: ${item_ordered_amount_target_currency} ;;
     filters: [sales_orders_v2.document_category_vbtyp: "C"]
     value_format_name: decimal_2
-    # sql_distinct_key: ${sales_orders_v2.key};;
-    # link: {
-    #   label: "Show Orders"
-    #   url: "{{ dummy_set_details_sales_performance._link}}"
-    #   # &f[sales_order_item_delivery_summary_ndt.is_order_late]=Yes"
-    # }
   }
 
   measure: total_sales_amount_target_currency_formatted {
     hidden: no
     type: number
-    view_label: "Sales Orders"
+    view_label: "Sales Orders Items"
     label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     # label: "@{label_currency}Total Sales ({{currency}}) Formatted"
     sql: ${total_sales_amount_target_currency} ;;
     value_format_name: format_large_numbers_d1
-    # sql_distinct_key: ${sales_orders_v2.key};;
-    # link: {
-    #   label: "Show Orders"
-    #   url: "{{ dummy_set_details_sales_performance._link}}"
-    #   # &f[sales_order_item_delivery_summary_ndt.is_order_late]=Yes"
-    # }
   }
 
   measure: cumulative_sales_amount_target_currency {
@@ -537,77 +642,17 @@ dimension: selected_product_dimension_id {
   }
 
 
-#### QA testing stuff
-# {
 
-  # dimension: check_sales_order_value_line_item_source_currency {
-  #   hidden: no
-  #   view_label: "zQA"
-  #   type: number
-  #   sql: ${cumulative_order_quantity_kwmeng} * ${net_price_netpr} ;;
-  # }
-
-  # dimension: is_different_item_value_local_currency {
-  #   hidden: no
-  #   view_label: "zQA"
-  #   type: yesno
-  #   sql: ${check_sales_order_value_line_item_source_currency}<>${sales_order_value_line_item_source_currency} ;;
-  # }
-
-  # dimension: is_hdr_and_item_currency_different {
-  #   hidden: no
-  #   view_label: "zQA"
-  #   type: yesno
-  #   sql: ${currency_waerk}<>${currency_hdr_waerk} ;;
-  # }
-
-  # dimension: is_item_netwr_different {
-  #   hidden: no
-  #   view_label: "zQA"
-  #   type: yesno
-  #   sql: ${net_price_netwr}<>${sales_order_value_line_item_source_currency} ;;
-  # }
-
-  # dimension: net_price_netwr {
-  #   hidden: no
-  #   view_label: "zQA"
-  # }
-
-  # measure: total_sales_order2 {
-  #   hidden: no
-  #   view_label: "zQA"
-  #   type: max
-  #   sql: ${net_value_of_the_sales_order_in_document_currency_netwr} ;;
-  # }
-
-  # dimension: item_fill_rate {
-  #   hidden: no
-  #   type: number
-  #   view_label: "zQA"
-  #   sql: safe_divide(coalesce(${cumulative_confirmed_quantity_kbmeng},0),${cumulative_order_quantity_kwmeng}) ;;
-  #   value_format_name: percent_1
-  # }
-
-  # measure: avg_item_fill_rate {
-  #   hidden: no
-  #   type: average
-  #   view_label: "zQA"
-  #   sql: ${item_fill_rate} ;;
-  #   value_format_name: percent_1
-
-  # }
-
-
-
-
-#}
-
-
+#########################################################
+# MEASURES: Helper
+#{
+# Hidden measures used to support url link generation
   measure: link_generator {
     hidden: yes
     type: number
     sql: 1 ;;
     drill_fields: [link_generator]
   }
+#} end helper measures
 
   }

@@ -21,27 +21,27 @@
 #########################################################}
 
 include: "/views/core/balance_sheet_rfn.view"
-include: "/views/core/language_map_sdt.view"
+# include: "/views/core/language_map_sdt.view"
 include: "/views/core/universal_ledgers_md_rfn.view"
 include: "/views/core/balance_sheet_fiscal_periods_selected_sdt.view"
 include: "/views/core/balance_sheet_hierarchy_selection_sdt.view"
 include: "/views/core/balance_sheet_navigation_ext.view"
 
 explore: balance_sheet {
-  always_join: [language_map_sdt]
+  # always_join: [language_map_sdt]
 
   always_filter: {filters:[balance_sheet.hierarchy_name: "",balance_sheet.chart_of_accounts: "",balance_sheet.company_text: "",balance_sheet.target_currency_tcurr: ""]}
 
   # always filter on:
   #   - Client as defined with constant
-  sql_always_where: ${balance_sheet.client_mandt}='@{CLIENT_ID}';;
+  sql_always_where: ${balance_sheet.client_mandt}='@{CLIENT_ID}' AND ${balance_sheet.language_key_spras} = @{user_language};;
 
-  join: language_map_sdt {
-    type: inner
-    relationship: many_to_one
-    sql_on: ${balance_sheet.language_key_spras} = ${language_map_sdt.language_spras} ;;
-    fields: []
-  }
+  # join: language_map_sdt {
+  #   type: inner
+  #   relationship: many_to_one
+  #   sql_on: ${balance_sheet.language_key_spras} = ${language_map_sdt.language_spras} ;;
+  #   fields: []
+  # }
 
   join: universal_ledgers_md {
     view_label: "Balance Sheet"

@@ -55,10 +55,10 @@ view: sales_order_item_delivery_summary_ndt {
                      to_field:    sales_organizations_md.sales_org_name_vtext}
       bind_filters: {from_field:  distribution_channels_md.distribution_channel_name_vtext
                      to_field:    distribution_channels_md.distribution_channel_name_vtext}
-      bind_filters: {from_field:  divisions_md.division_name_vtext
-                     to_field:    divisions_md.division_name_vtext}
-      bind_filters: {from_field:  materials_md.material_text_maktx
-                     to_field:    materials_md.material_text_maktx}
+      bind_filters: {from_field:  sales_orders_v2.division_name_vtext
+                     to_field:    sales_orders_v2.division_name_vtext}
+      bind_filters: {from_field:  sales_orders_v2.material_text_maktx
+                     to_field:    sales_orders_v2.material_text_maktx}
     }
 
   }

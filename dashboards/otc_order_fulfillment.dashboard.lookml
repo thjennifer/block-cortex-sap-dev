@@ -32,8 +32,8 @@
       country: countries_md.country_name_landx
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
+      product: sales_orders_v2.material_text_maktx
+      division: sales_orders_v2.division_name_vtext
       sold_to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
@@ -62,8 +62,8 @@
       country: countries_md.country_name_landx
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
+      product: sales_orders_v2.material_text_maktx
+      division: sales_orders_v2.division_name_vtext
       sold_to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
@@ -91,8 +91,8 @@
       country: countries_md.country_name_landx
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
+      product: sales_orders_v2.material_text_maktx
+      division: sales_orders_v2.division_name_vtext
       sold_to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
@@ -123,8 +123,8 @@
       country: countries_md.country_name_landx
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
+      product: sales_orders_v2.material_text_maktx
+      division: sales_orders_v2.division_name_vtext
       sold_to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
@@ -196,8 +196,8 @@
       country: countries_md.country_name_landx
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
+      product: sales_orders_v2.material_text_maktx
+      division: sales_orders_v2.division_name_vtext
       sold_to: customers_md.customer_name
     row: 5
     col: 0
@@ -208,10 +208,10 @@
     title: Products with Longest Average Order Cycle Time (Days)
     explore: sales_orders_v2
     type: looker_bar
-    fields: [materials_md.material_number_matnr,materials_md.material_text_maktx,
+    fields: [sales_orders_v2.material_number_matnr,sales_orders_v2.material_text_maktx,
              sales_order_item_delivery_summary_ndt.avg_order_cycle_time]
     sorts: [sales_order_item_delivery_summary_ndt.avg_order_cycle_time desc]
-    hidden_fields: [materials_md.material_number_matnr]
+    hidden_fields: [sales_orders_v2.material_number_matnr]
     filters:
       sales_orders_v2.document_category_vbtyp: 'C'
     x_axis_gridlines: false
@@ -302,8 +302,8 @@
       country: countries_md.country_name_landx
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
+      product: sales_orders_v2.material_text_maktx
+      division: sales_orders_v2.division_name_vtext
       sold_to: customers_md.customer_name
     note_state: collapsed
     note_display: hover
@@ -317,8 +317,8 @@
     title: Order vs Delivery Efficiency
     explore: sales_orders_v2
     type: looker_line
-    fields: [materials_md.material_number_matnr,
-              materials_md.material_text_maktx,
+    fields: [ sales_orders_v2.material_number_matnr,
+              sales_orders_v2.material_text_maktx,
               sales_orders_v2.total_ordered_quantity,
               deliveries.total_quantity_delivered,
               across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty
@@ -429,8 +429,8 @@
       country: countries_md.country_name_landx
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
+      product: sales_orders_v2.material_text_maktx
+      division: sales_orders_v2.division_name_vtext
       sold_to: customers_md.customer_name
     row: 12
     col: 0

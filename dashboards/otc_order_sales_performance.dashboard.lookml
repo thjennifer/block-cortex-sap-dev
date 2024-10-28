@@ -78,7 +78,7 @@
     explore: sales_orders_v2
     type: looker_bar
     fields: [sales_orders_v2.selected_product_dimension_id,
-             across_sales_and_md_lookups_xvw.selected_product_dimension_description,
+             sales_orders_v2.selected_product_dimension_description,
              sales_orders_v2.total_sales_amount_target_currency_formatted,
             # sales_orders_v2.percent_of_total_sales_amount_target_currency
              ]
@@ -124,8 +124,8 @@
       country: countries_md.country_name_landx
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
+      product: sales_orders_v2.material_text_maktx
+      division: sales_orders_v2.division_name_vtext
       sold_to: customers_md.customer_name
       product_level: sales_orders_v2.parameter_display_product_level
     row: 2
@@ -138,7 +138,7 @@
     explore: sales_orders_v2
     type: looker_bar
     fields: [sales_orders_v2.selected_product_dimension_id,
-             across_sales_and_md_lookups_xvw.selected_product_dimension_description,
+             sales_orders_v2.selected_product_dimension_description,
              sales_orders_v2.avg_sales_per_order_target_currency_formatted]
     sorts: [sales_orders_v2.avg_sales_per_order_target_currency_formatted desc]
     hidden_fields: [sales_orders_v2.selected_product_dimension_id]
@@ -183,8 +183,8 @@
       country: countries_md.country_name_landx
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
+      product: sales_orders_v2.material_text_maktx
+      division: sales_orders_v2.division_name_vtext
       sold_to: customers_md.customer_name
       product_level: sales_orders_v2.parameter_display_product_level
     row: 2
@@ -284,8 +284,8 @@
       country: countries_md.country_name_landx
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
+      product: sales_orders_v2.material_text_maktx
+      division: sales_orders_v2.division_name_vtext
       sold_to: customers_md.customer_name
     row: 20
     col: 0
@@ -326,8 +326,8 @@
       country: countries_md.country_name_landx
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
+      product: sales_orders_v2.material_text_maktx
+      division: sales_orders_v2.division_name_vtext
       sold_to: customers_md.customer_name
     note_display: hover
     note_text: |-
@@ -401,8 +401,8 @@
       country: countries_md.country_name_landx
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
+      product: sales_orders_v2.material_text_maktx
+      division: sales_orders_v2.division_name_vtext
       sold_to: customers_md.customer_name
     row: 21
     col: 0
@@ -460,8 +460,8 @@
       country: countries_md.country_name_landx
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
+      product: sales_orders_v2.material_text_maktx
+      division: sales_orders_v2.division_name_vtext
       sold_to: customers_md.customer_name
     row: 21
     col: 12

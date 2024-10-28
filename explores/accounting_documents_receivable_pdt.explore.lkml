@@ -1,7 +1,7 @@
 include: "/views/core/accounting_documents_receivable_pdt.view"
 include: "/views/core/otc_common_parameters_xvw.view"
 include: "/views/core/currency_conversion_sdt.view"
-include: "/views/core/language_map_sdt.view"
+# include: "/views/core/language_map_sdt.view"
 include: "/views/core/companies_md_rfn.view"
 include: "/views/core/customers_md_rfn.view"
 
@@ -13,11 +13,11 @@ explore: accounting_documents_receivable_pdt {
     sql:  ;;
   }
 
-  join: language_map_sdt {
-    type: cross
-    relationship: many_to_one
-    fields: []
-  }
+  # join: language_map_sdt {
+  #   type: cross
+  #   relationship: many_to_one
+  #   fields: []
+  # }
 
 
   join: currency_conversion_sdt {
@@ -36,7 +36,7 @@ explore: accounting_documents_receivable_pdt {
     relationship: many_to_one
     sql_on:  ${accounting_documents_receivable_pdt.client_mandt}=${companies_md.client_mandt} AND
              ${accounting_documents_receivable_pdt.company_code_bukrs} = ${companies_md.company_code_bukrs} AND
-             ${language_map_sdt.language_spras} = ${companies_md.language_spras}
+             ${companies_md.language_spras} = @{user_language}
             ;;
   }
 
@@ -46,7 +46,7 @@ explore: accounting_documents_receivable_pdt {
     relationship: many_to_one
     sql_on:  ${accounting_documents_receivable_pdt.client_mandt}=${customers_md.client_mandt} AND
              ${accounting_documents_receivable_pdt.customer_number_kunnr} = ${customers_md.customer_number_kunnr} AND
-             ${language_map_sdt.language_spras} = ${customers_md.language_spras}
+             ${customers_md.language_spras} = @{user_language}
             ;;
   }
 

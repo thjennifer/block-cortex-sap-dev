@@ -6,7 +6,7 @@ view: +countries_md {
   dimension: key {
     hidden: yes
     primary_key: yes
-    sql: concat(${client_mandt},${country_key_land1},${country_language_spras}) ;;
+    sql: concat(${client_mandt},${country_key_land1},${language_spras}) ;;
   }
 
   dimension: client_mandt {
@@ -23,8 +23,12 @@ view: +countries_md {
   dimension: country_name_landx {
     hidden: no
     label: "{% if _explore._name == 'sales_orders_v2' %}Sold to Party Region{%else%}Country Name{%endif%} @{label_append_sap_code}"
-    full_suggestions: yes
-    suggest_persist_for: "5 minutes"
+    # full_suggestions: yes
+    # suggest_persist_for: "5 minutes"
+  }
+
+  dimension: language_spras {
+    hidden: no
   }
 
   }

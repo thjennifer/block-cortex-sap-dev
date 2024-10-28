@@ -186,7 +186,7 @@
              deliveries.blocked_status_with_symbol,
              sales_orders_v2.sales_document_vbeln,
              sales_orders_v2.item_posnr,
-             materials_md.material_text_maktx,
+             sales_orders_v2.material_text_maktx,
              sales_order_item_partner_function_sdt.customer_names_sold_to,
              sales_order_item_partner_function_sdt.customer_names_ship_to,
              sales_order_item_partner_function_sdt.customer_names_bill_to,
@@ -279,8 +279,8 @@
       country: countries_md.country_name_landx
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: materials_md.material_text_maktx
-      division: divisions_md.division_name_vtext
+      product: sales_orders_v2.material_text_maktx
+      division: sales_orders_v2.division_name_vtext
       sold_to: customers_md.customer_name
       target_currency: otc_common_parameters_xvw.parameter_target_currency
       order_status: across_sales_and_billing_summary_xvw.order_status

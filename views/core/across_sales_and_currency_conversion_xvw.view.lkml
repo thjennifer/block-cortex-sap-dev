@@ -22,7 +22,7 @@ view: across_sales_and_currency_conversion_xvw {
   #   value_format_name: decimal_2
   # }
 
-  # dimension: item_net_value_target_currency_netwr {
+  # dimension: item_ordered_amount_target_currency {
   #   hidden: no
   #   type: number
   #   view_label: "Sales Orders Items"
@@ -38,7 +38,7 @@ view: across_sales_and_currency_conversion_xvw {
   #   type: sum
   #   view_label: "Sales Orders"
   #   label: "@{label_currency}Total Sales ({{currency}})"
-  #   sql: ${item_net_value_target_currency_netwr} ;;
+  #   sql: ${item_ordered_amount_target_currency} ;;
   #   filters: [sales_orders_v2.document_category_vbtyp: "C"]
   #   value_format_name: decimal_2
   #   sql_distinct_key: ${sales_orders_v2.key};;

@@ -61,7 +61,7 @@
     name: Cancelled Orders
     explore: sales_orders_v2
     type: single_value
-    fields: [sales_orders_v2.percent_orders_with_cancellation]
+    fields: [sales_orders_v2.cancelled_order_percent]
     listen:
       date: sales_orders_v2.creation_date_erdat_date
       country: countries_md.country_name_landx
