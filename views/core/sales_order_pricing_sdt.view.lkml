@@ -137,7 +137,7 @@ view: sales_order_pricing_sdt {
     label: "@{label_currency}Average List Price ({{currency}})"
     # label: "{% assign currency = otc_common_parameters_xvw.parameter_target_currency._parameter_value | remove: \"'\" %}Average List Price ({{currency}})"
     sql: ${list_price_target} ;;
-    value_format_name: format_large_numbers_d1
+    value_format_name: "format_large_numbers_d1"
   }
 
   measure: avg_adjusted_price_target_curr {

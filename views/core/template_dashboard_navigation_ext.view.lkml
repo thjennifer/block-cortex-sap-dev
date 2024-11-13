@@ -104,7 +104,7 @@
 #           date: otc_dashboard_navigation_ext.filter1
 #           business_unit: otc_dashboard_navigation_ext.filter2
 #           customer_type: otc_dashboard_navigation_ext.filter3
-#           customer_country: otc_dashboard_navigation_ext.filter4
+#           customer_customer_country: otc_dashboard_navigation_ext.filter4
 #           customer_name: otc_dashboard_navigation_ext.filter5
 #           target_currency: otc_dashboard_navigation_ext.filter6
 #}

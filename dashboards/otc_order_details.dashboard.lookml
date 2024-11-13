@@ -62,7 +62,7 @@
   #     # " Order Status": sales_orders.sales_order_status
   #     Order Date: sales_orders_v2.creation_date_erdat_date
   #     Division: divisions_md.division_name_vtext
-  #     Country: countries_md.country_name_landx
+  #     customer_country: countries_md.country_name_landx
   #     Sales Org: sales_organizations_md.sales_org_name_vtext
   #     Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
   #     Product: materials_md.material_text_maktx
@@ -89,7 +89,7 @@
   #     # " Order Status": sales_orders_v2.sales_order_status
   #     Order Date: sales_orders_v2.creation_date_erdat_date
   #     Division: divisions_md.division_name_vtext
-  #     Country: countries_md.country_name_landx
+  #     customer_country: countries_md.country_name_landx
   #     Sales Org: sales_organizations_md.sales_org_name_vtext
   #     Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
   #     Product: materials_md.material_text_maktx
@@ -169,7 +169,7 @@
   #     # " Order Status": sales_orders_v2.sales_order_status
   #     Order Date: sales_orders_v2.creation_date_erdat_date
   #     Division: divisions_md.division_name_vtext
-  #     Country: countries_md.country_name_landx
+  #     customer_country: countries_md.country_name_landx
   #     Sales Org: sales_organizations_md.sales_org_name_vtext
   #     Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
   #     Product: materials_md.material_text_maktx
@@ -198,8 +198,8 @@
              sales_orders_v2.target_currency,
              sales_orders_v2.exchange_rate_ukurs,
              sales_orders_v2.total_ordered_quantity,
-             sales_order_item_delivery_summary_ndt.sum_total_quantity_delivered,
-             sales_orders_v2.total_net_value,
+             sales_order_item_delivery_summary_ndt.total_delivered_quantity,
+             sales_orders_v2.total_sales_amount_in_source_currency,
              sales_orders_v2.total_sales_amount_target_currency]
     sorts: [sales_orders_v2.sales_document_vbeln]
     limit: 50
@@ -230,8 +230,8 @@
     #   sales_order_item_partner_function_sdt.customer_names_ship_to, sales_order_item_partner_function_sdt.customer_names_bill_to,
     #   sales_orders_v2.creation_date_erdat_date, sales_orders_v2.requested_delivery_date_vdatu_date,
     #   sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat, sales_orders_v2.total_ordered_quantity,
-    #   sales_orders_v2.base_unit_of_measure_meins, sales_order_item_delivery_summary_ndt.sum_total_quantity_delivered,
-    #   sales_orders_v2.total_net_value, currency_conversion_sdt.from_currency_fcurr,
+    #   sales_orders_v2.base_unit_of_measure_meins, sales_order_item_delivery_summary_ndt.total_delivered_quantity,
+    #   sales_orders_v2.total_sales_amount_in_source_currency, currency_conversion_sdt.from_currency_fcurr,
     #   sales_orders_v2.total_sales_amount_target_currency, currency_conversion_sdt.to_currency_tcurr,
     #   currency_conversion_sdt.exchange_rate_ukurs]
     truncate_header: false
@@ -250,20 +250,20 @@
       currency_conversion_sdt.from_currency_fcurr: Document Currency
       currency_conversion_sdt.to_currency_tcurr: Target Currency
       currency_conversion_sdt.exchange_rate_ukurs: Exchange Rate
-      sales_orders_v2.total_net_value: Total Net Value (Document)
-      sales_orders_v2.total_sales_amount_target_currency: Total Net Value (Target)
+      # sales_orders_v2.total_sales_amount_in_source_currency: Total Net Value (Document)
+      # sales_orders_v2.total_sales_amount_target_currency: Total Net Value (Target)
     series_column_widths:
       sales_orders_v2.total_ordered_quantity: 100
       materials_md.material_text_maktx: 150
       sales_orders_v2.base_unit_of_measure_meins: 75
-      sales_order_item_delivery_summary_ndt.sum_total_quantity_delivered: 100
+      sales_order_item_delivery_summary_ndt.total_delivered_quantity: 100
       sales_orders_v2.creation_date_erdat_date: 100
       sales_orders_v2.requested_delivery_date_vdatu_date: 100
       sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat: 100
       currency_conversion_sdt.from_currency_fcurr: 75
       currency_conversion_sdt.to_currency_tcurr: 75
       sales_orders_v2.total_sales_amount_target_currency: 75
-      sales_orders_v2.total_net_value: 75
+      sales_orders_v2.total_sales_amount_in_source_currency: 75
 
     series_cell_visualizations:
       sales_orders_v2.total_ordered_quantity:
@@ -276,12 +276,12 @@
       </font>
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
       product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      customer_name: customers_md.customer_name
       target_currency: otc_common_parameters_xvw.parameter_target_currency
       order_status: across_sales_and_billing_summary_xvw.order_status
       is_blocked: deliveries.is_blocked

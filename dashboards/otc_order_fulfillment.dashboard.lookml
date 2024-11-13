@@ -29,12 +29,12 @@
       sales_orders_v2.document_category_vbtyp: 'C'
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
       product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      customer_name: customers_md.customer_name
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders delivered completely (for all line items)."
@@ -59,12 +59,13 @@
       sales_orders_v2.document_category_vbtyp: 'C'
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      product: sales_orders_v2.material_text_maktx
+      # target_currency: otc_common_parameters_xvw.parameter_target_currency
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders delivered by the promised delivery date."
@@ -88,12 +89,13 @@
       sales_orders_v2.document_category_vbtyp: 'C'
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      product: sales_orders_v2.material_text_maktx
+      # target_currency: otc_common_parameters_xvw.parameter_target_currency
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders delivered completely (for all line items) by the promised delivery date."
@@ -120,12 +122,13 @@
         font_color: "#DB4C40", bold: false, italic: false, strikethrough: false, fields: !!null ''}]
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      product: sales_orders_v2.material_text_maktx
+      # target_currency: otc_common_parameters_xvw.parameter_target_currency
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders not fully delivered by the promised delivery date."
@@ -193,12 +196,13 @@
     note_text: "Monthly tracking of order fulfillment and on-time delivery. In Full % is the percentage of sales orders where all order lines have been fulfilled (inventory has been reserved and is ready for shipment). On Time in Full (OTIF) % is the percentage of sales orders that have been fulfilled completely by the requested delivery date."
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      product: sales_orders_v2.material_text_maktx
+      # target_currency: otc_common_parameters_xvw.parameter_target_currency
     row: 5
     col: 0
     width: 12
@@ -299,12 +303,13 @@
     note_text: Limited to 10 products ranked in descending order by Avg Order Cycle Time
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      product: sales_orders_v2.material_text_maktx
+      # target_currency: otc_common_parameters_xvw.parameter_target_currency
     note_state: collapsed
     note_display: hover
     note_text: "Order cycle time is average number of days between order placement and order delivery. "
@@ -320,7 +325,7 @@
     fields: [ sales_orders_v2.material_number_matnr,
               sales_orders_v2.material_text_maktx,
               sales_orders_v2.total_ordered_quantity,
-              deliveries.total_quantity_delivered,
+              deliveries.total_delivered_quantity,
               across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty
               ]
     sorts: [across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty desc]
@@ -355,8 +360,8 @@
               series: [{axisId: sales_orders_v2.total_ordered_quantity,
                             id: sales_orders_v2.total_ordered_quantity,
                           name: Total Ordered Quantity},
-                      {axisId: deliveries.total_quantity_delivered,
-                           id: deliveries.total_quantity_delivered,
+                      {axisId: deliveries.total_delivered_quantity,
+                           id: deliveries.total_delivered_quantity,
                          name: Total Delivered Quantity}], showLabels: true, showValues: true, },
             {label: 'Difference', orientation: right,
               series: [{axisId: across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty,
@@ -365,15 +370,15 @@
     x_axis_label: Item
     series_types:
       sales_orders_v2.total_ordered_quantity: column
-      deliveries.total_quantity_delivered: column
+      deliveries.total_delivered_quantity: column
       across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty: line
     series_colors:
       sales_orders_v2.total_ordered_quantity: "#12B5CB"
-      deliveries.total_quantity_delivered: "#A6CFD5"
+      deliveries.total_delivered_quantity: "#A6CFD5"
       across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty: "#404040"
     series_labels:
       sales_orders_v2.total_ordered_quantity: Total Ordered Quantity
-      deliveries.total_quantity_delivered: Total Delivered Quantity
+      deliveries.total_delivered_quantity: Total Delivered Quantity
     x_axis_label_rotation: 0
     advanced_vis_config: |-
       {
@@ -426,12 +431,13 @@
     note_text: "Top 10 Items with Largest Difference between Quantity Ordered and Delivered"
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      product: sales_orders_v2.material_text_maktx
+      # target_currency: otc_common_parameters_xvw.parameter_target_currency
     row: 12
     col: 0
     width: 24

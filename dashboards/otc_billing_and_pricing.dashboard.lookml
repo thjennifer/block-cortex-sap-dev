@@ -68,12 +68,12 @@
       hidden_fields: [sales_orders_v2.sold_to_party_kunnr, sales_order_pricing_sdt.abs_difference_list_and_adjusted_price]
       listen:
         date: sales_orders_v2.creation_date_erdat_date
-        country: countries_md.country_name_landx
+        customer_country: countries_md.country_name_landx
+        customer_name: sales_orders_v2.customer_name
         sales_org: sales_organizations_md.sales_org_name_vtext
         distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-        product: sales_orders_v2.material_text_maktx
         division: sales_orders_v2.division_name_vtext
-        sold_to: customers_md.customer_name
+        product: sales_orders_v2.material_text_maktx
         target_currency: otc_common_parameters_xvw.parameter_target_currency
       row: 2
       col: 0
@@ -144,12 +144,12 @@
       hidden_pivots: {}
       listen:
         date: sales_orders_v2.creation_date_erdat_date
-        country: countries_md.country_name_landx
+        customer_country: countries_md.country_name_landx
+        customer_name: sales_orders_v2.customer_name
         sales_org: sales_organizations_md.sales_org_name_vtext
         distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-        product: sales_orders_v2.material_text_maktx
         division: sales_orders_v2.division_name_vtext
-        sold_to: customers_md.customer_name
+        product: sales_orders_v2.material_text_maktx
         target_currency: otc_common_parameters_xvw.parameter_target_currency
       row: 13
       col: 0

@@ -32,8 +32,8 @@
       display: inline
       options: []
 
-  - name: country
-    title: Country
+  - name: customer_country
+    title: "Sold to Customer: Country"
     type: field_filter
     default_value: ''
     allow_multiple_values: true
@@ -43,6 +43,18 @@
       display: popover
     explore: countries_md
     field: countries_md.country_name_landx
+
+  - name: customer_name
+    title: "Sold to Customer: Name"
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: advanced
+      display: popover
+    explore: customers_md
+    field: customers_md.customer_name
 
   - name: sales_org
     title: Sales Org
@@ -80,18 +92,6 @@
       display: popover
     explore: divisions_md
     field: divisions_md.division_name_vtext
-
-  - name: sold_to
-    title: Sold to
-    type: field_filter
-    default_value: ''
-    allow_multiple_values: true
-    required: false
-    ui_config:
-      type: advanced
-      display: popover
-    explore: customers_md
-    field: customers_md.customer_name
 
   - name: product
     title: Product
@@ -147,12 +147,12 @@
       show_comparison: false
       listen:
         date: otc_dashboard_navigation_ext.filter1
-        country: otc_dashboard_navigation_ext.filter2
-        sales_org: otc_dashboard_navigation_ext.filter3
-        distribution_channel: otc_dashboard_navigation_ext.filter4
-        division: otc_dashboard_navigation_ext.filter5
-        product: otc_dashboard_navigation_ext.filter6
-        sold_to: otc_dashboard_navigation_ext.filter7
+        customer_country: otc_dashboard_navigation_ext.filter2
+        customer_name: otc_dashboard_navigation_ext.filter3
+        sales_org: otc_dashboard_navigation_ext.filter4
+        distribution_channel: otc_dashboard_navigation_ext.filter5
+        division: otc_dashboard_navigation_ext.filter6
+        product: otc_dashboard_navigation_ext.filter7
         target_currency: otc_dashboard_navigation_ext.filter8
       row: 0
       col: 0

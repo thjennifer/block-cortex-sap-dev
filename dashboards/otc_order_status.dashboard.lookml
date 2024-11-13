@@ -51,12 +51,12 @@
       sales_orders_v2.document_category_vbtyp: 'C'
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      product: sales_orders_v2.material_text_maktx
     note_state: collapsed
     note_display: hover
     note_text: "The number of sales orders."
@@ -80,12 +80,12 @@
       sales_orders_v2.document_category_vbtyp: 'C'
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      product: sales_orders_v2.material_text_maktx
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders with a product return."
@@ -109,12 +109,12 @@
       sales_orders_v2.document_category_vbtyp: 'C'
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      product: sales_orders_v2.material_text_maktx
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders processed without any holds."
@@ -138,12 +138,12 @@
       sales_orders_v2.document_category_vbtyp: 'C'
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      product: sales_orders_v2.material_text_maktx
     note_state: collapsed
     note_display: hover
     note_text: "The number of sales orders blocked (is on hold or has backorder)."
@@ -152,65 +152,61 @@
     width: 6
     height: 2
 ######################################################################################################
-#   - name: bbb_funnel
-#     title: Booking to Billing
-#     explore: sales_orders_daily_agg
-#     type: looker_funnel
-#     fields: [sales_orders_daily_agg__lines.total_ordered_amount_target_currency_formatted,
-#             sales_orders_daily_agg__lines.total_booking_amount_target_currency_formatted,
-#             sales_orders_daily_agg__lines.total_backlog_amount_target_currency_formatted,
-#             sales_orders_daily_agg__lines.total_shipped_amount_target_currency_formatted,
-#             sales_orders_daily_agg__lines.total_invoiced_amount_target_currency_formatted]
-#     filters:
-#       sales_orders_daily_agg__lines.line_category_code: "ORDER"
-#       sales_orders_daily_agg.order_category_code: "-RETURN"
-#     leftAxisLabelVisible: false
-#     leftAxisLabel: ''
-#     rightAxisLabelVisible: false
-#     rightAxisLabel: ''
-#     smoothedBars: false
-#     orientation: rows
-#     labelPosition: left
-#     percentType: total
-#     percentPosition: inline
-#     valuePosition: inline
-#     color_application:
-#       collection_id: 1bc1f1d8-7461-4bfd-8c3b-424b924287b5
-#       custom:
-#         id: 92e66b84-021e-3146-39de-2f52135eba51
-#         label: Custom
-#         type: continuous
-#         stops:
-#         - color: "#468FAF"
-#           offset: 0
-#         - color: "#013A63"
-#           offset: 100
-#       options:
-#         steps: 5
-#         reverse: true
-#     isStepped: true
-#     labelOverlap: false
-#     note_state: collapsed
-#     note_display: hover
-#     note_text: |-
-#       Beginning with Total Sales Ordered Amount, this funnel depicts the flow of amounts across the stages of a line item:
-#       </br>Booking
-#       </br>Backlog
-#       </br>Shipping
-#       </br>Billing
-#     listen:
-#       date: sales_orders_daily_agg.ordered_date
-#       business_unit: sales_orders_daily_agg.business_unit_name
-#       customer_type: sales_orders_daily_agg.parameter_customer_type
-#       customer_country: sales_orders_daily_agg.selected_customer_country
-#       customer_name: sales_orders_daily_agg.selected_customer_name
-#       target_currency: otc_common_parameters_xvw.parameter_target_currency
-#       order_source: sales_orders_daily_agg.order_source_name
-#       item_category: sales_orders_daily_agg__lines.category_description
-#     row: 4
-#     col: 0
-#     width: 12
-#     height: 8
+  - name: order_to_billing_funnel
+    title: Order to Billing
+    explore: sales_orders_v2
+    type: looker_funnel
+    fields: [sales_orders_v2.total_sales_amount_target_currency_formatted,
+            across_sales_and_billing_summary_xvw.total_delivered_amount_target_currency_formatted,
+            across_sales_and_billing_summary_xvw.total_billed_amount_target_currency_formatted]
+    filters:
+      sales_orders_v2.document_category_vbtyp: 'C'
+    leftAxisLabelVisible: false
+    leftAxisLabel: ''
+    rightAxisLabelVisible: false
+    rightAxisLabel: ''
+    smoothedBars: false
+    orientation: rows
+    labelPosition: left
+    percentType: total
+    percentPosition: inline
+    valuePosition: inline
+    color_application:
+      collection_id: 1bc1f1d8-7461-4bfd-8c3b-424b924287b5
+      custom:
+        id: 92e66b84-021e-3146-39de-2f52135eba51
+        label: Custom
+        type: continuous
+        stops:
+        - color: "#468FAF"
+          offset: 0
+        - color: "#013A63"
+          offset: 100
+      options:
+        steps: 3
+        reverse: true
+    isStepped: true
+    labelOverlap: false
+    note_state: collapsed
+    note_display: hover
+    note_text: |-
+      Beginning with Total Sales Ordered Amount, this funnel depicts the flow of amounts across the stages of a line item:
+      </br>Order
+      </br>Delivery
+      </br>Billing
+    listen:
+      date: sales_orders_v2.creation_date_erdat_date
+      customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
+      sales_org: sales_organizations_md.sales_org_name_vtext
+      distribution_channel: distribution_channels_md.distribution_channel_name_vtext
+      division: sales_orders_v2.division_name_vtext
+      product: sales_orders_v2.material_text_maktx
+      target_currency: otc_common_parameters_xvw.parameter_target_currency
+    row: 4
+    col: 0
+    width: 12
+    height: 8
 ######################################################################################################
   - name: order_status_donut
     title: Order Status
@@ -253,12 +249,12 @@
     note_text: "Percent of Sales Orders by Status: Open, Cancelled, or Closed."
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      product: sales_orders_v2.material_text_maktx
     row: 4
     col: 12
     width: 12

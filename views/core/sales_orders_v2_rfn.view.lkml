@@ -74,11 +74,6 @@ view: +sales_orders_v2 {
     description: "Sales Order Number"
   }
 
-  dimension: sold_to_party_kunnr {
-    hidden: no
-    label: "@{label_field_name}"
-  }
-
   dimension: sales_document_type_auart {
     hidden: no
     label: "@{label_field_name}"
@@ -118,6 +113,26 @@ view: +sales_orders_v2 {
   #} end order attributes
 
 #########################################################
+# DIMENSIONS: Customer
+#{
+#--> requires Customers MD to be joined in same Explore using sold_to_party_kunnr
+
+  dimension: sold_to_party_kunnr {
+    hidden: no
+    label: "@{label_field_name}"
+  }
+
+#--> cross references customers_md
+  dimension: customer_name  {
+    hidden: no
+    label: "{%- if _explore._name == 'sales_orders_v2' -%}Sold to Party Name{%- else -%}Customer Name{%- endif -%}"
+    description: "Customer Name (name1)"
+    sql: COALESCE(${customers_md.customer_name},CONCAT('Sold to Party: ',${sales_orders_v2.sold_to_party_kunnr})) ;;
+  }
+
+#} end customer dimensions
+
+#########################################################
 # DIMENSIONS: Order Currency Conversion
 #{
 # Requires currency_conversion_sdt to be joined in same Explore
@@ -151,6 +166,13 @@ view: +sales_orders_v2 {
     label: "Order"
     description: "Sales Order Creation Date ERDAT"
     sql: ${TABLE}.CreationDate_ERDAT ;;
+  }
+
+  dimension: day_of_sales_order_creation_date_erdat {
+    hidden: no
+    group_label: "Order Date"
+    group_item_label: "Day of Month"
+    description: "Day of month of sales order creation date ERDAT"
   }
 
   dimension: week_of_sales_order_creation_date_erdat {
@@ -205,6 +227,13 @@ view: +sales_orders_v2 {
     hidden: no
     label: "Requested Delivery"
     description: "Requested Delivery Date VDATU"
+  }
+
+  dimension: day_of_requested_delivery_date_vdatu {
+    hidden: no
+    group_label: "Requested Delivery Date"
+    group_item_label: "Day of Month"
+    description: "Day of month of requested delivery date VDATU"
   }
 
   dimension: week_of_requested_delivery_date_vdatu {
@@ -305,6 +334,24 @@ view: +sales_orders_v2 {
     sql: {% if parameter_display_product_level._parameter_value == 'Item' %}${item_posnr}{%else%}${division_hdr_spart}{%endif%} ;;
     can_filter: yes
     value_format_name: id
+  }
+
+  dimension: product_hierarchy_prodh {
+    hidden: no
+    view_label: "Sales Orders Items"
+    label: "@{label_field_name}"
+  }
+
+  dimension: item_category_pstyv {
+    hidden: no
+    view_label: "Sales Orders Items"
+    label: "@{label_field_name}"
+  }
+
+  dimension: item_type_posar {
+    hidden: no
+    view_label: "Sales Orders Items"
+    label: "@{label_field_name}"
   }
 
 #} end item attributes
@@ -517,7 +564,7 @@ view: +sales_orders_v2 {
     view_label: "Sales Orders Items"
     group_label: "Amounts in Source Currency"
     label: "Total Sales Amount in Source Currency"
-    description: "Sum of ordered amount where document category type = 'C' in source currency. Currency (Source) is required field to avoid summing across multiple currencies. If currency not included, a warning message is returned"
+    description: "Sum of ordered amount in source currency where document category type = 'C'. Currency (Source) is required field to avoid summing across multiple currencies. If currency not included, a warning message is returned"
     sql: {%- if sales_orders_v2.currency_hdr_waerk._is_selected -%}${item_ordered_amount}{%- else -%}NULL{%- endif -%} ;;
     filters: [document_category_vbtyp: "C"]
     value_format_name: decimal_2
@@ -526,27 +573,9 @@ view: +sales_orders_v2 {
 
 #} end amounts in source currency
 
-
-  measure: total_ordered_quantity {
-    hidden: no
-    type: sum
-    sql: ${cumulative_order_quantity_kwmeng} ;;
-  }
-
-
-
-  measure: total_net_value {
-    hidden: no
-    type: sum
-    label: "Total Sales Amount (Source Currency)"
-    description: "Total Sales (Source Currency)"
-    sql: ${sales_order_value_line_item_source_currency} ;;
-    value_format_name: "format_large_numbers_d1"
-  }
-
-
-
-
+#########################################################
+# MEASURES: Amounts in Target Currency
+#{
   measure: total_sales_amount_target_currency {
     hidden: no
     type: sum
@@ -558,20 +587,10 @@ view: +sales_orders_v2 {
     value_format_name: decimal_2
   }
 
-  measure: total_sales_amount_target_currency_formatted {
-    hidden: no
-    type: number
-    view_label: "Sales Orders Items"
-    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
-    # label: "@{label_currency}Total Sales ({{currency}}) Formatted"
-    sql: ${total_sales_amount_target_currency} ;;
-    value_format_name: format_large_numbers_d1
-  }
-
   measure: cumulative_sales_amount_target_currency {
     hidden: no
     type: running_total
-    group_label: "Sales Orders"
+    group_label: "Sales Orders Items"
     label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     description: "Cumulative sum of sales amount in target currency"
     sql: ${total_sales_amount_target_currency} ;;
@@ -583,11 +602,46 @@ view: +sales_orders_v2 {
     hidden: no
     type: number
     view_label: "Sales Orders"
-    label: "@{label_currency}Average Sales per Order ({{currency}})"
+    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
+    # label: "@{label_currency}Average Sales per Order ({{currency}})"
     sql: safe_divide(${total_sales_amount_target_currency},${sales_orders_v2.sales_order_count});;
     # sql_distinct_key: ${sales_orders_v2.key};;
     value_format_name: decimal_2
+  }
+
+#} end amounts in target currency
+
+#########################################################
+# MEASURES: Amounts in Target Currency Formatted for Large Numbers
+#{
+  measure: total_sales_amount_target_currency_formatted {
+    hidden: no
+    type: number
+    view_label: "Sales Orders Items"
+    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
+    sql: ${total_sales_amount_target_currency} ;;
+    value_format_name: format_large_numbers_d1
+    link: {
+      label: "Order Line Details"
+      icon_url: "/favicon.ico"
+      url: "
+      @{link_build_variable_defaults}
+      {% assign link = link_generator._link %}
+      {% assign use_qualified_filter_names = false %}
+      {% assign append_extra_mapping = false %}
+      {% assign expl = _explore._name %}
+      {% if expl == 'sales_orders_v2' %}
+        @{link_map_otc_sales_orders_to_order_details_extra_mapping}
+      {% endif %}
+      {% assign source_to_destination_filters_mapping = '@{link_map_otc_sales_orders_to_order_details}'%}
+      {% if append_extra_mapping == true %}
+        {% assign source_to_destination_filters_mapping = source_to_destination_filters_mapping | append: extra_mapping %}
+      {% endif %}
+      @{link_map_otc_target_dash_id_order_details}
+      @{link_build_dashboard_url}
+      "
     }
+  }
 
   measure: avg_sales_per_order_target_currency_formatted {
     hidden: no
@@ -598,40 +652,12 @@ view: +sales_orders_v2 {
     sql: ${avg_sales_per_order_target_currency};;
     value_format_name: format_large_numbers_d1
   }
-    # link: {
-    #   label: "Show Orders"
-    #   url: "{{ dummy_set_details_sales_performance._link}}"
-    #   # &f[sales_order_item_delivery_summary_ndt.is_order_late]=Yes"
-    # }
 
-    ## dynamic capture of filters with link
-    # link: {
-    #   label: "Open Order Details Dashboard"
-    #   icon_url: "/favicon.ico"
-    #   url: "
-    #   @{link_build_variable_defaults}
-    #   {% assign link = link_generator._link %}
-    #   {% assign filters_mapping = '@{link_map_otc_sales_orders_to_order_details}' | append: '||across_sales_and_billing_summary_xvw.order_status|Order Status||deliveries.is_blocked|Is Blocked' %}
+#} end target currency amounts formatted as large numbers
 
-    #   {% assign model = _model._name %}
-    #   {% assign target_dashboard = _model._name | append: '::otc_order_details' %}
-
-    #   {% assign default_filters_override = false %}
-
-    #   @{link_build_dashboard_url}
-    #   "
-    # }
-
-  # }
-
-  # measure: test_avg {
-  #   hidden: no
-  #   type: average_distinct
-  #   view_label: "Sales Orders"
-  #   sql: ${item_net_price_target_currency_netpr} ;;
-  #   sql_distinct_key: ${sales_orders_v2.key};;
-  # }
-
+#########################################################
+# MEASURES: Misc
+#{
   measure: percent_of_total_sales_amount_target_currency {
     hidden: no
     view_label: "Sales Orders"
@@ -641,6 +667,13 @@ view: +sales_orders_v2 {
     # sql_distinct_key: ${sales_orders_v2.key};;
   }
 
+  measure: total_ordered_quantity {
+    hidden: no
+    type: sum
+    sql: ${cumulative_order_quantity_kwmeng} ;;
+  }
+
+#} end misc measures
 
 
 #########################################################
@@ -654,5 +687,26 @@ view: +sales_orders_v2 {
     drill_fields: [link_generator]
   }
 #} end helper measures
+
+
+# link: {
+  #   label: "Show Orders"
+  #   url: "{{ dummy_set_details_sales_performance._link}}"
+  #   # &f[sales_order_item_delivery_summary_ndt.is_order_late]=Yes"
+  # }
+
+  ## dynamic capture of filters with link
+  # link: {
+  #   label: "Open Order Details Dashboard"
+  #   icon_url: "/favicon.ico"
+  #   url: "
+  #   @{link_build_variable_defaults}
+  #   {% assign link = link_generator._link %}
+  #   {% assign filters_mapping = '@{link_map_otc_sales_orders_to_order_details}' | append: '||across_sales_and_billing_summary_xvw.order_status|Order Status||deliveries.is_blocked|Is Blocked' %}
+  #   {% assign target_dashboard = _model._name | append: '::otc_order_details' %}
+  #   @{link_build_dashboard_url}
+  #   "
+  # }
+
 
   }

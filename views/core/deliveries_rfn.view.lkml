@@ -241,7 +241,7 @@ view: +deliveries {
   #   value_format_name: percent_1
   # }
 
-  measure: total_quantity_delivered {
+  measure: total_delivered_quantity {
     hidden: no
     type: sum
     sql: ${actual_quantity_delivered_in_sales_units_lfimg} ;;
@@ -296,7 +296,7 @@ view: +deliveries {
   #             count_late_deliveries,
   #             percent_on_time_deliveries,
   #             percent_late_deliveries,
-  #             total_quantity_delivered,
+  #             total_delivered_quantity,
   #             date__proof_of_delivery___podat_date,
   #             proof_of_delivery_timestamp,
   #             delivery_date_lfdat_date,

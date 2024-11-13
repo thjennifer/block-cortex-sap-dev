@@ -104,7 +104,7 @@
 #           date: otc_dashboard_navigation_ext.filter1
 #           business_unit: otc_dashboard_navigation_ext.filter2
 #           customer_type: otc_dashboard_navigation_ext.filter3
-#           customer_country: otc_dashboard_navigation_ext.filter4
+#           customer_customer_country: otc_dashboard_navigation_ext.filter4
 #           customer_name: otc_dashboard_navigation_ext.filter5
 #           target_currency: otc_dashboard_navigation_ext.filter6
 #}
@@ -138,7 +138,7 @@ view: otc_dashboard_navigation_ext {
   }
 
   dimension: map_filter_numbers_to_dashboard_filter_names {
-    sql: '1|date||2|country||3|sales_org||4|distribution_channel||5|division||6|product||7|sold_to||8|target_currency||9|language' ;;
+    sql: '1|date||2|customer_country||3|customer_name||4|sales_org||5|distribution_channel||6|division||7|product||8|target_currency' ;;
     # sql: "1|date||2|business_unit||3|customer_type||4|customer_country" ;;
   }
 
@@ -153,7 +153,7 @@ view: otc_dashboard_navigation_ext {
             {% when "orders" %}
             "@{link_map_otc_dash_bindings_order_status}||@{link_map_otc_dash_bindings_order_sales_performance}||@{link_map_otc_dash_bindings_order_fulfillment}||@{link_map_otc_dash_bindings_billing_and_pricing}"
            {% when "odetails" %}
-            "@{link_map_otc_dash_bindings_order_status}||@{link_map_otc_dash_bindings_order_sales_performance}||@{link_map_otc_dash_bindings_order_fulfillment}||@{link_map_otc_dash_bindings_billing_and_pricing||@{link_map_otc_dash_bindings_order_details}"
+            "@{link_map_otc_dash_bindings_order_status}||@{link_map_otc_dash_bindings_order_sales_performance}||@{link_map_otc_dash_bindings_order_fulfillment}||@{link_map_otc_dash_bindings_billing_and_pricing}||@{link_map_otc_dash_bindings_order_details}"
           {% endcase %}
           ;;
 
@@ -177,13 +177,12 @@ view: otc_dashboard_navigation_ext {
     label: "date"
   }
 
-  filter: filter2 { hidden: no label: "country"}
-  filter: filter3 { hidden: no label: "sales_org"}
-  filter: filter4 { hidden: no label: "distribution_channel"}
-  filter: filter5 { hidden: no label: "division"}
-  filter: filter6 { hidden: no label: "product"}
-  filter: filter7 { hidden: no label: "sold_to"}
+  filter: filter2 { hidden: no label: "customer_country"}
+  filter: filter3 { hidden: no label: "customer_name"}
+  filter: filter4 { hidden: no label: "sales_org"}
+  filter: filter5 { hidden: no label: "distribution_channel"}
+  filter: filter6 { hidden: no label: "division"}
+  filter: filter7 { hidden: no label: "product"}
   filter: filter8 { hidden: no label: "target_currency"}
-  # filter: filter9 { hidden: no label: "language"}
 
 }

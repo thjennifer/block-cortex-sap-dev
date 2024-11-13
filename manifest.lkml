@@ -473,23 +473,23 @@ constant: label_currency_if_selected {
 constant: link_style_dashboard_navigation {
   value: "{% assign nav_style = parameter_navigation_style._parameter_value %}
   {% case nav_style %}
-  {% when 'buttons' %}
-  {% assign core_style = 'border-collapse: separate; border-radius: 6px; border: 2px solid #dcdcdc; margin-left: 5px; margin-bottom: 5px; padding: 6px 10px; line-height: 1.5; user-select: none; font-size: 12px; font-style: tahoma; text-align: center; text-decoration: none; letter-spacing: 0px; white-space: normal; float: left;' %}
-  {% assign non_click_style = core_style | append: 'background-color: #FFFFFF; color: #000000; font-weight: normal;' %}
-  {% assign click_style = core_style | append: 'background-color: #dbe8fb; color: #000000; font-weight: medium;' %}
-  {% assign div_style = 'text-align: center; display: inline-block; height: 40px;' %}
-  {% assign span_style = 'font-size: 16px; padding: 6px 10px 0 10px; height: 40px;' %}
-  {% when 'tabs' %}
-  {% assign core_style = 'font-color: #4285F4; padding: 5px 10px; border-style: solid; border-radius: 5px 5px 0 0; float: left; line-height: 20px;'%}
-  {% assign non_click_style = core_style | append: 'border-width: 1px; border-color: #D3D3D3;' %}
-  {% assign click_style = core_style | append: 'border-width: 3px; border-color: #808080 #808080 #F5F5F5 #808080; font-weight: bold; background-color: #F5F5F5;' %}
-  {% assign div_style = 'border-bottom: solid 2px #808080; padding: 4px 10px 0px 10px; height: 38px;' %}
-  {% assign span_style = 'font-size: 16px; padding: 6px 10px 0 10px; height: 38px;' %}
-  {% when 'plain' %}
-  {% assign non_click_style = 'color: #0059D6; padding: 5px 15px; float: left; line-height: 40px;' %}
-  {% assign click_style = non_click_style | append: 'font-weight:bold;font-size: 12px;' %}
-  {% assign div_style = 'float: left;' %}
-  {% assign span_style = 'font-size: 10px; display: table; margin:0 auto;' %}
+    {% when 'buttons' %}
+      {% assign core_style = 'border-collapse: separate; border-radius: 6px; border: 2px solid #dcdcdc; margin-left: 5px; margin-bottom: 5px; padding: 6px 10px; line-height: 1.5; user-select: none; font-size: 12px; font-style: tahoma; text-align: center; text-decoration: none; letter-spacing: 0px; white-space: normal; float: left;' %}
+      {% assign non_click_style = core_style | append: 'background-color: #FFFFFF; color: #000000; font-weight: normal;' %}
+      {% assign click_style = core_style | append: 'background-color: #dbe8fb; color: #000000; font-weight: medium;' %}
+      {% assign div_style = 'text-align: center; display: inline-block; height: 40px;' %}
+      {% assign span_style = 'font-size: 16px; padding: 6px 10px 0 10px; height: 40px;' %}
+    {% when 'tabs' %}
+      {% assign core_style = 'font-color: #4285F4; padding: 5px 10px; border-style: solid; border-radius: 5px 5px 0 0; float: left; line-height: 20px;'%}
+      {% assign non_click_style = core_style | append: 'border-width: 1px; border-color: #D3D3D3;' %}
+      {% assign click_style = core_style | append: 'border-width: 3px; border-color: #808080 #808080 #F5F5F5 #808080; font-weight: bold; background-color: #F5F5F5;' %}
+      {% assign div_style = 'border-bottom: solid 2px #808080; padding: 4px 10px 0px 10px; height: 38px;' %}
+      {% assign span_style = 'font-size: 16px; padding: 6px 10px 0 10px; height: 38px;' %}
+    {% when 'plain' %}
+      {% assign non_click_style = 'color: #0059D6; padding: 5px 15px; float: left; line-height: 40px;' %}
+      {% assign click_style = non_click_style | append: 'font-weight:bold;font-size: 12px;' %}
+      {% assign div_style = 'float: left;' %}
+      {% assign span_style = 'font-size: 10px; display: table; margin:0 auto;' %}
   {% endcase %}"
 }
 
@@ -545,7 +545,7 @@ constant: link_style_dashboard_navigation {
 #  to filters on dashboard otc_order_line_item_details
 #}
 constant: link_map_otc_sales_orders_to_order_details {
-  value: "sales_orders_v2.creation_date_erdat_date|Order Date||divisions_md.division_name_vtext|Division||countries_md.country_name_landx|Country||materials_md.material_text_maktx|Product||sales_organizations_md.sales_org_name_vtext|Sales Org||distribution_channels_md.distribution_channel_name_vtext|Distribution Channel||otc_common_parameters_xvw.parameter_target_currency|Target Currency||customers_md.|Sold to"
+  value: "sales_orders_v2.creation_date_erdat_date|date||sales_orders_v2.division_name_vtext|division||countries_md.country_name_landx|customer_country||sales_orders_v2.material_text_maktx|product||sales_organizations_md.sales_org_name_vtext|sales_org||distribution_channels_md.distribution_channel_name_vtext|distribution_channel||otc_common_parameters_xvw.parameter_target_currency|target_currency||sales_orders_v2.customer_name|customer_name"
 }
 
 #--> link_map_otc_sales_invoices_to_invoice_details
@@ -556,29 +556,27 @@ constant: link_map_otc_sales_invoices_to_invoice_details {
   value: "invoice_date|date||business_unit_name|business_unit||bill_to_customer_country|customer_country||bill_to_customer_name|customer_name||order_source_name|order_source||category_description|item_category||parameter_target_currency|target_currency"
 }
 
-
-
 #--> link_map_otc_sales_orders_to_order_details_extra_mapping
 #{
 # - To accommodate the dual purpose of the selected_product_dimension_description field, which can represent either an item description
-#   or a category description based on the parameter_display_product_level parameter,
-#   additional logic is required to ensure the correct mapping to the corresponding dashboard filter--either item_description or item_category.
+#   or a sales division based on the parameter_display_product_level parameter,
+#   additional logic is required to ensure the correct mapping to the corresponding dashboard filter--either product or division.
 # - Returns a liquid variable called extra_mapping which can be appended to the source_to_destination_filters_mapping variable.
 #}
 constant: link_map_otc_sales_orders_to_order_details_extra_mapping {
   value: "{%- assign extra_mapping = '' -%}
-  {%- if sales_orders__lines.selected_product_dimension_description._in_query -%}
-  {%- assign append_extra_mapping = true -%}
-  {%- assign pl = sales_orders__lines.parameter_display_product_level._parameter_value -%}
-  {%- if pl == 'Category' -%}
-  {%- assign target_filter = 'item_category' -%}
-  {%- elsif pl == 'Item' -%}
-  {%- assign target_filter = 'item_description' -%}
-  {%- endif -%}
-  {%- assign extra_mapping = '||selected_product_dimension_description|' | append: target_filter -%}
-  {%- else -%}
-  {%- assign append_extra_mapping = false -%}
-  {%- endif -%}"
+          {%- if sales_orders_v2.selected_product_dimension_description._in_query -%}
+              {%- assign append_extra_mapping = true -%}
+              {%- assign pl = sales_orders_v2.parameter_display_product_level._parameter_value -%}
+                {%- if pl == 'Division' -%}
+                    {%- assign target_filter = 'division' -%}
+                {%- elsif pl == 'Item' -%}
+                    {%- assign target_filter = 'product' -%}
+                {%- endif -%}
+              {%- assign extra_mapping = '||selected_product_dimension_description|' | append: target_filter -%}
+          {%- else -%}
+              {%- assign append_extra_mapping = false -%}
+          {%- endif -%}"
 }
 
 #--> link_map_otc_invoices_to_order_details
@@ -626,7 +624,7 @@ constant: link_map_otc_dash_bindings_billing_and_pricing {
 }
 
 constant: link_map_otc_dash_bindings_order_details {
-  value: "otc_order_details|Orders Details|1,2,3,4,5,6,7,8"
+  value: "otc_order_details|Order Details|1,2,3,4,5,6,7,8"
 }
 
 # constant: link_map_otc_dash_bindings_billing_accounts_receivable {
@@ -650,19 +648,19 @@ constant: link_map_otc_dash_bindings_order_details {
 
 constant: link_map_clean_target_dashboard {
   value: "{% assign check_target_type = target_dashboard | plus: 0 %}
-  {% if check_target_type == 0 %}
-  {% assign name_size = target_dashboard | size %}
-  {% comment %} For names with '::' or length of 22 characters without '_', keep the name as is. {% endcomment %}
-  {% comment %} Otherwise, add the model name and '::' to ensure proper reference to the LookML dashboard. {% endcomment %}
-  {% if target_dashboard contains '::' %}
-  {% elsif name_size == 22 %}
-  {% if target_dashboard contains '_' %}
-  {% assign target_dashboard = _model._name | append: '::' | append: target_dashboard %}
-  {% endif %}
-  {% else %}
-  {% assign target_dashboard = _model._name | append: '::' | append: target_dashboard %}
-  {% endif %}
-  {% endif %}"
+          {% if check_target_type == 0 %}
+            {% assign name_size = target_dashboard | size %}
+            {% comment %} For names with '::' or length of 22 characters without '_', keep the name as is. {% endcomment %}
+            {% comment %} Otherwise, add the model name and '::' to ensure proper reference to the LookML dashboard. {% endcomment %}
+            {% if target_dashboard contains '::' %}
+              {% elsif name_size == 22 %}
+                {% if target_dashboard contains '_' %}
+                  {% assign target_dashboard = _model._name | append: '::' | append: target_dashboard %}
+                {% endif %}
+              {% else %}
+                  {% assign target_dashboard = _model._name | append: '::' | append: target_dashboard %}
+            {% endif %}
+          {% endif %}"
 }
 
 #--> link_map_otc_target_dash_id_*
@@ -698,9 +696,9 @@ constant: link_map_filters_from_navigation_dash_bindings {
   <!-- Capture model_name and view_name (if needed to qualify field name) -->
   {% assign model_name = _model._name %}
   {% if use_qualified_filter_names == true %}
-  {% assign view_name = _view._name | append: '.' %}
+    {% assign view_name = _view._name | append: '.' %}
   {%else%}
-  {% assign view_name = '' %}
+    {% assign view_name = '' %}
   {%endif%}
 
   <!-- Create nav_items array from dash_bindings and dash_map from map_filter_numbers_to_dashboard_filter_names. -->
@@ -710,24 +708,24 @@ constant: link_map_filters_from_navigation_dash_bindings {
   <!-- Begin loop through the array of dashboards. -->
   <!-- Note this for loop ends outside of this constant in the navigation_links html property -->
   {% for nav_item in nav_items %}
-  {% assign nav_parts = nav_item | split: '|' %}
-  {% assign dash_label = nav_parts[1] %}
+    {% assign nav_parts = nav_item | split: '|' %}
+    {% assign dash_label = nav_parts[1] %}
 
-  <!-- Assign target_dashboard name and ensure any LookML dashboard names provided follow proper naming syntax. -->
-  {% assign target_dashboard = nav_parts[0] %}
-  @{link_map_clean_target_dashboard}
+    <!-- Assign target_dashboard name and ensure any LookML dashboard names provided follow proper naming syntax. -->
+    {% assign target_dashboard = nav_parts[0] %}
+    @{link_map_clean_target_dashboard}
 
-  <!-- Create source_to_destination_filters_mapping variable by looping through the mapped pairs -->
-  {% assign dash_filter_set = nav_parts[2] | split: ',' %}
-  {% for dash_filter in dash_filter_set %}
-  {% for map_item in dash_map %}
-  {% assign map_item_key = map_item | split:'|' | first %}
-  {% if dash_filter == map_item_key %}
-  {% assign map_item_value = map_item | split:'|' | last %}
-  {% assign filter_name = view_name | append: 'filter' | append: dash_filter | append: '|' | append: map_item_value | append: '||' %}
-  {% assign source_to_destination_filters_mapping = source_to_destination_filters_mapping | append: filter_name  %}
-  {% endif %}
-  {% endfor %}
+    <!-- Create source_to_destination_filters_mapping variable by looping through the mapped pairs -->
+    {% assign dash_filter_set = nav_parts[2] | split: ',' %}
+    {% for dash_filter in dash_filter_set %}
+      {% for map_item in dash_map %}
+        {% assign map_item_key = map_item | split:'|' | first %}
+        {% if dash_filter == map_item_key %}
+          {% assign map_item_value = map_item | split:'|' | last %}
+          {% assign filter_name = view_name | append: 'filter' | append: dash_filter | append: '|' | append: map_item_value | append: '||' %}
+          {% assign source_to_destination_filters_mapping = source_to_destination_filters_mapping | append: filter_name  %}
+        {% endif %}
+    {% endfor %}
   {% endfor %}"
 }
 

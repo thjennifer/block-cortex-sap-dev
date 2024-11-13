@@ -166,7 +166,7 @@
       sales_orders_v2.requested_delivery_date_vdatu_date, sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat,
       sales_orders_v2.base_unit_of_measure_meins, currency_conversion_sdt.from_currency_fcurr,
       currency_conversion_sdt.to_currency_tcurr, currency_conversion_sdt.exchange_rate_ukurs,
-      sales_orders_v2.total_ordered_quantity, sales_order_item_delivery_summary_ndt.sum_total_quantity_delivered,
+      sales_orders_v2.total_ordered_quantity, sales_order_item_delivery_summary_ndt.total_delivered_quantity,
       sales_orders_v2.total_net_value, sales_orders_v2.total_sales_amount_target_currency]
 
     sorts: [sales_orders_v2.sales_document_vbeln]
@@ -198,7 +198,7 @@
       sales_order_item_partner_function_sdt.customer_names_ship_to, sales_order_item_partner_function_sdt.customer_names_bill_to,
       sales_orders_v2.creation_date_erdat_date, sales_orders_v2.requested_delivery_date_vdatu_date,
       sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat, sales_orders_v2.total_ordered_quantity,
-      sales_orders_v2.base_unit_of_measure_meins, sales_order_item_delivery_summary_ndt.sum_total_quantity_delivered,
+      sales_orders_v2.base_unit_of_measure_meins, sales_order_item_delivery_summary_ndt.total_delivered_quantity,
       sales_orders_v2.total_net_value, currency_conversion_sdt.from_currency_fcurr,
       sales_orders_v2.total_sales_amount_target_currency, currency_conversion_sdt.to_currency_tcurr,
       currency_conversion_sdt.exchange_rate_ukurs]
@@ -224,7 +224,7 @@
       sales_orders_v2.total_ordered_quantity: 100
       materials_md.material_text_maktx: 150
       sales_orders_v2.base_unit_of_measure_meins: 75
-      sales_order_item_delivery_summary_ndt.sum_total_quantity_delivered: 100
+      sales_order_item_delivery_summary_ndt.total_delivered_quantity: 100
       sales_orders_v2.creation_date_erdat_date: 100
       sales_orders_v2.requested_delivery_date_vdatu_date: 100
       sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat: 100

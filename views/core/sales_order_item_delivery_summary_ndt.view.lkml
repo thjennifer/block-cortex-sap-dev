@@ -16,15 +16,15 @@ view: sales_order_item_delivery_summary_ndt {
       # column: creation_date_erdat_date {field: sales_orders_v2.creation_date_erdat_date}
       column: creation_timestamp { field: sales_orders_v2.creation_timestamp }
       column: requested_delivery_date_vdatu { field: sales_orders_v2.requested_delivery_date_vdatu_raw }
-      column: total_ordered_quantity { field: sales_orders_v2.total_ordered_quantity }
-      column: total_quantity_delivered { field: deliveries.total_quantity_delivered }
+      column: item_ordered_quantity { field: sales_orders_v2.total_ordered_quantity }
+      column: item_delivered_quantity { field: deliveries.total_delivered_quantity }
       column: min_delivery_date_lfdat { field: deliveries.min_delivery_date_lfdat }
       column: max_proof_of_delivery_date_podat { field: deliveries.max_proof_of_delivery_date_podat }
       column: max_proof_of_delivery_timestamp { field: deliveries.max_proof_of_delivery_timestamp }
       column: min_actual_goods_movement_date_wadat_ist { field: deliveries.min_actual_goods_movement_date_wadat_ist }
 
       derived_column: is_order_delivered_in_full {
-        sql: min(total_ordered_quantity = total_quantity_delivered) over (partition by  client_mandt, sales_document_vbeln)  ;;
+        sql: min(item_ordered_quantity = item_delivered_quantity) over (partition by  client_mandt, sales_document_vbeln)  ;;
       }
       derived_column: is_order_on_time {
         sql: min(if(max_proof_of_delivery_date_podat is null,null, max_proof_of_delivery_date_podat <= requested_delivery_date_vdatu)) over (partition by  client_mandt, sales_document_vbeln) ;;
@@ -48,17 +48,17 @@ view: sales_order_item_delivery_summary_ndt {
       }
       # bind_all_filters: yes causes a circular reference if fields based on NDT included as a filter (eg., order_status)
       bind_filters: {from_field:  sales_orders_v2.creation_date_erdat_date
-                     to_field:    sales_orders_v2.creation_date_erdat_date}
+                    to_field:    sales_orders_v2.creation_date_erdat_date}
       bind_filters: {from_field:  countries_md.country_name_landx
-                     to_field:    countries_md.country_name_landx}
+                    to_field:    countries_md.country_name_landx}
       bind_filters: {from_field:  sales_organizations_md.sales_org_name_vtext
-                     to_field:    sales_organizations_md.sales_org_name_vtext}
+                    to_field:    sales_organizations_md.sales_org_name_vtext}
       bind_filters: {from_field:  distribution_channels_md.distribution_channel_name_vtext
-                     to_field:    distribution_channels_md.distribution_channel_name_vtext}
+                    to_field:    distribution_channels_md.distribution_channel_name_vtext}
       bind_filters: {from_field:  sales_orders_v2.division_name_vtext
-                     to_field:    sales_orders_v2.division_name_vtext}
+                    to_field:    sales_orders_v2.division_name_vtext}
       bind_filters: {from_field:  sales_orders_v2.material_text_maktx
-                     to_field:    sales_orders_v2.material_text_maktx}
+                    to_field:    sales_orders_v2.material_text_maktx}
     }
 
   }
@@ -106,12 +106,14 @@ view: sales_order_item_delivery_summary_ndt {
     hidden: no
   }
 
-  dimension: total_ordered_quantity {
-    label: "Total Quantity Ordered"
+  dimension: item_ordered_quantity {
+    label: "Item Ordered Quantity"
     description: "Line Item Quantity Ordered"
     type: number
+
   }
-  dimension: total_quantity_delivered {
+  dimension: item_delivered_quantity {
+    label: "Item Delivered Quantity"
     description: "Line Item Quantity Delivered"
     type: number
   }
@@ -155,7 +157,7 @@ view: sales_order_item_delivery_summary_ndt {
 
   # dimension: is_item_in_full {
   #   type: yesno
-  #   sql: ${total_quantity_delivered} = ${total_ordered_quantity} ;;
+  #   sql: ${total_delivered_quantity} = ${total_ordered_quantity} ;;
   # }
 
   # dimension: is_item_on_time {
@@ -435,23 +437,18 @@ view: sales_order_item_delivery_summary_ndt {
         @{link_build_variable_defaults}
         {% assign link = link_generator._link %}
         {% assign filters_mapping = '@{link_map_otc_sales_orders_to_order_details}' %}
-
-        {% assign model = _model._name %}
         {% assign target_dashboard = _model._name | append: '::otc_order_details' %}
-
-        {% assign default_filters_override = false %}
-
         @{link_build_dashboard_url}
       "
       }
   }
 
-  measure: sum_total_quantity_delivered {
+  measure: total_delivered_quantity {
     hidden: yes
     view_label: "Deliveries"
-    label: "Total Quantity Delivered"
+    # label: "Total Quantity Delivered"
     type: sum
-    sql: ${total_quantity_delivered} ;;
+    sql: ${item_delivered_quantity} ;;
   }
 
   measure: max_days_late {
@@ -460,7 +457,7 @@ view: sales_order_item_delivery_summary_ndt {
   }
 
   set: set_details_late_deliveries {
-    fields: [sales_document_vbeln,  sales_order_item_partner_function_sdt.customer_names_ship_to, set_product*, is_order_late, requested_delivery_date_as_string, max_proof_of_delivery_date_as_string, max_days_late, sum_total_quantity_delivered]
+    fields: [sales_document_vbeln,  sales_order_item_partner_function_sdt.customer_names_ship_to, set_product*, is_order_late, requested_delivery_date_as_string, max_proof_of_delivery_date_as_string, max_days_late, total_delivered_quantity]
   }
 
   set: set_product {

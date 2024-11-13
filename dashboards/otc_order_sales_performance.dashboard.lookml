@@ -62,16 +62,6 @@
   - name: dashboard_navigation
     filters:
       otc_dashboard_navigation_ext.parameter_navigation_focus_page: '2'
-    # listen:
-    #   date: otc_dashboard_navigation_ext.filter1
-    #   business_unit: otc_dashboard_navigation_ext.filter2
-    #   customer_type: otc_dashboard_navigation_ext.filter3
-    #   customer_country: otc_dashboard_navigation_ext.filter4
-    #   customer_name: otc_dashboard_navigation_ext.filter5
-    #   target_currency: otc_dashboard_navigation_ext.filter6
-    #   order_source: otc_dashboard_navigation_ext.filter7
-    #   item_category: otc_dashboard_navigation_ext.filter8
-    #   item_language: otc_dashboard_navigation_ext.filter9
 #####################################################################################################
   - name: top_products_by_sales
     title: Top Products by Sales
@@ -121,12 +111,13 @@
       </div>
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      product: sales_orders_v2.material_text_maktx
+      target_currency: otc_common_parameters_xvw.parameter_target_currency
       product_level: sales_orders_v2.parameter_display_product_level
     row: 2
     col: 0
@@ -180,12 +171,13 @@
       </div>
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      product: sales_orders_v2.material_text_maktx
+      target_currency: otc_common_parameters_xvw.parameter_target_currency
       product_level: sales_orders_v2.parameter_display_product_level
     row: 2
     col: 12
@@ -281,12 +273,13 @@
       </div>
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      product: sales_orders_v2.material_text_maktx
+      target_currency: otc_common_parameters_xvw.parameter_target_currency
     row: 20
     col: 0
     width: 12
@@ -323,12 +316,13 @@
         }
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      product: sales_orders_v2.material_text_maktx
+      target_currency: otc_common_parameters_xvw.parameter_target_currency
     note_display: hover
     note_text: |-
       <div style="text-align: left;">
@@ -347,7 +341,7 @@
     height: 10
 #####################################################################################################
   - name: top_sales_organization_by_sales
-    title: Top Sales Organization by Sales
+    title: Top Sales Organizations by Sales
     explore: sales_orders_v2
     type: looker_bar
     fields: [sales_orders_v2.sales_organization_vkorg,
@@ -398,12 +392,13 @@
       </div>
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      product: sales_orders_v2.material_text_maktx
+      target_currency: otc_common_parameters_xvw.parameter_target_currency
     row: 21
     col: 0
     width: 12
@@ -457,12 +452,13 @@
     title_hidden: true
     listen:
       date: sales_orders_v2.creation_date_erdat_date
-      country: countries_md.country_name_landx
+      customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      sold_to: customers_md.customer_name
+      product: sales_orders_v2.material_text_maktx
+      target_currency: otc_common_parameters_xvw.parameter_target_currency
     row: 21
     col: 12
     width: 12
