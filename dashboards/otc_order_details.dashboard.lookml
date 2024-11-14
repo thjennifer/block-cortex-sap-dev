@@ -19,18 +19,18 @@
     required: false
     ui_config:
       type: button_group
-      display: popover
+      display: inline
     explore: sales_orders_v2
     field: across_sales_and_billing_summary_xvw.order_status
 
   - name: is_blocked
     title: Is Blocked
     type: field_filter
-    default_value: 'No'
+    default_value: ''
     allow_multiple_values: true
     required: false
     ui_config:
-      type: button_toggles
+      type: button_group
       display: inline
     explore: sales_orders_v2
     listens_to_filters: []
@@ -78,7 +78,7 @@
   #   name: Blocked Orders
   #   explore: sales_orders_v2
   #   type: single_value
-  #   fields: [across_sales_and_deliveries_xvw.blocked_sales_order_count]
+  #   fields: [across_sales_and_deliveries_xvw.blocked_order_count]
   #   # enable_conditional_formatting: true
   #   # conditional_formatting_include_totals: false
   #   # conditional_formatting_include_nulls: false
@@ -183,7 +183,7 @@
     explore: sales_orders_v2
     type: looker_grid
     fields: [across_sales_and_billing_summary_xvw.order_status_with_symbols,
-             deliveries.blocked_status_with_symbol,
+             deliveries.is_blocked_with_symbols,
              sales_orders_v2.sales_document_vbeln,
              sales_orders_v2.item_posnr,
              sales_orders_v2.material_text_maktx,
@@ -221,11 +221,11 @@
     show_sql_query_menu_options: false
     pinned_columns:
       across_sales_and_billing_summary_xvw.order_status_with_symbols: left
-      deliveries.blocked_status_with_symbol: left
+      deliveries.is_blocked_with_symbols: left
       sales_orders_v2.sales_document_vbeln: left
       sales_orders_v2.item_posnr: left
     # column_order: [across_sales_and_billing_summary_xvw.order_status_with_symbols,
-    #   deliveries.blocked_status_with_symbol, sales_orders_v2.sales_document_vbeln,
+    #   deliveries.is_blocked_with_symbols, sales_orders_v2.sales_document_vbeln,
     #   sales_orders_v2.item_posnr, materials_md.material_text_maktx, sales_order_item_partner_function_sdt.customer_names_sold_to,
     #   sales_order_item_partner_function_sdt.customer_names_ship_to, sales_order_item_partner_function_sdt.customer_names_bill_to,
     #   sales_orders_v2.creation_date_erdat_date, sales_orders_v2.requested_delivery_date_vdatu_date,
@@ -238,7 +238,7 @@
     minimum_column_width: 75
     series_labels:
       across_sales_and_billing_summary_xvw.order_status_with_symbols: Order Status
-      deliveries.blocked_status_with_symbol: Is Blocked
+      deliveries.is_blocked_with_symbols: Is Blocked
       sales_order_item_partner_function_sdt.customer_names_sold_to: Sold To
       sales_order_item_partner_function_sdt.customer_names_ship_to: Ship To
       sales_order_item_partner_function_sdt.customer_names_bill_to: Billed To

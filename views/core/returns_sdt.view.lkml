@@ -138,7 +138,7 @@ view: returns_sdt {
   #   sql: ${reference_sales_document_vbeln} ;;
   # }
 
-  measure: total_quantity_returned {
+  measure: total_returned_quantity {
     hidden: no
     type: sum
     sql: ${return_item_quantity} ;;

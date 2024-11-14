@@ -140,7 +140,7 @@ view: +deliveries {
     ;;
   }
 
-  dimension: blocked_status_with_symbol {
+  dimension: is_blocked_with_symbols {
     hidden: no
     type: string
     group_label: "Status"
@@ -149,6 +149,22 @@ view: +deliveries {
             {% else %}
              {%assign sym = "" %}{% assign color = "#080808" %}
             {%endif%}<p style="color: {{color}}"><b> {{sym}} {{value}}</b> </p>;;
+  }
+
+  dimension: is_blocked_in_delivery {
+    hidden: yes
+    type: yesno
+    group_label: "Status"
+    description: "Delivery Block Document Header (LIFSK) is not null"
+    sql:  ${delivery_block_document_header_lifsk} is not null;;
+  }
+
+  dimension: is_blocked_in_billing {
+    hidden: yes
+    type: yesno
+    group_label: "Status"
+    description: "Billing Block in SD Document (FAKSK) is not null"
+    sql:  ${billing_block_in_sd_document_faksk} is not null;;
   }
 
 #} end delivery statuses

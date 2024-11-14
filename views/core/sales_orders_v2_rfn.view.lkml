@@ -81,7 +81,7 @@ view: +sales_orders_v2 {
 
   dimension: document_category_vbtyp {
     hidden: no
-    label: "Sales @{label_field_name}"
+    label: "@{label_field_name}"
     description: "Document Category (C, M, J, etc)"
   }
 
@@ -482,6 +482,14 @@ view: +sales_orders_v2 {
     filters: [document_category_vbtyp: "C"]
   }
 
+  measure: percent_of_sales_orders {
+    hidden: no
+    type: percent_of_total
+    description: "Column Percent of Sales Orders"
+    direction: "column"
+    sql: ${sales_order_count} ;;
+  }
+
   measure: sold_to_customer_count {
     hidden: no
     type: count_distinct
@@ -528,13 +536,24 @@ view: +sales_orders_v2 {
     sql: ${sales_order_count} ;;
     value_format_name: format_large_numbers_d1
     link: {
-      label: "Open Order Details Dashboard"
+      label: "Show Sales Orders by Month"
+      url: "@{link_build_variable_defaults}
+      {% assign link = link_generator._link %}
+      {% assign measure = 'sales_orders_v2.sales_order_count' %}
+      {% assign m = 'sales_orders_v2.creation_date_erdat_month' %}
+      {% assign drill_fields =  m | append: ',' | append: measure %}
+      @{link_vis_line_chart_1_date_1_measure}
+      @{link_build_explore_url}
+      "
+    }
+    link: {
+      label: "Order Line Details"
       icon_url: "/favicon.ico"
       url: "
       @{link_build_variable_defaults}
       {% assign link = link_generator._link %}
-      {% assign filters_mapping = '@{link_map_otc_sales_orders_to_order_details}' | append: '||across_sales_and_billing_summary_xvw.order_status|Order Status||deliveries.is_blocked|Is Blocked' %}
-      {% assign target_dashboard = _model._name | append: '::otc_order_details' %}
+      {% assign source_to_destination_filters_mapping = '@{link_map_otc_sales_orders_to_order_details}'%}
+      @{link_map_otc_target_dash_id_order_details}
       @{link_build_dashboard_url}
       "
     }

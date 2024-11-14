@@ -40,13 +40,13 @@
     title: Total Sales Orders
     explore: sales_orders_v2
     type: single_value
-    fields: [ sales_orders_v2.sales_order_count,
+    fields: [ sales_orders_v2.sales_order_count_formatted,
               across_sales_and_returns_xvw.has_return_sales_order_percent,
               one_touch_order.one_touch_sales_order_percent,
-              across_sales_and_deliveries_xvw.blocked_sales_order_count]
+              across_sales_and_deliveries_xvw.blocked_order_count]
     hidden_fields: [across_sales_and_returns_xvw.has_return_sales_order_percent,
                     one_touch_order.one_touch_sales_order_percent,
-                    across_sales_and_deliveries_xvw.blocked_sales_order_count]
+                    across_sales_and_deliveries_xvw.blocked_order_count]
     filters:
       sales_orders_v2.document_category_vbtyp: 'C'
     listen:
@@ -69,13 +69,13 @@
     title: Return Orders
     explore: sales_orders_v2
     type: single_value
-    fields: [ sales_orders_v2.sales_order_count,
+    fields: [ sales_orders_v2.sales_order_count_formatted,
               across_sales_and_returns_xvw.has_return_sales_order_percent,
               one_touch_order.one_touch_sales_order_percent,
-              across_sales_and_deliveries_xvw.blocked_sales_order_count]
-    hidden_fields: [sales_orders_v2.sales_order_count,
+              across_sales_and_deliveries_xvw.blocked_order_count]
+    hidden_fields: [sales_orders_v2.sales_order_count_formatted,
                     one_touch_order.one_touch_sales_order_percent,
-                    across_sales_and_deliveries_xvw.blocked_sales_order_count]
+                    across_sales_and_deliveries_xvw.blocked_order_count]
     filters:
       sales_orders_v2.document_category_vbtyp: 'C'
     listen:
@@ -98,13 +98,13 @@
     title: One Touch Orders
     explore: sales_orders_v2
     type: single_value
-    fields: [ sales_orders_v2.sales_order_count,
+    fields: [ sales_orders_v2.sales_order_count_formatted,
               across_sales_and_returns_xvw.has_return_sales_order_percent,
               one_touch_order.one_touch_sales_order_percent,
-              across_sales_and_deliveries_xvw.blocked_sales_order_count]
-    hidden_fields: [sales_orders_v2.sales_order_count,
+              across_sales_and_deliveries_xvw.blocked_order_count]
+    hidden_fields: [sales_orders_v2.sales_order_count_formatted,
                     across_sales_and_returns_xvw.has_return_sales_order_percent,
-                    across_sales_and_deliveries_xvw.blocked_sales_order_count]
+                    across_sales_and_deliveries_xvw.blocked_order_count]
     filters:
       sales_orders_v2.document_category_vbtyp: 'C'
     listen:
@@ -127,11 +127,11 @@
     title: Blocked Orders
     explore: sales_orders_v2
     type: single_value
-    fields: [ sales_orders_v2.sales_order_count,
+    fields: [ sales_orders_v2.sales_order_count_formatted,
               across_sales_and_returns_xvw.has_return_sales_order_percent,
               one_touch_order.one_touch_sales_order_percent,
-              across_sales_and_deliveries_xvw.blocked_sales_order_count]
-    hidden_fields: [sales_orders_v2.sales_order_count,
+              across_sales_and_deliveries_xvw.blocked_order_count]
+    hidden_fields: [sales_orders_v2.sales_order_count_formatted,
                     across_sales_and_returns_xvw.has_return_sales_order_percent,
                     one_touch_order.one_touch_sales_order_percent]
     filters:

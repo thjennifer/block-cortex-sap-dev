@@ -9,9 +9,10 @@ view: across_sales_and_billing_summary_xvw {
 
   label: "Sales Orders"
 
- dimension: key {
-  primary_key: yes
-  sql: concat(${sales_orders_v2.client_mandt},${sales_orders_v2.sales_document_vbeln},${sales_orders_v2.item_posnr}) ;;
+  dimension: key {
+    hidden: yes
+    primary_key: yes
+    sql: concat(${sales_orders_v2.client_mandt},${sales_orders_v2.sales_document_vbeln},${sales_orders_v2.item_posnr}) ;;
   }
 
   dimension: is_order_closed {

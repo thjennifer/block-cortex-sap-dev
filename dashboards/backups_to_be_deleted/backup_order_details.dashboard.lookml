@@ -21,7 +21,7 @@
     name: Blocked Orders
     explore: sales_orders_v2
     type: single_value
-    fields: [across_sales_and_deliveries_xvw.blocked_sales_order_count]
+    fields: [across_sales_and_deliveries_xvw.blocked_order_count]
     limit: 500
     column_limit: 50
     custom_color_enabled: true

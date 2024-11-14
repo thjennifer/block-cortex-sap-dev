@@ -541,11 +541,11 @@ constant: link_style_dashboard_navigation {
 # }
 
 #--> link_map_otc_sales_orders_to_order_details
-#{ Maps fields found in Explores sales_orders and sales_orders_daily_agg
-#  to filters on dashboard otc_order_line_item_details
+#{ Maps fields found in Explores sales_orders_v2
+#  to filters on dashboard otc_order_details
 #}
 constant: link_map_otc_sales_orders_to_order_details {
-  value: "sales_orders_v2.creation_date_erdat_date|date||sales_orders_v2.division_name_vtext|division||countries_md.country_name_landx|customer_country||sales_orders_v2.material_text_maktx|product||sales_organizations_md.sales_org_name_vtext|sales_org||distribution_channels_md.distribution_channel_name_vtext|distribution_channel||otc_common_parameters_xvw.parameter_target_currency|target_currency||sales_orders_v2.customer_name|customer_name"
+  value: "sales_orders_v2.creation_date_erdat_date|date||sales_orders_v2.division_name_vtext|division||countries_md.country_name_landx|customer_country||sales_orders_v2.material_text_maktx|product||sales_organizations_md.sales_org_name_vtext|sales_org||distribution_channels_md.distribution_channel_name_vtext|distribution_channel||otc_common_parameters_xvw.parameter_target_currency|target_currency||sales_orders_v2.customer_name|customer_name||across_sales_and_billing_summary_xvw.order_status|order_status"
 }
 
 #--> link_map_otc_sales_invoices_to_invoice_details
