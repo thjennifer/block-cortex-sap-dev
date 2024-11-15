@@ -70,8 +70,8 @@
     title: Top Products by Avg Sales
     explore: sales_orders_v2
     type: looker_bar
-    fields: [materials_md.material_number_matnr, materials_md.material_text_maktx, sales_orders_v2.avg_sales_per_order_target_currency_formatted]
-    sorts: [sales_orders_v2.avg_sales_per_order_target_currency_formatted desc]
+    fields: [materials_md.material_number_matnr, materials_md.material_text_maktx, sales_orders_v2.average_ordered_amount_per_order_target_currency_formatted]
+    sorts: [sales_orders_v2.average_ordered_amount_per_order_target_currency_formatted desc]
     # filters:
     #   sales_orders_v2.sales_order_count: ">=10"
     limit: 10
@@ -89,10 +89,10 @@
     x_axis_scale: auto
     y_axis_combined: true
     series_colors:
-      {sales_orders_v2.avg_sales_per_order_target_currency: "#53575E"}
+      {sales_orders_v2.average_ordered_amount_per_order_target_currency: "#53575E"}
 
     y_axes: [{label: '', orientation: bottom, series: [{axisId: sales_orders_v2.total_sales_amount_target_currency_formatted,
-            id: sales_orders_v2.avg_sales_per_order_target_currency_formatted, name: Avg Sales per Order (Target Currency 'USD')}], showLabels: true, showValues: false,
+            id: sales_orders_v2.average_ordered_amount_per_order_target_currency_formatted, name: Avg Sales per Order (Target Currency 'USD')}], showLabels: true, showValues: false,
         unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear}]
     x_axis_zoom: true
     y_axis_zoom: true
@@ -166,8 +166,8 @@
     title: Top Customers by Avg Sales
     explore: sales_orders_v2
     type: looker_bar
-    fields: [sales_orders_v2.sold_to_party_kunnr, customers_md.customer_name, sales_orders_v2.avg_sales_per_order_target_currency]
-    sorts: [sales_orders_v2.avg_sales_per_order_target_currency desc]
+    fields: [sales_orders_v2.sold_to_party_kunnr, customers_md.customer_name, sales_orders_v2.average_ordered_amount_per_order_target_currency]
+    sorts: [sales_orders_v2.average_ordered_amount_per_order_target_currency desc]
     # filters:
     #   sales_orders_v2.sales_order_count: ">=10"
     limit: 10
@@ -185,10 +185,10 @@
     x_axis_scale: auto
     y_axis_combined: true
     series_colors:
-      {sales_orders_v2.avg_sales_per_order_target_currency: "#53575E"}
+      {sales_orders_v2.average_ordered_amount_per_order_target_currency: "#53575E"}
 
     y_axes: [{label: '', orientation: bottom, series: [{axisId: sales_orders_v2.total_sales_amount_target_currency_formatted_formatted,
-            id: sales_orders_v2.avg_sales_per_order_target_currency
+            id: sales_orders_v2.average_ordered_amount_per_order_target_currency
             # , name: Avg Sales per Order (Target Currency 'USD')
     }], showLabels: true, showValues: false,
         unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear}]

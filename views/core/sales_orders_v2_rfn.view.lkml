@@ -324,7 +324,7 @@ view: +sales_orders_v2 {
 
   dimension: selected_product_dimension_id {
     hidden: no
-    type: number
+    type: string
     # group_label: "Item Categories & Descriptions"
     view_label: "Sales Orders Items"
     label: "{%- if _field._is_selected -%}
@@ -595,12 +595,24 @@ view: +sales_orders_v2 {
 #########################################################
 # MEASURES: Amounts in Target Currency
 #{
-  measure: total_sales_amount_target_currency {
+
+  measure: total_ordered_amount_target_currency {
     hidden: no
     type: sum
     view_label: "Sales Orders Items"
     # label: "@{label_currency}Total Sales Amount ({{currency}})"
     label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
+    description: "Sum of ordered amounts across orders and lines converted to target currency"
+    sql: ${item_ordered_amount_target_currency} ;;
+    value_format_name: decimal_2
+  }
+
+  measure: total_sales_amount_target_currency {
+    hidden: no
+    type: sum
+    view_label: "Sales Orders Items"
+    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
+    description: "Sum of ordered amounts across sales orders (document category VBTYP = 'C') converted to target currency"
     sql: ${item_ordered_amount_target_currency} ;;
     filters: [sales_orders_v2.document_category_vbtyp: "C"]
     value_format_name: decimal_2
@@ -617,36 +629,62 @@ view: +sales_orders_v2 {
     value_format_name: decimal_2
   }
 
-  measure: avg_sales_per_order_target_currency {
+  measure: average_ordered_amount_per_order_target_currency {
     hidden: no
     type: number
-    view_label: "Sales Orders"
-    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
-    # label: "@{label_currency}Average Sales per Order ({{currency}})"
-    sql: safe_divide(${total_sales_amount_target_currency},${sales_orders_v2.sales_order_count});;
-    # sql_distinct_key: ${sales_orders_v2.key};;
+    group_label: "Amounts"
+    label: "@{label_currency_defaults}{%- assign field_name = 'Average Amount per Order' -%}@{label_currency_if_selected}"
+    description: "Average amount per order in target currency"
+    sql: safe_divide(${total_ordered_amount_target_currency},${sales_orders_v2.order_count});;
     value_format_name: decimal_2
   }
+
+
 
 #} end amounts in target currency
 
 #########################################################
 # MEASURES: Amounts in Target Currency Formatted for Large Numbers
 #{
+
+  measure: total_ordered_amount_target_currency_formatted {
+    hidden: no
+    type: number
+    view_label: "Sales Orders Items"
+    group_label: "Amounts Formatted as Large Numbers"
+    label: "@{label_currency_defaults}{%- assign add_formatted = true -%}@{label_currency_field_name}@{label_currency_if_selected}"
+    description: "Sum of ordered amount in target currency and formatted for large values (e.g., 2.3M or 75.2K)"
+    sql: ${total_ordered_amount_target_currency} ;;
+    value_format_name: format_large_numbers_d1
+  }
+
   measure: total_sales_amount_target_currency_formatted {
     hidden: no
     type: number
     view_label: "Sales Orders Items"
-    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
+    group_label: "Amounts Formatted as Large Numbers"
+    label: "@{label_currency_defaults}{%- assign add_formatted = true -%}@{label_currency_field_name}@{label_currency_if_selected}"
     sql: ${total_sales_amount_target_currency} ;;
     value_format_name: format_large_numbers_d1
+#-->  opens modal showing sales by month
+    link: {
+      label: "Show Sales by Month"
+      url: "@{link_build_variable_defaults}
+      {% assign link = link_generator._link %}
+      {% assign measure = 'sales_orders_v2.total_sales_amount_target_currency' %}
+      {% assign m = 'sales_orders_v2.creation_date_erdat_month' %}
+      {% assign drill_fields =  m | append: ',' | append: measure %}
+      @{link_vis_line_chart_1_date_1_measure}
+      @{link_build_explore_url}
+      "
+    }
+#-->  links to Order Line Details dashboard
     link: {
       label: "Order Line Details"
       icon_url: "/favicon.ico"
       url: "
       @{link_build_variable_defaults}
       {% assign link = link_generator._link %}
-      {% assign use_qualified_filter_names = false %}
       {% assign append_extra_mapping = false %}
       {% assign expl = _explore._name %}
       {% if expl == 'sales_orders_v2' %}
@@ -662,14 +700,44 @@ view: +sales_orders_v2 {
     }
   }
 
-  measure: avg_sales_per_order_target_currency_formatted {
+
+  measure: average_ordered_amount_per_order_target_currency_formatted {
     hidden: no
     type: number
     view_label: "Sales Orders"
-    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
+    group_label: "Amounts Formatted as Large Numbers"
+    label: "@{label_currency_defaults}{%- assign add_formatted = true -%}{%- assign field_name = 'Average Amount per Order' -%}@{label_currency_if_selected}"
+    description: "Average amount per order in target currency and formatted for large values (e.g., 2.3M or 75.2K)"
     # label: "@{label_currency}Average Sales per Order ({{currency}}) Formatted"
-    sql: ${avg_sales_per_order_target_currency};;
+    sql: ${average_ordered_amount_per_order_target_currency};;
     value_format_name: format_large_numbers_d1
+#-->  opens modal showing sales by month
+    link: {
+      label: "Show Average Sales per Order by Month"
+      url: "@{link_build_variable_defaults}
+      {% assign link = link_generator._link %}
+      {% assign measure = 'sales_orders_v2.average_ordered_amount_per_order_target_currency' %}
+      {% assign m = 'sales_orders_v2.creation_date_erdat_month' %}
+      {% assign drill_fields =  m | append: ',' | append: measure %}
+      @{link_vis_line_chart_1_date_1_measure}
+      @{link_build_explore_url}
+      "
+    }
+    link: {
+      label: "Order Line Details"
+      icon_url: "/favicon.ico"
+      url: "
+      @{link_build_variable_defaults}
+      {% assign link = link_generator._link %}
+      {% assign source_to_destination_filters_mapping = '@{link_map_otc_sales_orders_to_order_details}'%}
+      @{link_map_otc_sales_orders_to_order_details_extra_mapping}
+      {% if append_extra_mapping == true %}
+        {% assign source_to_destination_filters_mapping = source_to_destination_filters_mapping | append: extra_mapping %}
+      {% endif %}
+      @{link_map_otc_target_dash_id_order_details}
+      @{link_build_dashboard_url}
+      "
+    }
   }
 
 #} end target currency amounts formatted as large numbers

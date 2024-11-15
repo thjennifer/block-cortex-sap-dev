@@ -37,13 +37,13 @@ explore: sales_orders_v2 {
   # persist_for: "2 minutes"
   sql_always_where: ${sales_orders_v2.client_mandt}='@{CLIENT_ID}'
 
-  and
-      {% if sales_orders_v2.date_filter._is_filtered %}
-      {% condition sales_orders_v2.date_filter %} timestamp(${sales_orders_v2.creation_date_erdat_raw}) {% endcondition %}
-      {% else %}
+ -- and
+--      {% if sales_orders_v2.date_filter._is_filtered %}
+--      {% condition sales_orders_v2.date_filter %} timestamp(${sales_orders_v2.creation_date_erdat_raw}) {% endcondition %}
+--      {% else %}
       --filter to last 3 years by default
-      ${sales_orders_v2.creation_date_erdat_raw} >= date_sub(current_date,interval 3 YEAR)
-      {% endif %}
+--      ${sales_orders_v2.creation_date_erdat_raw} >= date_sub(current_date,interval 3 YEAR)
+--      {% endif %}
 ;;
   # and {% if currency_conversion_sdt._in_query and sales_orders_v2.date_filter._is_filtered %}
   #     {% condition sales_orders_v2.date_filter %} timestamp(${currency_conversion_sdt.conv_date}) {% endcondition %}

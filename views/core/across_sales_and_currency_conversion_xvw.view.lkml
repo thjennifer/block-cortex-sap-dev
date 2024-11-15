@@ -64,7 +64,7 @@ view: across_sales_and_currency_conversion_xvw {
   #   }
   # }
 
-  # measure: avg_sales_per_order_target_currency {
+  # measure: average_ordered_amount_per_order_target_currency {
   #   hidden: no
   #   type: number
   #   view_label: "Sales Orders"

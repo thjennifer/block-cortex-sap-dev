@@ -130,18 +130,18 @@
     type: looker_bar
     fields: [sales_orders_v2.selected_product_dimension_id,
              sales_orders_v2.selected_product_dimension_description,
-             sales_orders_v2.avg_sales_per_order_target_currency_formatted]
-    sorts: [sales_orders_v2.avg_sales_per_order_target_currency_formatted desc]
+             sales_orders_v2.average_ordered_amount_per_order_target_currency_formatted]
+    sorts: [sales_orders_v2.average_ordered_amount_per_order_target_currency_formatted desc]
     hidden_fields: [sales_orders_v2.selected_product_dimension_id]
     filters:
       sales_orders_v2.document_category_vbtyp: 'C'
     limit: 10
     show_value_labels: true
     series_colors:
-      sales_orders_v2.avg_sales_per_order_target_currency_formatted: "#53575E"
+      sales_orders_v2.average_ordered_amount_per_order_target_currency_formatted: "#53575E"
     y_axes: [{label: '', orientation: bottom,
-              series: [{axisId: sales_orders_v2.avg_sales_per_order_target_currency_formatted,
-                            id: sales_orders_v2.avg_sales_per_order_target_currency_formatted,
+              series: [{axisId: sales_orders_v2.average_ordered_amount_per_order_target_currency_formatted,
+                            id: sales_orders_v2.average_ordered_amount_per_order_target_currency_formatted,
                             name: Avg Sales per Order}], showLabels: true, showValues: false,
       }]
     advanced_vis_config: |-
@@ -189,7 +189,7 @@
     explore: sales_orders_v2
     type: looker_bar
     fields: [ sales_orders_v2.sold_to_party_kunnr,
-              across_sales_and_md_lookups_xvw.customer_name,
+              sales_orders_v2.customer_name,
               sales_orders_v2.total_sales_amount_target_currency_formatted,
               sales_orders_v2.total_sales_amount_target_currency,
               sales_orders_v2.cumulative_sales_amount_target_currency]
@@ -290,19 +290,19 @@
     explore: sales_orders_v2
     type: looker_bar
     fields: [sales_orders_v2.sold_to_party_kunnr,
-             across_sales_and_md_lookups_xvw.customer_name,
-             sales_orders_v2.avg_sales_per_order_target_currency_formatted]
-    sorts: [sales_orders_v2.avg_sales_per_order_target_currency_formatted desc]
+             sales_orders_v2.customer_name,
+             sales_orders_v2.average_ordered_amount_per_order_target_currency_formatted]
+    sorts: [sales_orders_v2.average_ordered_amount_per_order_target_currency_formatted desc]
     hidden_fields: [sales_orders_v2.sold_to_party_kunnr]
     filters:
       sales_orders_v2.document_category_vbtyp: 'C'
     limit: 10
     show_value_labels: true
     series_colors:
-      sales_orders_v2.avg_sales_per_order_target_currency_formatted: "#53575E"
+      sales_orders_v2.average_ordered_amount_per_order_target_currency_formatted: "#53575E"
     y_axes: [{label: '', orientation: bottom,
-              series: [{axisId: sales_orders_v2.avg_sales_per_order_target_currency_formatted,
-                            id: sales_orders_v2.avg_sales_per_order_target_currency_formatted}], showLabels: true, showValues: false,}]
+              series: [{axisId: sales_orders_v2.average_ordered_amount_per_order_target_currency_formatted,
+                            id: sales_orders_v2.average_ordered_amount_per_order_target_currency_formatted}], showLabels: true, showValues: false,}]
     advanced_vis_config: |-
       {
         tooltip: {

@@ -573,7 +573,7 @@ constant: link_map_otc_sales_orders_to_order_details_extra_mapping {
                 {%- elsif pl == 'Item' -%}
                     {%- assign target_filter = 'product' -%}
                 {%- endif -%}
-              {%- assign extra_mapping = '||selected_product_dimension_description|' | append: target_filter -%}
+              {%- assign extra_mapping = '||sales_orders_v2.selected_product_dimension_description|' | append: target_filter -%}
           {%- else -%}
               {%- assign append_extra_mapping = false -%}
           {%- endif -%}"
