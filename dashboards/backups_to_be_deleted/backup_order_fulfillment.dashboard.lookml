@@ -18,7 +18,7 @@
     name: In Full %
     explore: sales_orders_v2
     type: single_value
-    fields: [sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full]
+    fields: [sales_order_item_delivery_summary_ndt.in_full_order_percent]
     listen:
       date: sales_orders_v2.creation_date_erdat_date
       country: countries_md.country_name_landx
@@ -39,7 +39,7 @@
     name: On Time %
     explore: sales_orders_v2
     type: single_value
-    fields: [sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time]
+    fields: [sales_order_item_delivery_summary_ndt.on_time_order_percent]
     listen:
       date: sales_orders_v2.creation_date_erdat_date
       country: countries_md.country_name_landx
@@ -60,7 +60,7 @@
     name: OTIF %
     explore: sales_orders_v2
     type: single_value
-    fields: [sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif]
+    fields: [sales_order_item_delivery_summary_ndt.on_time_and_in_full_order_percent]
     # fields: [across_sales_and_deliveries_xvw.percent_otif_deliveries]
     listen:
       date: sales_orders_v2.creation_date_erdat_date
@@ -82,7 +82,7 @@
     name: Late Delivery %
     explore: sales_orders_v2
     type: single_value
-    fields: [sales_order_item_delivery_summary_ndt.percent_orders_delivered_late]
+    fields: [sales_order_item_delivery_summary_ndt.late_order_percent]
     # fields: [deliveries.percent_late_deliveries]
     enable_conditional_formatting: true
     conditional_formatting: [{type: greater than, value: 0.05, background_color: '',
@@ -179,8 +179,8 @@
     name: Delivery Performance by Month
     explore: sales_orders_v2
     type: looker_line
-    fields: [sales_orders_v2.creation_date_erdat_month,sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time,
-            sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full, sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif]
+    fields: [sales_orders_v2.creation_date_erdat_month,sales_order_item_delivery_summary_ndt.on_time_order_percent,
+            sales_order_item_delivery_summary_ndt.in_full_order_percent, sales_order_item_delivery_summary_ndt.on_time_and_in_full_order_percent]
     sorts: [sales_orders_v2.creation_date_erdat_month]
     limit: 500
     column_limit: 50
@@ -194,17 +194,17 @@
     x_axis_zoom: true
     y_axis_zoom: true
     series_types:
-      sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time: column
-      sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full: column
-      sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif: column
+      sales_order_item_delivery_summary_ndt.on_time_order_percent: column
+      sales_order_item_delivery_summary_ndt.in_full_order_percent: column
+      sales_order_item_delivery_summary_ndt.on_time_and_in_full_order_percent: column
     series_colors:
-      sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time: "#F39B6D"
-      sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full: "#6494AA"
-      sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif: "#89BD9E"
+      sales_order_item_delivery_summary_ndt.on_time_order_percent: "#F39B6D"
+      sales_order_item_delivery_summary_ndt.in_full_order_percent: "#6494AA"
+      sales_order_item_delivery_summary_ndt.on_time_and_in_full_order_percent: "#89BD9E"
     series_labels:
-      sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time: On Time %
-      sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full: In Full %
-      sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif: OTIF %
+      sales_order_item_delivery_summary_ndt.on_time_order_percent: On Time %
+      sales_order_item_delivery_summary_ndt.in_full_order_percent: In Full %
+      sales_order_item_delivery_summary_ndt.on_time_and_in_full_order_percent: OTIF %
     x_axis_datetime_label: "%B %y"
     defaults_version: 1
     listen:

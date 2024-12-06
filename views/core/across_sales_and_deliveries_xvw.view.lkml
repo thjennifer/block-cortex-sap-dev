@@ -71,7 +71,39 @@ view: across_sales_and_deliveries_xvw {
     type: number
     sql: ${sales_orders_v2.total_ordered_quantity} - ${deliveries.total_delivered_quantity};;
     value_format_name: decimal_0
+#--> returns a table listing order lines sorted in descending order by difference between ordered and fulfilled quantity, ordered amount and ordered date
+    link: {
+      label: "Show Orders with Differences"
+      url: "
+      @{link_build_variable_defaults}
+      {% assign link = link_generator._link %}
+      {%- assign header_drill = 'sales_orders_v2.sales_document_vbeln,
+        sales_orders_v2.document_category_vbtyp,
+        across_sales_and_billing_summary_xvw.order_status_with_symbols,
+        sales_orders_v2.creation_date_erdat_date,
+        sales_orders_v2.customer_name' -%}
+      {%- assign line_drill = 'sales_orders_v2.item_posnr,
+        sales_orders_v2.material_text_maktx,
+        sales_orders_v2.base_unit_of_measure_mein,
+        sales_orders_v2.total_ordered_quantity,
+        deliveries.total_delivered_quantity,
+        across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty' -%}
+      {% assign drill_fields = header_drill | append: ',' | append: line_drill %}
+      {% assign sorts = 'across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty+desc,sales_orders_v2.creation_date_erdat_date+desc' %}
+      {% assign cell_visualization = '\"across_sales_and_deliveries_xvw.difference_order_qty_delivery_qty\":{\"is_active\":true}' %}
+      @{link_vis_table_assign_cell_visualization}
+      @{link_build_explore_url}
+      "
+    }
   }
+
+  # {% assign line_drill = 'sales_orders_v2.item_posnr, sales_orders_v2.material_text_maktx,sales_orders_v2.total_ordered_quantity, returns_sdt.total_returned_quantity, sales_orders_v2.base_unit_of_measure_meins,sales_orders_v2.total_sales_amount_target_currency,across_sales_and_returns_xvw.total_returned_amount_target_currency, returns_sdt.is_return' %}
+  #     {% assign drill_fields = header_drill | append: ',' | append: line_drill | append: ',' %}
+  #     {% assign default_filters = 'returns_sdt.is_return=Yes' %}
+  #     {% assign cell_visualization = '\"sales_orders_v2.total_sales_amount_target_currency\":{\"is_active\":true},\"across_sales_and_returns_xvw.total_returned_amount_target_currency\":{\"is_active\":true}' %}
+  #     {% assign sorts='across_sales_and_returns_xvw.total_returned_amount_target_currency+desc,sales_orders_v2.sales_document_vbeln, sales_orders_v2.item_posnr' %}
+  #     @{link_vis_table_assign_cell_visualization}
+  #     @{link_build_explore_url}
 
   measure: difference_delivery_qty_order_qty {
     type: number

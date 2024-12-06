@@ -1,25 +1,19 @@
 #########################################################{
 # Order Sales Performance dashboard provides insights into
-# top sales performers including items, categories, customers,
+# top sales performers including items, divisions, customers,
 # business units, and order sources.
 #
 # Extends otc_template_orders and modifies to:
-#   add filters item_language and product_level
-#   update dashboard_navigation to:
-#       listen to item_language
-#       set parameter_navigation_focus_page: '2'
+#   add filter product_level
+#   update dashboard_navigation to set parameter_navigation_focus_page: '2'
 #
 # Visualization Elements:
 #   top_products_by_sales - bar chart
 #   top_products_by_avg_sales - bar chart
 #   top_customers_by_sales - bar chart
 #   top_customers_by_avg_sales - bar chart
-#   sales_by_order_source - donut chart (looker_pie)
-#   top_business_units_by_sales - bar chart
-#
-# To handle order_category_code of MIXED, amount KPIs use chart filters for both
-#   order_category_code <> 'RETURN'
-#   line_category_code = 'ORDER'
+#   top_sales_organizations_by_sales - bar chart
+#   sales_by_distrubtion - donut chart (looker_pie)
 #
 #########################################################}
 

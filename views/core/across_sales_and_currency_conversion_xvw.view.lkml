@@ -149,7 +149,7 @@ view: across_sales_and_currency_conversion_xvw {
 
   # measure: dummy_set_product_with_late {
   #   hidden:yes
-  #   drill_fields: [set_product*,percent_orders_delivered_late]
+  #   drill_fields: [set_product*,late_order_percent]
   #   sql: 1=1 ;;
   # }
 

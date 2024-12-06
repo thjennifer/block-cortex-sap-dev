@@ -378,16 +378,23 @@ view: +sales_orders_v2 {
 #########################################################
 # DIMENSIONS: Item Quantity
 #{
-  dimension: cumulative_order_quantity_kwmeng {
+  # dimension: cumulative_order_quantity_kwmeng {
+  #   hidden: no
+  #   view_label: "Sales Orders Items"
+  #   label: "Item Ordered Quantity@{label_append_sap_code}"
+  # }
+
+  dimension: item_ordered_quantity_kwmeng {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "Order Quantity of Item@{label_append_sap_code}"
+    label: "@{label_field_name}"
+    sql: ${cumulative_order_quantity_kwmeng} ;;
   }
 
   dimension: cumulative_confirmed_quantity_kbmeng {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "Confirmed Quantity of Item@{label_append_sap_code}"
+    label: "Item Confirmed Quantity@{label_append_sap_code}"
     description: "Confirmed Quantity of Item in Sale Unit of Measure"
   }
 
@@ -395,7 +402,7 @@ view: +sales_orders_v2 {
     hidden: no
     view_label: "Sales Orders Items"
     label: "Base UoM"
-    description: "Base Unit of Measure@{label_append_sap_code}"
+    description: "Base Unit of Measure (MEINS)"
   }
 
   dimension: sales_unit_vrkme {
@@ -430,17 +437,20 @@ view: +sales_orders_v2 {
 
   dimension: item_ordered_amount {
     hidden: no
+    type: number
     view_label: "Sales Orders Items"
     label: "Item Ordered Amount (Source Currency)"
     description: "Item Qty * Net Price (Source Currency)"
     sql: ${sales_order_value_line_item_source_currency} ;;
+    value_format_name: decimal_2
   }
 
   dimension: item_ordered_amount_target_currency {
     hidden: no
     type: number
     view_label: "Sales Orders Items"
-    label: "Item Sales Amount (Target Currency)@{label_append_sap_code}"
+    label: "Item Ordered Amount (Target Currency)"
+    # label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     description: "Item Quantity * Net Price (Target Currency)"
     sql:  ${item_net_price_target_currency_netpr} * ${cumulative_order_quantity_kwmeng};;
     value_format_name: decimal_2
@@ -757,7 +767,7 @@ view: +sales_orders_v2 {
   measure: total_ordered_quantity {
     hidden: no
     type: sum
-    sql: ${cumulative_order_quantity_kwmeng} ;;
+    sql: ${item_ordered_quantity_kwmeng} ;;
   }
 
 #} end misc measures

@@ -1,13 +1,24 @@
+#########################################################{
+# Order Details dashboard provides
+# a table of orders including details like customer, items,
+# ordered quantities and amounts.
+#
+# This dashboard is accessed through drills from select KPIs.
+#
+# Extends otc_template and modifies to:
+#   add filters to support KPI-specific drills
+#   update dashboard_navigation to:
+#       set parameter_navigation_focus_page: '4'
+#       set parameter_navigation_subject: 'odetails'
+#
+# Visualization Elements:
+#   order_details_table
+#
+#########################################################}
+
+
 - dashboard: otc_order_details
   title: Order Details
-  layout: newspaper
-  preferred_viewer: dashboards-next
-  crossfilter_enabled: true
-  description: ''
-  preferred_slug: Qrlbm8ZvmtMjrMzVPn1xl4
-
-  # pull navigation bar and filters from template
-  # if using navigation_focus_page parameter for active dashboard update navigation tile to use the correct filter
   extends: otc_template
 
   filters:
@@ -32,9 +43,61 @@
     ui_config:
       type: button_group
       display: inline
+      options: ['Yes','No']
     explore: sales_orders_v2
-    listens_to_filters: []
     field: deliveries.is_blocked
+
+  - name: is_order_on_time
+    title: Is Order Delivered On Time
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: button_group
+      display: inline
+      options: ['Yes','No']
+    explore: sales_orders_v2
+    field: sales_order_item_delivery_summary_ndt.is_order_on_time
+
+  - name: is_order_delivered_in_full
+    title: Is Order Delivered In Full
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: button_group
+      display: inline
+      options: ['Yes','No']
+    explore: sales_orders_v2
+    field: sales_order_item_delivery_summary_ndt.is_order_delivered_in_full
+
+  - name: is_order_on_time_and_in_full
+    title: Is Order Delivered On Time & In Full
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: button_group
+      display: inline
+      options: ['Yes','No']
+    explore: sales_orders_v2
+    field: sales_order_item_delivery_summary_ndt.is_order_on_time_and_in_full
+
+  - name: is_order_late
+    title: Is Order Delivered Late
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: button_group
+      display: inline
+      options: ['Yes','No']
+    explore: sales_orders_v2
+    field: sales_order_item_delivery_summary_ndt.is_order_late
 
   elements:
 
@@ -43,173 +106,44 @@
       otc_dashboard_navigation_ext.parameter_navigation_focus_page: '5'
       otc_dashboard_navigation_ext.parameter_navigation_subject: 'odetails'
 
-
-  # - name: header_order_status
-  #   type: text
-  #   title_text: <font color="#808080">What is my Order Status?</font>
-  #   body_text: ''
-  #   row: 2
-  #   col: 0
-  #   width: 24
-  #   height: 1
-
-  # - title: Total Orders
-  #   name: Total Orders
-  #   explore: sales_orders_v2
-  #   type: single_value
-  #   fields: [sales_orders_v2.sales_order_count]
-  #   listen:
-  #     # " Order Status": sales_orders.sales_order_status
-  #     Order Date: sales_orders_v2.creation_date_erdat_date
-  #     Division: divisions_md.division_name_vtext
-  #     customer_country: countries_md.country_name_landx
-  #     Sales Org: sales_organizations_md.sales_org_name_vtext
-  #     Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-  #     Product: materials_md.material_text_maktx
-  #   note_state: collapsed
-  #   note_display: hover
-  #   note_text: "The number of sales orders (document category type = C)."
-  #   row: 2
-  #   col: 0
-  #   width: 5
-  #   height: 4
-
-  # - title: Blocked Orders
-  #   name: Blocked Orders
-  #   explore: sales_orders_v2
-  #   type: single_value
-  #   fields: [across_sales_and_deliveries_xvw.blocked_order_count]
-  #   # enable_conditional_formatting: true
-  #   # conditional_formatting_include_totals: false
-  #   # conditional_formatting_include_nulls: false
-  #   # conditional_formatting: [{type: greater than, value: 5, background_color: '',
-  #   #     font_color: "#EA4335",
-  #   #     bold: false, italic: false, strikethrough: false, fields: !!null ''}]
-  #   listen:
-  #     # " Order Status": sales_orders_v2.sales_order_status
-  #     Order Date: sales_orders_v2.creation_date_erdat_date
-  #     Division: divisions_md.division_name_vtext
-  #     customer_country: countries_md.country_name_landx
-  #     Sales Org: sales_organizations_md.sales_org_name_vtext
-  #     Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-  #     Product: materials_md.material_text_maktx
-  #   note_state: collapsed
-  #   note_display: hover
-  #   note_text: "The number of sales orders blocked for delivery reasons (such as customers exceeding credit limit or insufficient stock)."
-  #   row: 2
-  #   col: 5
-  #   width: 5
-  #   height: 4
-
-  # - title: Order Status
-  #   name: Order Status Bar
-  #   explore: sales_orders_v2
-  #   type: looker_bar
-  #   fields: [across_sales_and_billing_summary_xvw.order_status, sales_orders_v2.sales_order_count]
-  #   pivots: [across_sales_and_billing_summary_xvw.order_status]
-  #   filters:
-  #     across_sales_and_billing_summary_xvw.order_status: "-NULL"
-  #   sorts: [across_sales_and_billing_summary_xvw.order_status desc]
-  #   limit: 500
-  #   column_limit: 50
-  #   x_axis_gridlines: false
-  #   y_axis_gridlines: true
-  #   show_view_names: false
-  #   show_y_axis_labels: true
-  #   show_y_axis_ticks: true
-  #   y_axis_tick_density: default
-  #   y_axis_tick_density_custom: 5
-  #   show_x_axis_label: true
-  #   show_x_axis_ticks: false
-  #   y_axis_scale_mode: linear
-  #   x_axis_reversed: false
-  #   y_axis_reversed: false
-  #   plot_size_by_field: false
-  #   trellis: ''
-  #   stacking: percent
-  #   limit_displayed_rows: false
-  #   legend_position: center
-  #   point_style: none
-  #   show_value_labels: false
-  #   label_density: 25
-  #   x_axis_scale: auto
-  #   y_axis_combined: true
-  #   ordering: none
-  #   show_null_labels: false
-  #   show_totals_labels: false
-  #   show_silhouette: false
-  #   totals_color: "#808080"
-  #   y_axes: [{label: '', orientation: bottom, series: [{axisId: Open - sales_orders_v2.sales_order_count,
-  #           id: Open - sales_orders_v2.sales_order_count, name: Open}, {axisId: Closed
-  #             - sales_orders_v2.sales_order_count, id: Closed - sales_orders_v2.sales_order_count,
-  #           name: Closed}, {axisId: Cancelled - sales_orders_v2.sales_order_count, id: Cancelled
-  #             - sales_orders_v2.sales_order_count, name: Cancelled}], showLabels: false,
-  #       showValues: false, unpinAxis: false, tickDensity: default, tickDensityCustom: 5,
-  #       type: linear}]
-  #   x_axis_zoom: true
-  #   y_axis_zoom: true
-  #   hide_legend: true
-  #   series_colors:
-  #     Open - sales_orders_v2.sales_order_count: "#98B6B1"
-  #     Closed - sales_orders_v2.sales_order_count: "#BFBDC1"
-  #     Cancelled - sales_orders_v2.sales_order_count: "#Eb9486"
-  #   advanced_vis_config: "{\n  title: {\n    text: \"Order Status\",\n    verticalAlign:\
-  #     \ 'bottom',\n    \n    \n  },\n  plotOptions: {\n    series: {\n      dataLabels:\
-  #     \ {\n        enabled: true,\n        align: 'center',\n        inside: true,\n\
-  #     \        use_html: true,\n        format: '<span style=\"font-size:120%\"<b>{series.name}</b></span><span\
-  #     \ style=\"font-weight: normal; font-size:100%;\"><br><br>{point.y: ,.0f}<br>{percentage:.1f}%</span>',\n\
-  #     \      },\n    },\n  },\n  series: [{\n    name: 'Open',\n    dataLabels: {\n\
-  #     \      enabled: true,\n    },\n  }, {\n    name: 'Closed',\n    dataLabels:\
-  #     \ {\n      enabled: true,\n    },\n  }, {\n    name: 'Cancelled',\n    dataLabels:\
-  #     \ {\n      enabled: true,\n      inside: true,\n      align: 'left',\n     \
-  #     \ x: 40\n    },\n  }]\n}"
-  #   defaults_version: 1
-  #   title_hidden: true
-  #   listen:
-  #     # " Order Status": sales_orders_v2.sales_order_status
-  #     Order Date: sales_orders_v2.creation_date_erdat_date
-  #     Division: divisions_md.division_name_vtext
-  #     customer_country: countries_md.country_name_landx
-  #     Sales Org: sales_organizations_md.sales_org_name_vtext
-  #     Distribution Channel: distribution_channels_md.distribution_channel_name_vtext
-  #     Product: materials_md.material_text_maktx
-  #   row: 2
-  #   col: 10
-  #   width: 14
-  #   height: 4
-
-  - title: Order Details
-    name: Order Details
+  - name: order_details_table
+    title: Order Details
     explore: sales_orders_v2
     type: looker_grid
-    fields: [across_sales_and_billing_summary_xvw.order_status_with_symbols,
-             deliveries.is_blocked_with_symbols,
+    fields: [
              sales_orders_v2.sales_document_vbeln,
              sales_orders_v2.item_posnr,
              sales_orders_v2.material_text_maktx,
+
+             across_sales_and_billing_summary_xvw.order_status_with_symbols,
+             deliveries.is_blocked_with_symbols,
+
+
              sales_order_item_partner_function_sdt.customer_names_sold_to,
              sales_order_item_partner_function_sdt.customer_names_ship_to,
              sales_order_item_partner_function_sdt.customer_names_bill_to,
+
              sales_orders_v2.creation_date_erdat_date,
              sales_orders_v2.requested_delivery_date_vdatu_date,
              sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat,
+
              sales_orders_v2.base_unit_of_measure_meins,
+             sales_orders_v2.item_ordered_quantity_kwmeng,
+             sales_order_item_delivery_summary_ndt.item_delivered_quantity,
+
+             sales_orders_v2.item_ordered_amount,
              sales_orders_v2.currency_hdr_waerk,
+             sales_orders_v2.item_ordered_amount_target_currency,
              sales_orders_v2.target_currency,
-             sales_orders_v2.exchange_rate_ukurs,
-             sales_orders_v2.total_ordered_quantity,
-             sales_order_item_delivery_summary_ndt.total_delivered_quantity,
-             sales_orders_v2.total_sales_amount_in_source_currency,
-             sales_orders_v2.total_sales_amount_target_currency]
-    sorts: [sales_orders_v2.sales_document_vbeln]
-    limit: 50
-    column_limit: 50
+             sales_orders_v2.exchange_rate_ukurs]
+    sorts: [sales_orders_v2.sales_document_vbeln, sales_orders_v2.item_posnr]
+    limit: 100
     show_view_names: false
     show_row_numbers: false
-    truncate_text: false
+    truncate_text: true
     hide_totals: false
     hide_row_totals: false
-    size_to_fit: true
+    size_to_fit: false
     table_theme: white
     limit_displayed_rows: false
     enable_conditional_formatting: false
@@ -219,11 +153,12 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     show_sql_query_menu_options: false
+    truncate_header: false
+
     pinned_columns:
-      across_sales_and_billing_summary_xvw.order_status_with_symbols: left
-      deliveries.is_blocked_with_symbols: left
       sales_orders_v2.sales_document_vbeln: left
       sales_orders_v2.item_posnr: left
+      sales_orders_v2.material_text_maktx: left
     # column_order: [across_sales_and_billing_summary_xvw.order_status_with_symbols,
     #   deliveries.is_blocked_with_symbols, sales_orders_v2.sales_document_vbeln,
     #   sales_orders_v2.item_posnr, materials_md.material_text_maktx, sales_order_item_partner_function_sdt.customer_names_sold_to,
@@ -234,8 +169,7 @@
     #   sales_orders_v2.total_sales_amount_in_source_currency, currency_conversion_sdt.from_currency_fcurr,
     #   sales_orders_v2.total_sales_amount_target_currency, currency_conversion_sdt.to_currency_tcurr,
     #   currency_conversion_sdt.exchange_rate_ukurs]
-    truncate_header: false
-    minimum_column_width: 75
+
     series_labels:
       across_sales_and_billing_summary_xvw.order_status_with_symbols: Order Status
       deliveries.is_blocked_with_symbols: Is Blocked
@@ -246,33 +180,38 @@
       sales_orders_v2.requested_delivery_date_vdatu_date: Requested Delivery Date
       sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat: Proof
         of Delivery Date
-      sales_orders_v2.base_unit_of_measure_meins: Base UoM
-      currency_conversion_sdt.from_currency_fcurr: Document Currency
-      currency_conversion_sdt.to_currency_tcurr: Target Currency
-      currency_conversion_sdt.exchange_rate_ukurs: Exchange Rate
-      # sales_orders_v2.total_sales_amount_in_source_currency: Total Net Value (Document)
-      # sales_orders_v2.total_sales_amount_target_currency: Total Net Value (Target)
+      sales_orders_v2.currency_hdr_waerk: Source Currency
+      sales_orders_v2.target_currency: Target Currency
+      sales_orders_v2.exchange_rate_ukurs: Exchange Rate
+
+
+    minimum_column_width: 75
     series_column_widths:
-      sales_orders_v2.total_ordered_quantity: 100
-      materials_md.material_text_maktx: 150
-      sales_orders_v2.base_unit_of_measure_meins: 75
-      sales_order_item_delivery_summary_ndt.total_delivered_quantity: 100
+      materials_md.material_text_maktx: 250
       sales_orders_v2.creation_date_erdat_date: 100
       sales_orders_v2.requested_delivery_date_vdatu_date: 100
       sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat: 100
-      currency_conversion_sdt.from_currency_fcurr: 75
+      sales_orders_v2.base_unit_of_measure_meins: 75
+      sales_orders_v2.item_ordered_quantity_kwmeng: 100
+      sales_order_item_delivery_summary_ndt.item_delivered_quantity: 100
+      sales_orders_v2.currency_hdr_waerk.from_currency_fcurr: 75
       currency_conversion_sdt.to_currency_tcurr: 75
-      sales_orders_v2.total_sales_amount_target_currency: 75
-      sales_orders_v2.total_sales_amount_in_source_currency: 75
+      sales_orders_v2.item_ordered_amount: 100
+      sales_orders_v2.item_ordered_amount_target_currency: 100
 
+    series_text_format:
+      across_sales_and_billing_summary_xvw.order_status_with_symbols:
+        align: center
+      deliveries.is_blocked_with_symbols:
+        align: center
     series_cell_visualizations:
       sales_orders_v2.total_ordered_quantity:
         is_active: false
-    defaults_version: 1
-    note_state: expanded
-    note_display: below
+
+    # note_state: expand
+    # note_display: below
     note_text: |-
-      <font size="-2">Limited to 50 Order Items. To see more, select "Explore from Here" option and adjust row limit setting.
+      <font size="-2">Limited to 100 Order Items. To see more, select "Explore from Here" option and adjust row limit setting.
       </font>
     listen:
       date: sales_orders_v2.creation_date_erdat_date
@@ -285,7 +224,11 @@
       target_currency: otc_common_parameters_xvw.parameter_target_currency
       order_status: across_sales_and_billing_summary_xvw.order_status
       is_blocked: deliveries.is_blocked
-    row: 7
+      is_order_on_time: sales_order_item_delivery_summary_ndt.is_order_on_time
+      is_order_delivered_in_full: sales_order_item_delivery_summary_ndt.is_order_delivered_in_full
+      is_order_on_time_and_in_full: sales_order_item_delivery_summary_ndt.is_order_on_time_and_in_full
+      is_order_late: sales_order_item_delivery_summary_ndt.is_order_late
+    row: 1
     col: 0
     width: 24
-    height: 9
+    height: 16

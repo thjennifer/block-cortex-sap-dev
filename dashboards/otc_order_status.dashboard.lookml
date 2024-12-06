@@ -1,26 +1,18 @@
 #########################################################{
 # Order Status dashboard provides an overview of order-related metrics,
-# including order volume, a breakdown of the order flow status from booking to billing,
+# including order volume, a breakdown of the order flow status from order to billing,
 # and an analysis of order status categories (open, closed, and cancelled).
 #
-# Extends otc_template_orders and modifies:
+# Extends otc_template and modifies:
 #   dashboard_navigation to set parameter_navigation_focus_page: '1'
 #
 # Visualization Elements:
-#   total_orders - single-value viz
+#   total_sales_orders - single-value viz
 #   return_sales_order_percent - single-value viz
 #   one_touch_orders_percent - single-value viz
 #   blocked_orders - single-value viz
-#   bbb_funnel - looker_funnel
+#   order_to_billing_funnel - looker_funnel
 #   order_status_donut - looker_pie
-#
-# Order Counts and Percents apply chart filter order_category_code <> 'RETURN'
-# Not equal to return is used in case there is a category code like MIXED
-# which includes lines for orders and returns.
-#
-# To handle order_category_code of MIXED, amount KPIs use chart filters for both
-#   order_category_code <> 'RETURN'
-#   line_category_code = 'ORDER'
 #
 #########################################################}
 
@@ -94,7 +86,7 @@
     width: 6
     height: 2
 ######################################################################################################
-  - name: no_holds_sales_order_percent
+  - name: one_touch_sales_order_percent
     title: One Touch Orders
     explore: sales_orders_v2
     type: single_value

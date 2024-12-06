@@ -1,11 +1,27 @@
+#########################################################{
+# Order Fulfillment dashboard provides insights into
+# fulfillment performance over time, items with longest average
+# order cycle time and items having fulfillment issues.
+#
+# Extends otc_template_orders and modifies to:
+#   update dashboard_navigation to set parameter_navigation_focus_page: '3'
+#
+# Visualization Elements:
+#   in_full - single value
+#   on_time - single value
+#   otif - single value
+#   late_delivery - single value
+#   delivery_performance_by_month - line chart
+#   average_cycle_time - bar chart
+#   delivery_efficiency - column + line chart
+#
+#########################################################}
+
+
 - dashboard: otc_order_fulfillment
   title: Order Fulfillment
-  layout: newspaper
-  preferred_viewer: dashboards-next
-  description: ''
-
-  # pull navigation bar and filters from template
-  # if using navigation_focus_page parameter for active dashboard update navigation tile to use the correct filter
+  description: "See delivery performance over time, items with longest average order cycle time, and items currently having fulfillment issues."
+  crossfilter_enabled: true
   extends: otc_template
 
   elements:
@@ -18,13 +34,13 @@
     title: In Full %
     explore: sales_orders_v2
     type: single_value
-    fields: [sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full,
-             sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time,
-             sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif,
-             sales_order_item_delivery_summary_ndt.percent_orders_delivered_late]
-    hidden_fields: [sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time,
-                    sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif,
-                    sales_order_item_delivery_summary_ndt.percent_orders_delivered_late]
+    fields: [sales_order_item_delivery_summary_ndt.in_full_order_percent,
+             sales_order_item_delivery_summary_ndt.on_time_order_percent,
+             sales_order_item_delivery_summary_ndt.on_time_and_in_full_order_percent,
+             sales_order_item_delivery_summary_ndt.late_order_percent]
+    hidden_fields: [sales_order_item_delivery_summary_ndt.on_time_order_percent,
+                    sales_order_item_delivery_summary_ndt.on_time_and_in_full_order_percent,
+                    sales_order_item_delivery_summary_ndt.late_order_percent]
     filters:
       sales_orders_v2.document_category_vbtyp: 'C'
     listen:
@@ -47,14 +63,13 @@
     title: On Time %
     explore: sales_orders_v2
     type: single_value
-    type: single_value
-    fields: [sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full,
-              sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time,
-              sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif,
-              sales_order_item_delivery_summary_ndt.percent_orders_delivered_late]
-    hidden_fields: [sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full,
-                    sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif,
-                    sales_order_item_delivery_summary_ndt.percent_orders_delivered_late]
+    fields: [sales_order_item_delivery_summary_ndt.in_full_order_percent,
+              sales_order_item_delivery_summary_ndt.on_time_order_percent,
+              sales_order_item_delivery_summary_ndt.on_time_and_in_full_order_percent,
+              sales_order_item_delivery_summary_ndt.late_order_percent]
+    hidden_fields: [sales_order_item_delivery_summary_ndt.in_full_order_percent,
+                    sales_order_item_delivery_summary_ndt.on_time_and_in_full_order_percent,
+                    sales_order_item_delivery_summary_ndt.late_order_percent]
     filters:
       sales_orders_v2.document_category_vbtyp: 'C'
     listen:
@@ -78,13 +93,13 @@
     title: OTIF %
     explore: sales_orders_v2
     type: single_value
-    fields: [sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full,
-              sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time,
-              sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif,
-              sales_order_item_delivery_summary_ndt.percent_orders_delivered_late]
-    hidden_fields: [sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full,
-                    sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time,
-                    sales_order_item_delivery_summary_ndt.percent_orders_delivered_late]
+    fields: [sales_order_item_delivery_summary_ndt.in_full_order_percent,
+              sales_order_item_delivery_summary_ndt.on_time_order_percent,
+              sales_order_item_delivery_summary_ndt.on_time_and_in_full_order_percent,
+              sales_order_item_delivery_summary_ndt.late_order_percent]
+    hidden_fields: [sales_order_item_delivery_summary_ndt.in_full_order_percent,
+                    sales_order_item_delivery_summary_ndt.on_time_order_percent,
+                    sales_order_item_delivery_summary_ndt.late_order_percent]
     filters:
       sales_orders_v2.document_category_vbtyp: 'C'
     listen:
@@ -108,13 +123,13 @@
     title: Late Delivery %
     explore: sales_orders_v2
     type: single_value
-    fields: [sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full,
-              sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time,
-              sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif,
-              sales_order_item_delivery_summary_ndt.percent_orders_delivered_late]
-    hidden_fields: [sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full,
-                    sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time,
-                    sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif]
+    fields: [sales_order_item_delivery_summary_ndt.in_full_order_percent,
+              sales_order_item_delivery_summary_ndt.on_time_order_percent,
+              sales_order_item_delivery_summary_ndt.on_time_and_in_full_order_percent,
+              sales_order_item_delivery_summary_ndt.late_order_percent]
+    hidden_fields: [sales_order_item_delivery_summary_ndt.in_full_order_percent,
+                    sales_order_item_delivery_summary_ndt.on_time_order_percent,
+                    sales_order_item_delivery_summary_ndt.on_time_and_in_full_order_percent]
     filters:
       sales_orders_v2.document_category_vbtyp: 'C'
     enable_conditional_formatting: true
@@ -137,14 +152,14 @@
     width: 6
     height: 3
 #####################################################################################################
-  - name: delivery_performance
+  - name: delivery_performance_by_month
     title: Delivery Performance by Month
     explore: sales_orders_v2
     type: looker_line
     fields: [sales_orders_v2.creation_date_erdat_month,
-            sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time_formatted,
-            sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full_formatted,
-            sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif_formatted]
+            sales_order_item_delivery_summary_ndt.on_time_order_percent_formatted,
+            sales_order_item_delivery_summary_ndt.in_full_order_percent_formatted,
+            sales_order_item_delivery_summary_ndt.on_time_and_in_full_order_percent_formatted]
     sorts: [sales_orders_v2.creation_date_erdat_month]
     filters:
       sales_orders_v2.document_category_vbtyp: 'C'
@@ -158,18 +173,14 @@
     x_axis_label: Month
     x_axis_zoom: true
     y_axis_zoom: true
-    # series_types:
-    #   sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time: line
-    #   sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full: line
-    #   sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif: line
     series_colors:
-      sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time_formatted: "#F39B6D"
-      sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full_formatted: "#6494AA"
-      sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif_formatted: "#89BD9E"
+      sales_order_item_delivery_summary_ndt.on_time_order_percent_formatted: "#F39B6D"
+      sales_order_item_delivery_summary_ndt.in_full_order_percent_formatted: "#6494AA"
+      sales_order_item_delivery_summary_ndt.on_time_and_in_full_order_percent_formatted: "#89BD9E"
     series_labels:
-      sales_order_item_delivery_summary_ndt.percent_orders_delivered_on_time_formatted: On Time %
-      sales_order_item_delivery_summary_ndt.percent_orders_delivered_in_full_formatted: In Full %
-      sales_order_item_delivery_summary_ndt.percent_orders_delivered_otif_formatted: OTIF %
+      sales_order_item_delivery_summary_ndt.on_time_order_percent_formatted: On Time %
+      sales_order_item_delivery_summary_ndt.in_full_order_percent_formatted: In Full %
+      sales_order_item_delivery_summary_ndt.on_time_and_in_full_order_percent_formatted: OTIF %
     x_axis_datetime_label: "%B %y"
     advanced_vis_config: |-
       {
@@ -193,7 +204,7 @@
         }
     note_state: collapsed
     note_display: hover
-    note_text: "Monthly tracking of order fulfillment and on-time delivery. In Full % is the percentage of sales orders where all order lines have been fulfilled (inventory has been reserved and is ready for shipment). On Time in Full (OTIF) % is the percentage of sales orders that have been fulfilled completely by the requested delivery date."
+    note_text: "Monthly tracking of order on-time and in-full delivery. In Full % is the percentage of sales orders where all order lines have been fulfilled. On Time in Full (OTIF) % is the percentage of sales orders that have been fulfilled completely by the requested delivery date."
     listen:
       date: sales_orders_v2.creation_date_erdat_date
       customer_country: countries_md.country_name_landx
@@ -212,12 +223,14 @@
     title: Products with Longest Average Order Cycle Time (Days)
     explore: sales_orders_v2
     type: looker_bar
-    fields: [sales_orders_v2.material_number_matnr,sales_orders_v2.material_text_maktx,
+    fields: [sales_orders_v2.material_number_matnr,
+             sales_orders_v2.material_text_maktx,
              sales_order_item_delivery_summary_ndt.avg_order_cycle_time]
     sorts: [sales_order_item_delivery_summary_ndt.avg_order_cycle_time desc]
     hidden_fields: [sales_orders_v2.material_number_matnr]
     filters:
       sales_orders_v2.document_category_vbtyp: 'C'
+      sales_order_item_delivery_summary_ndt.is_order_delivered_in_full: "Yes"
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_y_axis_labels: true
@@ -332,6 +345,7 @@
     hidden_fields: [materials_md.material_number_matnr]
     filters:
       sales_orders_v2.document_category_vbtyp: 'C'
+      across_sales_and_billing_summary_xvw.order_status: '-Cancelled'
     # fields: [ sales_orders__lines.inventory_item_id,
     #           sales_orders__lines.item_description,
     #           sales_orders__lines.total_ordered_quantity_by_item_formatted,
