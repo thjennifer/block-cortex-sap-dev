@@ -1,3 +1,5 @@
+# Includes join to Sales Orders to limit to only countries of customers found in that table
+
 include: "/views/core/countries_md_rfn.view"
 include: "/views/core/sales_orders_v2_rfn.view"
 include: "/views/core/customers_md_rfn.view"
@@ -9,13 +11,11 @@ explore: countries_md {
 
 
   join: customers_md {
-    view_label: "Sales Orders"
     type: inner
     relationship: many_to_one
     sql_on: ${countries_md.client_mandt} = ${customers_md.client_mandt} AND
-            ${countries_md.country_key_land1} = ${customers_md.country_key_land1}
-            ;;
-    fields: []
+            ${countries_md.country_key_land1} = ${customers_md.country_key_land1};;
+    fields: [customers_md.customer_name]
   }
 
   join: sales_orders_v2 {

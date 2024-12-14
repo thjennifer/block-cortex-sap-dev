@@ -35,6 +35,7 @@
       display: inline
       # type: advanced
       # display: popover
+
   - name: customer_country
     title: "Sold to Customer: Country"
     type: field_filter
@@ -56,11 +57,14 @@
     ui_config:
       type: advanced
       display: popover
-    explore: customers_md
+    # explore: customers_md
+    # field: customers_md.customer_name
+    explore: countries_md
     field: customers_md.customer_name
+    listens_to_filters: [customer_country]
 
   - name: sales_org
-    title: Sales Org
+    title: Sales Organization
     type: field_filter
     default_value: ''
     allow_multiple_values: true
@@ -81,7 +85,6 @@
       type: checkboxes
       display: popover
     explore: sales_orders_v2
-    listens_to_filters: [language_key_spras]
     field: distribution_channels_md.distribution_channel_name_vtext
 
   - name: division

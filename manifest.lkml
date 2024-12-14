@@ -620,7 +620,7 @@ constant: link_map_otc_dash_bindings_order_fulfillment {
 }
 
 constant: link_map_otc_dash_bindings_billing_and_pricing {
-  value: "otc_billing_and_pricing|Billing and Pricing|1,2,3,4,5,6,7,8"
+  value: "otc_billing|Billing and Pricing|1,2,3,4,5,6,7,8"
 }
 
 constant: link_map_otc_dash_bindings_order_details {
@@ -1309,7 +1309,7 @@ constant: link_build_explore_url {
 ###### TO REMOVE
 ###### used in zBlock_v1 and will be remove:
 constant: GCP_PROJECT {
-  value: "thjennifer3"
+  value: "thjennifer1"
   export: override_required
 }
 

@@ -133,7 +133,7 @@ view: +sales_orders_v2 {
 #} end customer dimensions
 
 #########################################################
-# DIMENSIONS: Order Currency Conversion
+# DIMENSIONS: Currency Conversion
 #{
 # Requires currency_conversion_sdt to be joined in same Explore
 
@@ -662,7 +662,7 @@ view: +sales_orders_v2 {
     type: number
     view_label: "Sales Orders Items"
     group_label: "Amounts Formatted as Large Numbers"
-    label: "@{label_currency_defaults}{%- assign add_formatted = true -%}@{label_currency_field_name}@{label_currency_if_selected}"
+    label: "@{label_currency_defaults}{%- assign add_formatted = true  -%}@{label_currency_field_name}@{label_currency_if_selected}"
     description: "Sum of ordered amount in target currency and formatted for large values (e.g., 2.3M or 75.2K)"
     sql: ${total_ordered_amount_target_currency} ;;
     value_format_name: format_large_numbers_d1

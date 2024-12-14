@@ -19,11 +19,11 @@
       name: Price Adjustments by Customer
       explore: sales_orders_v2
       type: looker_column
-      fields: [sales_orders_v2.sold_to_party_kunnr, customers_md.customer_name, sales_order_pricing_sdt.avg_list_price_target,
-        sales_order_pricing_sdt.avg_adjusted_price_target_curr, sales_order_pricing_sdt.abs_difference_list_and_adjusted_price]
+      fields: [sales_orders_v2.sold_to_party_kunnr, customers_md.customer_name, sales_order_pricing_sdt.average_list_price_target_currency,
+        sales_order_pricing_sdt.average_adjusted_price_target_currency, sales_order_pricing_sdt.absolute_difference_list_and_adjusted_price_target_currency]
       filters:
         sales_order_pricing_sdt.adjusted_price: NOT NULL
-      sorts: [sales_order_pricing_sdt.abs_difference_list_and_adjusted_price desc]
+      sorts: [sales_order_pricing_sdt.absolute_difference_list_and_adjusted_price_target_currency desc]
       limit: 500
       column_limit: 50
       x_axis_gridlines: false
@@ -53,19 +53,19 @@
       show_totals_labels: false
       show_silhouette: false
       totals_color: "#808080"
-      y_axes: [{label: '', orientation: left, series: [{axisId: sales_order_pricing_sdt.avg_list_price_target,
-              id: sales_order_pricing_sdt.avg_list_price_target, name: Average
-                List Price (USD)}, {axisId: sales_order_pricing_sdt.avg_adjusted_price_target_curr,
-              id: sales_order_pricing_sdt.avg_adjusted_price_target_curr, name: Average
+      y_axes: [{label: '', orientation: left, series: [{axisId: sales_order_pricing_sdt.average_list_price_target_currency,
+              id: sales_order_pricing_sdt.average_list_price_target_currency, name: Average
+                List Price (USD)}, {axisId: sales_order_pricing_sdt.average_adjusted_price_target_currency,
+              id: sales_order_pricing_sdt.average_adjusted_price_target_currency, name: Average
                 Adjusted Price (USD)}], showLabels: true, showValues: false, unpinAxis: false,
           tickDensity: default, tickDensityCustom: 5, type: linear}]
       x_axis_zoom: true
       y_axis_zoom: true
       series_colors:
-        sales_order_pricing_sdt.avg_list_price_target: "#214a43"
-        sales_order_pricing_sdt.avg_adjusted_price_target_curr: "#51726e"
+        sales_order_pricing_sdt.average_list_price_target_currency: "#214a43"
+        sales_order_pricing_sdt.average_adjusted_price_target_currency: "#51726e"
       defaults_version: 1
-      hidden_fields: [sales_orders_v2.sold_to_party_kunnr, sales_order_pricing_sdt.abs_difference_list_and_adjusted_price]
+      hidden_fields: [sales_orders_v2.sold_to_party_kunnr, sales_order_pricing_sdt.absolute_difference_list_and_adjusted_price_target_currency]
       listen:
         date: sales_orders_v2.creation_date_erdat_date
         customer_country: countries_md.country_name_landx
@@ -85,13 +85,13 @@
       model: cortex_sap_operational_v2
       explore: sales_orders_v2
       type: looker_column
-      fields: [sales_order_pricing_sdt.avg_list_price_target,
+      fields: [sales_order_pricing_sdt.average_list_price_target_currency,
                sales_orders_v2.material_number_matnr,
                sales_orders_v2.material_text_maktx,
-               sales_order_pricing_sdt.avg_intercompany_price_target_curr]
+               sales_order_pricing_sdt.average_intercompany_price_target_currency]
       filters:
-        sales_order_pricing_sdt.inter_company_price: NOT NULL
-      sorts: [sales_order_pricing_sdt.avg_intercompany_price_target_curr desc]
+        sales_order_pricing_sdt.intercompany_price: NOT NULL
+      sorts: [sales_order_pricing_sdt.average_intercompany_price_target_currency desc]
       limit: 500
       column_limit: 50
       x_axis_gridlines: false
@@ -121,10 +121,10 @@
       show_totals_labels: false
       show_silhouette: false
       totals_color: "#808080"
-      y_axes: [{label: '', orientation: left, series: [{axisId: sales_order_pricing_sdt.avg_list_price_target,
-              id: sales_order_pricing_sdt.avg_list_price_target, name: Average
-                List Price (USD)}, {axisId: sales_order_pricing_sdt.avg_intercompany_price_target_curr,
-              id: sales_order_pricing_sdt.avg_intercompany_price_target_curr, name: Average
+      y_axes: [{label: '', orientation: left, series: [{axisId: sales_order_pricing_sdt.average_list_price_target_currency,
+              id: sales_order_pricing_sdt.average_list_price_target_currency, name: Average
+                List Price (USD)}, {axisId: sales_order_pricing_sdt.average_intercompany_price_target_currency,
+              id: sales_order_pricing_sdt.average_intercompany_price_target_currency, name: Average
                 Intercompany Price (USD)}], showLabels: true, showValues: false, unpinAxis: false,
           tickDensity: default, tickDensityCustom: 5, type: linear}]
       x_axis_zoom: true
@@ -134,8 +134,8 @@
         first_last: first
         num_rows: '10'
       series_colors:
-        sales_order_pricing_sdt.avg_list_price_target: "#214a43"
-        sales_order_pricing_sdt.avg_intercompany_price_target_curr: "#879d9d"
+        sales_order_pricing_sdt.average_list_price_target_currency: "#214a43"
+        sales_order_pricing_sdt.average_intercompany_price_target_currency: "#879d9d"
       show_null_points: false
       interpolation: step
       discontinuous_nulls: false

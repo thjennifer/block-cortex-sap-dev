@@ -1,4 +1,4 @@
-connection: "qa-thjennifer3"
+connection: "@{CONNECTION_NAME}"
 
 include: "/zBlock_v1/views/*.view"
 include: "/zBlock_v1/explores/**/*.explore"
