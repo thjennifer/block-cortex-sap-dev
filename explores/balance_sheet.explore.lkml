@@ -25,7 +25,7 @@ include: "/views/core/balance_sheet_rfn.view"
 include: "/views/core/universal_ledgers_md_rfn.view"
 include: "/views/core/balance_sheet_fiscal_periods_selected_sdt.view"
 include: "/views/core/balance_sheet_hierarchy_selection_sdt.view"
-include: "/views/core/balance_sheet_navigation_ext.view"
+include: "/views/core/balance_sheet_dashboard_navigation_ext.view"
 
 explore: balance_sheet {
   # always_join: [language_map_sdt]
@@ -72,7 +72,7 @@ explore: balance_sheet {
             ${balance_sheet.node} = ${balance_sheet_hierarchy_selection_sdt.node};;
   }
 
-  join: balance_sheet_navigation_ext {
+  join: balance_sheet_dashboard_navigation_ext {
     relationship: one_to_one
     sql:  ;;
 }

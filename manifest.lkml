@@ -496,8 +496,9 @@ constant: link_style_dashboard_navigation {
 #} end constants for link style
 
 #########################################################
-# LINK_MAP
+# LINK_MAP_OTC
 #{
+# Specific link_map constants for OTC-related content
 # Map explore fields to filters (begin with link_map_otc_)
 # or map dashboard ids to names and filter sets (begin with link_map_otc_dash_bindings_)
 #
@@ -635,7 +636,62 @@ constant: link_map_otc_dash_bindings_order_details {
 #   value: "otc_billing_invoice_line_details|Invoice Details|1,2,3,4,5,6,7,8,9"
 # }
 
+#--> link_map_otc_target_dash_id_*
+#{ These constants assign either order details dashboard id or invoice details dashboard id to the liquid
+# variable target_dashboard.
+#
+# Used in Link property in order to open these dashboards from KPI measures.
+#}
+constant: link_map_otc_target_dash_id_order_details {
+  value: "{% assign target_dashboard = '@{link_map_otc_dash_bindings_order_details}' | split: '|' | first %}
+  @{link_map_clean_target_dashboard}"
+}
 
+# constant: link_map_otc_target_dash_id_invoice_details {
+#   value: "{% assign target_dashboard = '@{link_map_otc_dash_bindings_billing_invoice_details}' | split: '|' | first %}
+#   @{link_map_clean_target_dashboard}"
+# }
+
+
+#} end link_map_otc constants
+
+#########################################################
+# LINK_MAP_FIN
+#{
+# Specific link_map constants for Finance-related content
+# Map explore fields to filters (begin with link_map_fin_)
+# or map dashboard ids to names and filter sets (begin with link_map_fin_dash_bindings_)
+
+constant: link_map_fin_dash_bindings_inc_mktplace {
+  value: "income_statement_mktplace_report_table|With Comparisons|1,2,3,4,5,6,7,8"
+}
+
+constant: link_map_fin_dash_bindings_inc_mktplace_no {
+  value: "income_statement_mktplace_report_table_no_comparison|Without Comparisons|1,2,3,4,5,6,7,8"
+}
+
+constant: link_map_fin_dash_bindings_inc_subtotal {
+  value: "income_statement_subtotal_table|With Comparisons|1,2,3,4,5,6,7,8"
+}
+
+constant: link_map_fin_dash_bindings_inc_subtotal_no {
+  value: "income_statement_subtotal_table_no_comparison|Without Comparisons|1,2,3,4,5,6,7,8"
+}
+
+constant: link_map_fin_dash_bindings_bal_subtotal {
+  value: "balance_sheet_subtotal_table|With Comparisons|1,2,3,4,5,6,7"
+}
+
+constant: link_map_fin_dash_bindings_bal_subtotal_no {
+  value: "balance_sheet_subtotal_table_no_comparison|Without Comparisons|1,2,3,4,5,6,7"
+}
+
+#} end link_map_fin constants
+
+#########################################################
+# LINK_MAP
+#{
+# general constants that apply to all types of link_map constants
 #--> link_map_clean_target_dashboard
 #{ Takes input of liquid variable target_dashboard and checks if it is a string.
 # If numeric, do nothing.
@@ -663,21 +719,6 @@ constant: link_map_clean_target_dashboard {
           {% endif %}"
 }
 
-#--> link_map_otc_target_dash_id_*
-#{ These constants assign either order details dashboard id or invoice details dashboard id to the liquid
-# variable target_dashboard.
-#
-# Used in Link property in order to open these dashboards from KPI measures.
-#}
-constant: link_map_otc_target_dash_id_order_details {
-  value: "{% assign target_dashboard = '@{link_map_otc_dash_bindings_order_details}' | split: '|' | first %}
-  @{link_map_clean_target_dashboard}"
-}
-
-# constant: link_map_otc_target_dash_id_invoice_details {
-#   value: "{% assign target_dashboard = '@{link_map_otc_dash_bindings_billing_invoice_details}' | split: '|' | first %}
-#   @{link_map_clean_target_dashboard}"
-# }
 
 
 #--> link_map_filters_from_navigation_dash_bindings

@@ -7,26 +7,27 @@
 
 - dashboard: balance_sheet_mktplace_report_table
   title: Financial Balance Sheet
-  layout: newspaper
-  preferred_viewer: dashboards-next
-  filters_location_top: false
   description: "Reports Fiscal Period Cumulative Amount in Target Currency for Levels 3 and 4 of the selected hierarchy, chart of accounts, company, fiscal period and comparison period (if any). Requires Report Table visualization to be downloaded from Looker Marketplace."
   extends: balance_sheet_template
-
+#####################################################################################################
   elements:
-
-  - title: Balance Sheet
-    name: Balance Sheet
+  - name: balance_sheet
+    title: Balance Sheet
     explore: balance_sheet
     type: marketplace_viz_report_table::report_table-marketplace
-    fields: [balance_sheet_hierarchy_selection_sdt.hier1_node_text, balance_sheet_hierarchy_selection_sdt.hier2_node_text,
-      balance_sheet.total_cumulative_amount_in_target_currency, balance_sheet.fiscal_year_period,
-      balance_sheet_hierarchy_selection_sdt.hier3_node_text]
+    fields: [balance_sheet.fiscal_year_period,
+             balance_sheet_hierarchy_selection_sdt.hier1_node_text,
+             balance_sheet_hierarchy_selection_sdt.hier2_node_text,
+             balance_sheet_hierarchy_selection_sdt.hier3_node_text,
+             balance_sheet.total_cumulative_amount_in_target_currency
+             ]
+    sorts: [balance_sheet.fiscal_year_period desc,
+            balance_sheet_hierarchy_selection_sdt.hier1_node_text,
+            balance_sheet_hierarchy_selection_sdt.hier2_node_text,
+            balance_sheet_hierarchy_selection_sdt.hier3_node_text]
     pivots: [balance_sheet.fiscal_year_period]
     filters:
       balance_sheet_fiscal_periods_selected_sdt.fiscal_period_group: "-NULL"
-    sorts: [balance_sheet.fiscal_year_period desc, balance_sheet_hierarchy_selection_sdt.hier1_node_text,
-      balance_sheet_hierarchy_selection_sdt.hier2_node_text, balance_sheet_hierarchy_selection_sdt.hier3_node_text]
     total: true
     series_labels: {}
     show_view_names: false
@@ -77,15 +78,15 @@
     truncate_header: false
     minimum_column_width: 75
     listen:
-      Fiscal Period: balance_sheet.select_fiscal_period
-      Comparison Type: balance_sheet.select_comparison_type
-      Custom Comparison Period: balance_sheet.select_custom_comparison_period
-      Hierarchy: balance_sheet.hierarchy_name
-      Chart of Accounts: balance_sheet.chart_of_accounts
-      Company Code: balance_sheet.company_text
-      Target Currency: balance_sheet.target_currency_tcurr
-      Ledger Name: universal_ledgers_md.ledger_id_name
-      Top Hierarchy Level: balance_sheet_hierarchy_selection_sdt.parameter_pick_start_level
+      fiscal_period: balance_sheet.select_fiscal_period
+      comparison_type: balance_sheet.select_comparison_type
+      custom_comparison_period: balance_sheet.select_custom_comparison_period
+      target_currency: balance_sheet.target_currency_tcurr
+      hierarchy: balance_sheet.hierarchy_name
+      chart_of_accounts: balance_sheet.chart_of_accounts
+      company_code: balance_sheet.company_text
+      ledger_name: universal_ledgers_md.ledger_id_name
+      top_hierarchy_level: balance_sheet_hierarchy_selection_sdt.parameter_pick_start_level
     row: 2
     col: 0
     width: 24

@@ -4,7 +4,6 @@ include: "/views/core/sales_orders_v2_rfn.view"
 # other facts
 include: "/views/core/one_touch_order_rfn.view"
 include: "/views/core/currency_conversion_sdt.view"
-# include: "/views/core/language_map_sdt.view"
 include: "/views/core/sales_order_schedule_line_sdt.view"
 include: "/views/core/deliveries_rfn.view"
 include: "/views/core/sales_order_item_delivery_summary_ndt.view"
@@ -24,7 +23,6 @@ include: "/views/core/countries_md_rfn.view"
 
 # field-only views
 include: "/views/core/otc_common_parameters_xvw.view"
-include: "/views/core/across_sales_and_md_lookups_xvw.view"
 include: "/views/core/across_sales_and_deliveries_xvw.view"
 include: "/views/core/across_sales_and_returns_xvw.view"
 include: "/views/core/across_sales_and_billing_summary_xvw.view"
@@ -233,11 +231,6 @@ explore: sales_orders_v2 {
 
   join: across_sales_and_deliveries_xvw {
     view_label: "Deliveries"
-    relationship: one_to_one
-    sql:  ;;
-  }
-
-  join: across_sales_and_md_lookups_xvw {
     relationship: one_to_one
     sql:  ;;
   }

@@ -8,49 +8,35 @@
 #   - Removed comparison-related fields from Balance Sheet table
 #########################################################}
 
-- dashboard: balance_sheet_subtotal3_table_no_comparison
+- dashboard: balance_sheet_subtotal_table_no_comparison
   title: Financial Balance Sheet
-  layout: newspaper
-  preferred_viewer: dashboards-next
   description: "Using standard table with subtotals, reports Fiscal Period Cumulative Amount in Target Currency for the selected hierarchy, chart of accounts, company, and fiscal period."
-  filters_location_top: false
-  extends: [balance_sheet_template, balance_sheet_subtotal3_table]
-
+  extends: [balance_sheet_template, balance_sheet_subtotal_table]
+#####################################################################################################
   filters:
-  - name: Comparison Type
-    title: Comparison Type
+  - name: comparison_type
     default_value: none
     ui_config:
-      type: dropdown_menu
-      display: inline
       # remove all options for comparisons
       options:
         - none
 
-  - name: Custom Comparison Period
-    title: Custom Comparison Period
-    type: field_filter
+  - name: custom_comparison_period
     default_value: 'None'
-    allow_multiple_values: false
-    required: false
     ui_config:
-      type: dropdown_menu
-      display: inline
       options:
         - None
-    explore: balance_sheet
-    field: balance_sheet.select_custom_comparison_period
-
+#####################################################################################################
   elements:
-  - title: Balance Sheet
-    name: Balance Sheet
+  - name: dashboard_navigation
+    filters:
+      balance_sheet_dashboard_navigation_ext.parameter_navigation_focus_page: '2'
+#####################################################################################################
+  - name: balance_sheet
     explore: balance_sheet
     type: looker_grid
-    fields: [balance_sheet_fiscal_periods_selected_sdt.reporting_period_amount_in_target_currency,
-      balance_sheet_hierarchy_selection_sdt.hier1_node_text,
-      balance_sheet_hierarchy_selection_sdt.hier2_node_text, balance_sheet_hierarchy_selection_sdt.hier3_node_text]
-
-  - title: navigation
-    name: navigation
-    filters:
-      balance_sheet_navigation_ext.navigation_focus_page: '2'
+    fields: [balance_sheet_hierarchy_selection_sdt.hier1_node_text,
+             balance_sheet_hierarchy_selection_sdt.hier2_node_text,
+             balance_sheet_hierarchy_selection_sdt.hier3_node_text,
+             balance_sheet_fiscal_periods_selected_sdt.reporting_period_amount_in_target_currency]
+    size_to_fit: false
