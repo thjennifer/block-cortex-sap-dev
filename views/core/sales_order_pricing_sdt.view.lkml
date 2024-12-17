@@ -114,7 +114,7 @@ view: sales_order_pricing_sdt {
   dimension: list_price_target_currency {
     hidden: no
     type: number
-    label: "List Price (Target Currency)"
+    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     description: "Standard price at which product is typically sold (Target Currency)"
     sql: ${list_price} * ${exchange_rate_ukurs} ;;
     value_format_name: decimal_2
@@ -126,12 +126,28 @@ view: sales_order_pricing_sdt {
     sql: ${TABLE}.AdjustedPrice ;;
   }
 
+  dimension: is_adjusted_price {
+    hidden: no
+    type: yesno
+    sql: ${adjusted_price} <> 0 ;;
+  }
+
   dimension: adjusted_price_target_currency {
     hidden: no
     type: number
-    label: "Adjusted Price (Target Currency)"
+    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     description: "Price after applying discounts, rebates and/or promotions (Target Currency)"
     sql: ${adjusted_price} * ${exchange_rate_ukurs} ;;
+    value_format_name: decimal_2
+  }
+
+  dimension: variance_list_and_adjusted_price_target_currency {
+    hidden: yes
+    type: number
+    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
+    sql: CASE WHEN ${adjusted_price} <> 0 THEN
+            ${list_price_target_currency} - ${adjusted_price_target_currency}
+         END;;
     value_format_name: decimal_2
   }
 
@@ -143,12 +159,28 @@ view: sales_order_pricing_sdt {
     value_format_name: decimal_2
   }
 
+  dimension: is_intercompany_price {
+    hidden: no
+    type: yesno
+    sql: ${intercompany_price} <> 0 ;;
+  }
+
   dimension: intercompany_price_target_currency {
     hidden: no
     type: number
-    label: "Intercompany Price (Target Currency)"
+    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     description: "Price at which goods are transferred between different company codes (Target Currency)"
     sql: ${intercompany_price} * ${exchange_rate_ukurs} ;;
+    value_format_name: decimal_2
+  }
+
+  dimension: variance_list_and_intercompany_price_target_currency {
+    hidden: yes
+    type: number
+    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
+    sql: CASE WHEN ${intercompany_price} <> 0 THEN
+            ${list_price_target_currency} - ${intercompany_price_target_currency}
+         END;;
     value_format_name: decimal_2
   }
 
@@ -163,10 +195,15 @@ view: sales_order_pricing_sdt {
   dimension: discount_amount_target_currency {
     hidden: no
     type: number
-    label: "Discount Amount (Target Currency)"
+    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     description: "Discount amount taken off of list price (Target Currency)"
     sql: ${discount_amount} * ${exchange_rate_ukurs} ;;
     value_format_name: decimal_2
+  }
+
+  dimension: is_discount {
+    type: yesno
+    sql: ${discount_amount} <> 0 ;;
   }
 
   measure: average_list_price_target_currency {
@@ -175,6 +212,36 @@ view: sales_order_pricing_sdt {
     label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     sql: ${list_price_target_currency} ;;
     value_format_name: decimal_0
+#--> returns table of invoice lines where price is adjusted
+    link: {
+      label: "Show Adjusted Price details"
+      url: "
+      {% if average_adjusted_price_target_currency._is_selected %}
+      @{link_build_variable_defaults}
+      {% assign link = link_generator._link %}
+      {% assign drill_fields = 'billing.sold_to_party_kunag, billing.customer_name, billing.billing_document_vbeln, billing.sales_document_aubel, billing.billing_date_fkdat, billing.material_number_matnr, billing.material_text_maktx, billing.actual_billed_quantity_fkimg, billing.item_billed_amount_target_currency, sales_order_pricing_sdt.list_price_target_currency, sales_order_pricing_sdt.adjusted_price_target_currency, sales_order_pricing_sdt.difference_list_and_adjusted_price_target_currency' %}
+      {% assign default_filters = 'sales_order_pricing_sdt.adjusted_price_target_currency%3e0' %}
+      {% assign sorts = 'sales_order_pricing_sdt.absolute_difference_list_and_adjusted_price_target_currency+desc' %}
+      @{link_vis_table}
+      @{link_build_explore_url}
+      {% endif %}
+      "
+    }
+#--> returns table of invoice lines where price is adjusted
+    link: {
+      label: "Show Intercompany Price details"
+      url: "
+      {% if average_intercompany_price_target_currency._is_selected %}
+      @{link_build_variable_defaults}
+      {% assign link = link_generator._link %}
+      {% assign drill_fields = 'billing.sold_to_party_kunag, billing.customer_name, billing.billing_document_vbeln, billing.sales_document_aubel, billing.billing_date_fkdat, billing.material_number_matnr, billing.material_text_maktx, billing.actual_billed_quantity_fkimg, billing.item_billed_amount_target_currency, sales_order_pricing_sdt.list_price_target_currency, sales_order_pricing_sdt.intercompany_price_target_currency, sales_order_pricing_sdt.difference_list_and_intercompany_price_target_currency' %}
+      {% assign default_filters = 'sales_order_pricing_sdt.intercompany_price%3e0' %}
+      {% assign sorts = 'sales_order_pricing_sdt.absolute_difference_list_and_intercompany_price_target_currency+desc' %}
+      @{link_vis_table}
+      @{link_build_explore_url}
+      {% endif %}
+      "
+    }
   }
 
   measure: average_adjusted_price_target_currency {
@@ -183,6 +250,33 @@ view: sales_order_pricing_sdt {
     label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     sql: ${adjusted_price_target_currency} ;;
     value_format_name: decimal_0
+#--> returns table of invoice lines where price is adjusted
+    link: {
+      label: "Show Adjusted Price details"
+      url: "
+      @{link_build_variable_defaults}
+      {% assign link = link_generator._link %}
+      {% assign drill_fields = 'billing.sold_to_party_kunag, billing.customer_name, billing.billing_document_vbeln, billing.sales_document_aubel, billing.billing_date_fkdat, billing.material_number_matnr, billing.material_text_maktx, billing.actual_billed_quantity_fkimg, billing.item_billed_amount_target_currency, sales_order_pricing_sdt.list_price_target_currency, sales_order_pricing_sdt.adjusted_price_target_currency, sales_order_pricing_sdt.difference_list_and_adjusted_price_target_currency' %}
+      {% assign default_filters = 'sales_order_pricing_sdt.adjusted_price_target_currency%3e0' %}
+      {% assign sorts = 'sales_order_pricing_sdt.absolute_difference_list_and_adjusted_price_target_currency+desc' %}
+      @{link_vis_table}
+      @{link_build_explore_url}
+      "
+    }
+#--> opens Billing Details dashboard filtered to lines where price is adjusted
+    link: {
+      label: "Billing Details"
+      icon_url: "/favicon.ico"
+      url: "
+      @{link_build_variable_defaults}
+      {% assign link = link_generator._link %}
+      {% assign use_qualified_filter_names = true %}
+      {% assign source_to_destination_filters_mapping = '@{link_map_otc_billing_to_billing_details}' %}
+      {% assign default_filters='is_adjusted_price=Yes'%}
+      @{link_map_otc_target_dash_id_billing_details}
+      @{link_build_dashboard_url}
+      "
+    }
   }
 
   measure: difference_list_and_adjusted_price_target_currency {
@@ -209,6 +303,33 @@ view: sales_order_pricing_sdt {
     label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     sql: ${intercompany_price_target_currency} ;;
     value_format_name: decimal_0
+#--> returns table of invoice lines where price is adjusted
+    link: {
+      label: "Show Intercompany Price details"
+      url: "
+      @{link_build_variable_defaults}
+      {% assign link = link_generator._link %}
+      {% assign drill_fields = 'billing.sold_to_party_kunag, billing.customer_name, billing.billing_document_vbeln, billing.sales_document_aubel, billing.billing_date_fkdat, billing.material_number_matnr, billing.material_text_maktx, billing.actual_billed_quantity_fkimg, billing.item_billed_amount_target_currency, sales_order_pricing_sdt.list_price_target_currency, sales_order_pricing_sdt.intercompany_price_target_currency, sales_order_pricing_sdt.difference_list_and_intercompany_price_target_currency' %}
+      {% assign default_filters = 'sales_order_pricing_sdt.intercompany_price%3e0' %}
+      {% assign sorts = 'sales_order_pricing_sdt.absolute_difference_list_and_intercompany_price_target_currency+desc' %}
+      @{link_vis_table}
+      @{link_build_explore_url}
+      "
+    }
+#--> opens Billing Details dashboard filtered to lines where price is adjusted
+    link: {
+      label: "Billing Details"
+      icon_url: "/favicon.ico"
+      url: "
+      @{link_build_variable_defaults}
+      {% assign link = link_generator._link %}
+      {% assign use_qualified_filter_names = true %}
+      {% assign source_to_destination_filters_mapping = '@{link_map_otc_billing_to_billing_details}' %}
+      {% assign default_filters='is_intercompany_price=Yes'%}
+      @{link_map_otc_target_dash_id_billing_details}
+      @{link_build_dashboard_url}
+      "
+    }
   }
 
   measure: difference_list_and_intercompany_price_target_currency {
@@ -245,6 +366,31 @@ view: sales_order_pricing_sdt {
     description: "Sum of Condition Value (KWERT) when Condition Class (KOAID) = 'A'. Value reported as a positive value and formatted for large numbers"
     sql: ${total_discount_amount_target_currency} ;;
     value_format_name: format_large_numbers_d1
+    link: {
+      label: "Billing Details"
+      icon_url: "/favicon.ico"
+      url: "
+      @{link_build_variable_defaults}
+      {% assign link = link_generator._link %}
+      {% assign use_qualified_filter_names = true %}
+      {% assign source_to_destination_filters_mapping = '@{link_map_otc_billing_to_billing_details}' %}
+      {% assign default_filters='is_discount=Yes'%}
+      @{link_map_otc_target_dash_id_billing_details}
+      @{link_build_dashboard_url}
+      "
+    }
   }
+
+#########################################################
+# MEASURES: Helper
+#{
+# Hidden measures used to support url link generation
+  measure: link_generator {
+    hidden: yes
+    type: number
+    sql: 1 ;;
+    drill_fields: [link_generator]
+  }
+#} end helper measures
 
   }

@@ -20,21 +20,40 @@ view: +billing {
     label: "@{label_field_name}"
   }
 
+  dimension: sales_document_aubel {
+    hidden: no
+    label: "@{label_field_name}"
+#--> opens Order Line Details dashboard for given Order Number
+    link: {
+      label: "Order Line Details"
+      icon_url: "/favicon.ico"
+      url: "
+      @{link_build_variable_defaults}
+      {% assign link = link_generator._link %}
+      {% assign use_qualified_filter_names = false %}
+      {% assign source_to_destination_filters_mapping = '@{link_map_otc_billing_to_order_details}'%}
+      @{link_map_otc_target_dash_id_order_details}
+      @{link_build_dashboard_url}
+      "
+    }
+  }
+
+  dimension: accounting_document_number_belnr {
+    hidden: no
+    label: "@{label_field_name}"
+  }
+
   dimension_group: billing_date_fkdat {
     hidden: no
     label: "Billing"
   }
 
-  dimension: is_cancelled {
-    hidden: no
-    type: yesno
-    sql: COALESCE(${TABLE}.BillingDocumentIsCancelled_FKSTO,'No') = 'X' ;;
-  }
-
-  dimension: sales_document_aubel {
+  dimension: fiscal_year_gjahr {
     hidden: no
     label: "@{label_field_name}"
   }
+
+
 
 #########################################################
 # DIMENSIONS: Billing Document Attributes
@@ -48,6 +67,23 @@ view: +billing {
     hidden: no
     label: "@{label_field_name}"
   }
+
+  dimension: billing_category_fktyp {
+    hidden: no
+    label: "@{label_field_name}"
+  }
+
+  dimension: is_cancelled {
+    hidden: no
+    type: yesno
+    sql: COALESCE(${TABLE}.BillingDocumentIsCancelled_FKSTO,'No') = 'X' ;;
+  }
+
+  dimension: cost_center_kostl {
+    hidden: no
+    label: "@{label_field_name}"
+  }
+
 
 #} end billing document attributes
 
@@ -185,8 +221,8 @@ view: +billing {
     hidden: no
     type: number
     view_label: "Billing Items"
-    label: "Item Billed Amount (Target Currency)"
-    # label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
+    # label: "Item Billed Amount (Target Currency)"
+    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     description: "Item net value converted to target currency (NETWR)"
     sql:  ${net_value_netwr} * ${exchange_rate_ukurs};;
     value_format_name: decimal_2
@@ -228,6 +264,18 @@ view: +billing {
     description: "Count of invoices formatted for large values (e.g., 2.3M or 75.2K)"
     sql: ${invoice_count} ;;
     value_format_name: format_large_numbers_d1
+    link: {
+      label: "Billing Details"
+      icon_url: "/favicon.ico"
+      url: "
+      @{link_build_variable_defaults}
+      {% assign link = link_generator._link %}
+      {% assign use_qualified_filter_names = true %}
+      {% assign source_to_destination_filters_mapping = '@{link_map_otc_billing_to_billing_details}'| append: '||billing_date_fkdat_month|date'%}
+      @{link_map_otc_target_dash_id_billing_details}
+      @{link_build_dashboard_url}
+      "
+    }
   }
 
   measure: invoice_line_count {
@@ -271,38 +319,18 @@ view: +billing {
     description: "Sum of billed amount in target currency and formatted for large values (e.g., 2.3M or 75.2K)"
     sql: ${total_billed_amount_target_currency} ;;
     value_format_name: format_large_numbers_d1
-#-->  opens modal showing sales by month
-#     link: {
-#       label: "Show Sales by Month"
-#       url: "@{link_build_variable_defaults}
-#       {% assign link = link_generator._link %}
-#       {% assign measure = 'sales_orders_v2.total_sales_amount_target_currency' %}
-#       {% assign m = 'sales_orders_v2.creation_date_erdat_month' %}
-#       {% assign drill_fields =  m | append: ',' | append: measure %}
-#       @{link_vis_line_chart_1_date_1_measure}
-#       @{link_build_explore_url}
-#       "
-#     }
-# #-->  links to Order Line Details dashboard
-#     link: {
-#       label: "Order Line Details"
-#       icon_url: "/favicon.ico"
-#       url: "
-#       @{link_build_variable_defaults}
-#       {% assign link = link_generator._link %}
-#       {% assign append_extra_mapping = false %}
-#       {% assign expl = _explore._name %}
-#       {% if expl == 'sales_orders_v2' %}
-#       @{link_map_otc_sales_orders_to_order_details_extra_mapping}
-#       {% endif %}
-#       {% assign source_to_destination_filters_mapping = '@{link_map_otc_sales_orders_to_order_details}'%}
-#       {% if append_extra_mapping == true %}
-#       {% assign source_to_destination_filters_mapping = source_to_destination_filters_mapping | append: extra_mapping %}
-#       {% endif %}
-#       @{link_map_otc_target_dash_id_order_details}
-#       @{link_build_dashboard_url}
-#       "
-#     }
+    link: {
+      label: "Billing Details"
+      icon_url: "/favicon.ico"
+      url: "
+      @{link_build_variable_defaults}
+      {% assign link = link_generator._link %}
+      {% assign use_qualified_filter_names = true %}
+      {% assign source_to_destination_filters_mapping = '@{link_map_otc_billing_to_billing_details}'| append: '||billing_date_fkdat_month|date'%}
+      @{link_map_otc_target_dash_id_billing_details}
+      @{link_build_dashboard_url}
+      "
+    }
   }
 
   measure: total_billed_amount_in_source_currency {
@@ -342,5 +370,16 @@ view: +billing {
 
 #} end amount measures
 
+#########################################################
+# MEASURES: Helper
+#{
+# Hidden measures used to support url link generation
+  measure: link_generator {
+    hidden: yes
+    type: number
+    sql: 1 ;;
+    drill_fields: [link_generator]
+  }
+#} end helper measures
 
  }

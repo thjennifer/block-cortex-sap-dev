@@ -133,7 +133,7 @@ view: otc_dashboard_navigation_ext {
     allowed_value: {value: "orders" label: "Orders" }
     # allowed_value: {value: "billing" label: "Billing"}
     allowed_value: {value: "odetails" label: "Orders with Details"}
-    # allowed_value: {value: "bdetails" label: "Billing with Line Details"}
+    allowed_value: {value: "bdetails" label: "Billing Details"}
     default_value: "orders"
   }
 
@@ -154,6 +154,8 @@ view: otc_dashboard_navigation_ext {
             "@{link_map_otc_dash_bindings_order_status}||@{link_map_otc_dash_bindings_order_sales_performance}||@{link_map_otc_dash_bindings_order_fulfillment}||@{link_map_otc_dash_bindings_billing_and_pricing}"
            {% when "odetails" %}
             "@{link_map_otc_dash_bindings_order_status}||@{link_map_otc_dash_bindings_order_sales_performance}||@{link_map_otc_dash_bindings_order_fulfillment}||@{link_map_otc_dash_bindings_billing_and_pricing}||@{link_map_otc_dash_bindings_order_details}"
+           {% when "bdetails" %}
+            "@{link_map_otc_dash_bindings_order_status}||@{link_map_otc_dash_bindings_order_sales_performance}||@{link_map_otc_dash_bindings_order_fulfillment}||@{link_map_otc_dash_bindings_billing_and_pricing}||@{link_map_otc_dash_bindings_billing_details}"
           {% endcase %}
           ;;
 

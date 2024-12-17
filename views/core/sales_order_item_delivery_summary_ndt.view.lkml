@@ -219,6 +219,7 @@ view: sales_order_item_delivery_summary_ndt {
   dimension: item_delivered_quantity {
     type: number
     description: "Total quantity delivered for the line item"
+    value_format_name: decimal_0
   }
 
   dimension: min_delivery_date_lfdat {

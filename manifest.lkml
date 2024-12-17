@@ -549,12 +549,12 @@ constant: link_map_otc_sales_orders_to_order_details {
   value: "sales_orders_v2.creation_date_erdat_date|date||sales_orders_v2.creation_date_erdat_month|date||sales_orders_v2.division_name_vtext|division||countries_md.country_name_landx|customer_country||sales_orders_v2.material_text_maktx|product||sales_organizations_md.sales_org_name_vtext|sales_org||distribution_channels_md.distribution_channel_name_vtext|distribution_channel||otc_common_parameters_xvw.parameter_target_currency|target_currency||sales_orders_v2.customer_name|customer_name||across_sales_and_billing_summary_xvw.order_status|order_status"
 }
 
-#--> link_map_otc_sales_invoices_to_invoice_details
-#{ Maps fields found in Explores sales_invoices and sales_invoices_daily_agg
-#  to filters on dashboard otc_billing_invoice_line_details
+#--> link_map_otc_billing_to_billing_details
+#{ Maps fields found in Explores billing
+#  to filters on dashboard otc_billing_details
 #}
-constant: link_map_otc_sales_invoices_to_invoice_details {
-  value: "invoice_date|date||business_unit_name|business_unit||bill_to_customer_country|customer_country||bill_to_customer_name|customer_name||order_source_name|order_source||category_description|item_category||parameter_target_currency|target_currency"
+constant: link_map_otc_billing_to_billing_details {
+  value: "billing.billing_date_fkdat_date|date||countries_md.country_name_landx|customer_country||billing.customer_name|customer_name||sales_organizations_md.sales_org_name_vtext|sales_org||distribution_channels_md.distribution_channel_name_vtext|distribution_channel||billing.division_name_vtext|division||billing.material_text_maktx|product||otc_common_parameters_xvw.parameter_target_currency|target_currency"
 }
 
 #--> link_map_otc_sales_orders_to_order_details_extra_mapping
@@ -580,12 +580,12 @@ constant: link_map_otc_sales_orders_to_order_details_extra_mapping {
           {%- endif -%}"
 }
 
-#--> link_map_otc_invoices_to_order_details
-#{ Maps fields found in explores sales_invoices and sales_invoices_daily_agg
-#  to dashboard filters on dashboard otc_order_line_item_details
+#--> link_map_otc_billing_to_order_details
+#{ Maps fields found in explores billing
+#  to dashboard filters on dashboard otc_order_details
 #}
-constant: link_map_otc_invoices_to_order_details {
-  value: "parameter_target_currency|target_currency||parameter_language|item_language||order_header_number|order_number"
+constant: link_map_otc_billing_to_order_details {
+  value: "parameter_target_currency|target_currency||sales_document_aubel|sales_document"
 }
 
 #--> link_map_otc_dash_bindings_*
@@ -621,7 +621,7 @@ constant: link_map_otc_dash_bindings_order_fulfillment {
 }
 
 constant: link_map_otc_dash_bindings_billing_and_pricing {
-  value: "otc_billing|Billing and Pricing|1,2,3,4,5,6,7,8"
+  value: "otc_billing_and_pricing|Billing and Pricing|1,2,3,4,5,6,7,8"
 }
 
 constant: link_map_otc_dash_bindings_order_details {
@@ -632,9 +632,9 @@ constant: link_map_otc_dash_bindings_order_details {
 #   value: "otc_billing_accounts_receivable|Accounts Receivable|1,2,3,4,5,6"
 # }
 
-# constant: link_map_otc_dash_bindings_billing_invoice_details {
-#   value: "otc_billing_invoice_line_details|Invoice Details|1,2,3,4,5,6,7,8,9"
-# }
+constant: link_map_otc_dash_bindings_billing_details {
+  value: "otc_billing_details|Billing Details|1,2,3,4,5,6,7,8"
+}
 
 #--> link_map_otc_target_dash_id_*
 #{ These constants assign either order details dashboard id or invoice details dashboard id to the liquid
@@ -647,10 +647,10 @@ constant: link_map_otc_target_dash_id_order_details {
   @{link_map_clean_target_dashboard}"
 }
 
-# constant: link_map_otc_target_dash_id_invoice_details {
-#   value: "{% assign target_dashboard = '@{link_map_otc_dash_bindings_billing_invoice_details}' | split: '|' | first %}
-#   @{link_map_clean_target_dashboard}"
-# }
+constant: link_map_otc_target_dash_id_billing_details {
+  value: "{% assign target_dashboard = '@{link_map_otc_dash_bindings_billing_details}' | split: '|' | first %}
+  @{link_map_clean_target_dashboard}"
+}
 
 
 #} end link_map_otc constants

@@ -1,4 +1,4 @@
-- dashboard: otc_billing_and_pricing
+- dashboard: old_otc_billing_and_pricing
   title: Billing and Pricing
   layout: newspaper
   preferred_viewer: dashboards-next

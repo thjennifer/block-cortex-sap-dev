@@ -20,7 +20,7 @@
 #
 #########################################################}
 
-- dashboard: otc_billing
+- dashboard: otc_billing_and_pricing
   title: Billing and Pricing
   description: "Overview of invoice volume and amounts including monthly trends. Highlights customers with highest discounts (average discount amount and percentages)."
 
@@ -612,7 +612,7 @@
       note_display: hover
       note_text: |-
         <div style="text-align: left;">
-        Customers are ranked in descending order by average adjustment amount across invoice lines.
+        Products are ranked in descending order by absolute difference between average list price and average intercompany price across invoice lines.
         </br></br>Average List Price and Average Intercompany Price across invoice lines with an intercompany transfer are shown as columns.
         </br>
         </div>

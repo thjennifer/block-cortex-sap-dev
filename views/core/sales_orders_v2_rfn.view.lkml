@@ -154,6 +154,7 @@ view: +sales_orders_v2 {
     hidden: no
     label: "@{label_field_name}"
     sql: ${currency_conversion_sdt.exchange_rate_ukurs} ;;
+    value_format_name: decimal_4
   }
 
 #}
@@ -389,6 +390,7 @@ view: +sales_orders_v2 {
     view_label: "Sales Orders Items"
     label: "@{label_field_name}"
     sql: ${cumulative_order_quantity_kwmeng} ;;
+    value_format_name: decimal_0
   }
 
   dimension: cumulative_confirmed_quantity_kbmeng {

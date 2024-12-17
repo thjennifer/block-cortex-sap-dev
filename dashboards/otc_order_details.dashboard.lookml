@@ -99,6 +99,18 @@
     explore: sales_orders_v2
     field: sales_order_item_delivery_summary_ndt.is_order_late
 
+  - name: sales_document
+    title: Sales Document
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: advanced
+      display: popover
+    explore: sales_orders_v2
+    field: sales_orders_v2.sales_document_vbeln
+
   elements:
 
   - name: dashboard_navigation
@@ -114,23 +126,17 @@
              sales_orders_v2.sales_document_vbeln,
              sales_orders_v2.item_posnr,
              sales_orders_v2.material_text_maktx,
-
              across_sales_and_billing_summary_xvw.order_status_with_symbols,
              deliveries.is_blocked_with_symbols,
-
-
              sales_order_item_partner_function_sdt.customer_names_sold_to,
              sales_order_item_partner_function_sdt.customer_names_ship_to,
              sales_order_item_partner_function_sdt.customer_names_bill_to,
-
              sales_orders_v2.creation_date_erdat_date,
              sales_orders_v2.requested_delivery_date_vdatu_date,
              sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat,
-
              sales_orders_v2.base_unit_of_measure_meins,
              sales_orders_v2.item_ordered_quantity_kwmeng,
              sales_order_item_delivery_summary_ndt.item_delivered_quantity,
-
              sales_orders_v2.item_ordered_amount,
              sales_orders_v2.currency_hdr_waerk,
              sales_orders_v2.item_ordered_amount_target_currency,
@@ -159,16 +165,6 @@
       sales_orders_v2.sales_document_vbeln: left
       sales_orders_v2.item_posnr: left
       sales_orders_v2.material_text_maktx: left
-    # column_order: [across_sales_and_billing_summary_xvw.order_status_with_symbols,
-    #   deliveries.is_blocked_with_symbols, sales_orders_v2.sales_document_vbeln,
-    #   sales_orders_v2.item_posnr, materials_md.material_text_maktx, sales_order_item_partner_function_sdt.customer_names_sold_to,
-    #   sales_order_item_partner_function_sdt.customer_names_ship_to, sales_order_item_partner_function_sdt.customer_names_bill_to,
-    #   sales_orders_v2.creation_date_erdat_date, sales_orders_v2.requested_delivery_date_vdatu_date,
-    #   sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat, sales_orders_v2.total_ordered_quantity,
-    #   sales_orders_v2.base_unit_of_measure_meins, sales_order_item_delivery_summary_ndt.total_delivered_quantity,
-    #   sales_orders_v2.total_sales_amount_in_source_currency, currency_conversion_sdt.from_currency_fcurr,
-    #   sales_orders_v2.total_sales_amount_target_currency, currency_conversion_sdt.to_currency_tcurr,
-    #   currency_conversion_sdt.exchange_rate_ukurs]
 
     series_labels:
       across_sales_and_billing_summary_xvw.order_status_with_symbols: Order Status
@@ -194,16 +190,31 @@
       sales_orders_v2.base_unit_of_measure_meins: 75
       sales_orders_v2.item_ordered_quantity_kwmeng: 100
       sales_order_item_delivery_summary_ndt.item_delivered_quantity: 100
-      sales_orders_v2.currency_hdr_waerk.from_currency_fcurr: 75
-      currency_conversion_sdt.to_currency_tcurr: 75
+      sales_orders_v2.currency_hdr_waerk: 75
+      sales_orders_v2.target_currency: 75
       sales_orders_v2.item_ordered_amount: 100
       sales_orders_v2.item_ordered_amount_target_currency: 100
+      sales_orders_v2.exchange_rate_ukurs: 75
 
     series_text_format:
       across_sales_and_billing_summary_xvw.order_status_with_symbols:
         align: center
       deliveries.is_blocked_with_symbols:
         align: center
+      sales_orders_v2.item_ordered_quantity_kwmeng:
+        align: right
+      sales_order_item_delivery_summary_ndt.item_delivered_quantity:
+        align: right
+      sales_orders_v2.currency_hdr_waerk:
+        align: center
+      sales_orders_v2.item_ordered_amount:
+        align: right
+      sales_orders_v2.target_currency:
+        align: center
+      sales_orders_v2.item_ordered_amount_target_currency:
+        align: right
+      sales_orders_v2.exchange_rate_ukurs:
+        align: right
     series_cell_visualizations:
       sales_orders_v2.total_ordered_quantity:
         is_active: false
@@ -228,6 +239,7 @@
       is_order_delivered_in_full: sales_order_item_delivery_summary_ndt.is_order_delivered_in_full
       is_order_on_time_and_in_full: sales_order_item_delivery_summary_ndt.is_order_on_time_and_in_full
       is_order_late: sales_order_item_delivery_summary_ndt.is_order_late
+      sales_document: sales_orders_v2.sales_document_vbeln
     row: 1
     col: 0
     width: 24
