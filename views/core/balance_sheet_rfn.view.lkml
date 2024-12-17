@@ -69,27 +69,29 @@ view: +balance_sheet {
 # Parameters for Balance Sheet Dashboard
 #{
 # 3 parameters:
-#   select_fiscal_period
-#   select_comparison_type
-#   select_custom_comparison_period
+#   parameter_fiscal_period
+#   parameter_comparison_type
+#   parameter_custom_comparison_period
 #
 # use parameter selections to define fiscal_period_group values of 'Reporting' or 'Comparison'
 #
 # the inner join to balance_sheet_fiscal_periods_selected at explore level will
-# filter to keep rows where fiscal_period_group is not null if select_fiscal_period is in the query
+# filter to keep rows where fiscal_period_group is not null if parameter_fiscal_period is in the query
 #########################################################
 
-  parameter: select_fiscal_period {
+  parameter: parameter_fiscal_period {
     type: unquoted
     view_label: "@{label_view_for_filters}"
+    label: "Select Fiscal Period"
     description: "Select a Fiscal Period for Balance Sheet Reporting"
     # suggest_explore: balance_sheet_fiscal_periods_sdt
     suggest_dimension: fiscal_year_period
   }
 
-  parameter: select_comparison_type {
+  parameter: parameter_comparison_type {
     type: unquoted
     view_label: "@{label_view_for_filters}"
+    label: "Select Comparison Type"
     description: "When creating a Balance Sheet report, you can choose to compare the selected fiscal period to the previous year, previous fiscal period, or a custom period. If Custom is selected, select a Fiscal Period from the 'Select Custom Comparison Period' parameter."
     allowed_value: {
       label: "None" value: "none"
@@ -106,9 +108,10 @@ view: +balance_sheet {
     default_value: "yoy"
   }
 
-  parameter: select_custom_comparison_period {
+  parameter: parameter_custom_comparison_period {
     type: unquoted
     view_label: "@{label_view_for_filters}"
+    label: "Select Custom Comparison Period"
     description: "When Comparison Type equals Custom, you must select a Comparison Period. If no comparison period selected, previous year will be used."
     # suggest_explore: fiscal_periods_sdt
     suggest_dimension: fiscal_year_period
@@ -257,7 +260,7 @@ view: +balance_sheet {
       <div  style="font-size:100%; background-color:rgb((169,169,169,.5); text-align:center;  line-height: .8; font-color: #808080">
           <a style="font-size:100%;color: black"><b>Balance Sheet</b></a><br>
           <a style= "font-size:80%;color: black">{{company_list}}</a><br>
-          <a style= "font-size:80%;color: black">Fiscal Period:   {{select_fiscal_period._parameter_value}}&nbsp;&nbsp;&nbsp; Current Ratio: {{current_ratio._rendered_value}}</a>
+          <a style= "font-size:80%;color: black">Fiscal Period:   {{parameter_fiscal_period._parameter_value}}&nbsp;&nbsp;&nbsp; Current Ratio: {{current_ratio._rendered_value}}</a>
           <br>
           <a style= "font-size: 60%; text-align:center;color: black"> Amounts in Millions  {{target_currency_tcurr}} </a>
        </div>

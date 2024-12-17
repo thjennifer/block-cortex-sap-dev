@@ -81,9 +81,9 @@
       balance_sheet_hierarchy_selection_sdt.hier1_node_text: false
       balance_sheet_hierarchy_selection_sdt.hier2_node_text: false
     listen:
-      fiscal_period: balance_sheet.select_fiscal_period
-      comparison_type: balance_sheet.select_comparison_type
-      custom_comparison_period: balance_sheet.select_custom_comparison_period
+      fiscal_period: balance_sheet.parameter_fiscal_period
+      comparison_type: balance_sheet.parameter_comparison_type
+      custom_comparison_period: balance_sheet.parameter_custom_comparison_period
       target_currency: balance_sheet.target_currency_tcurr
       hierarchy: balance_sheet.hierarchy_name
       chart_of_accounts: balance_sheet.chart_of_accounts

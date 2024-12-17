@@ -1,7 +1,7 @@
 #########################################################{
 # Order Sales Performance dashboard provides insights into
 # top sales performers including items, divisions, customers,
-# business units, and order sources.
+# sales organizations, and distribution channels.
 #
 # Extends otc_template_orders and modifies to:
 #   add filter product_level
@@ -13,31 +13,15 @@
 #   top_customers_by_sales - bar chart
 #   top_customers_by_avg_sales - bar chart
 #   top_sales_organizations_by_sales - bar chart
-#   sales_by_distrubtion - donut chart (looker_pie)
-#
+#   sales_by_distribution - donut chart (looker_pie)
 #########################################################}
-
 
 - dashboard: otc_order_sales_performance
   title: Sales Performance
-  description: "Gain insights into top sales performers including items, categories, customers, business units, and order sources."
-
+  description: "Gain insights into top sales performers including items, divisions, customers, sales organizations, and distribution channels."
   extends: otc_template
-
+#####################################################################################################
   filters:
-  # - name: item_language
-  #   title: Language of Item Description
-  #   type: field_filter
-  #   default_value: "{{ _user_attributes['cortex_oracle_ebs_default_language'] }}"
-  #   allow_multiple_values: false
-  #   required: false
-  #   ui_config:
-  #     type: dropdown_menu
-  #     display: inline
-  #     options: []
-  #   explore: item_md
-  #   field: item_md__item_descriptions.language_code
-
   - name: product_level
     title: Product Level to Display
     type: field_filter
@@ -49,9 +33,7 @@
       display: inline
     explore: sales_orders_v2
     field: sales_orders_v2.parameter_display_product_level
-
-
-
+#####################################################################################################
   elements:
   - name: dashboard_navigation
     filters:
@@ -278,7 +260,7 @@
     col: 0
     width: 12
     height: 10
-# #####################################################################################################
+#####################################################################################################
   - name: top_customers_by_avg_sales
     title: Top Customers by Average Sales
     explore: sales_orders_v2

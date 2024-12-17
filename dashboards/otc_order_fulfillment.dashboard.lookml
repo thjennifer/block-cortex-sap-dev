@@ -17,15 +17,12 @@
 #
 #########################################################}
 
-
 - dashboard: otc_order_fulfillment
   title: Order Fulfillment
   description: "See delivery performance over time, items with longest average order cycle time, and items currently having fulfillment issues."
-  crossfilter_enabled: true
   extends: otc_template
-
+#####################################################################################################
   elements:
-
   - name: dashboard_navigation
     filters:
       otc_dashboard_navigation_ext.parameter_navigation_focus_page: '3'
@@ -346,16 +343,6 @@
     filters:
       sales_orders_v2.document_category_vbtyp: 'C'
       across_sales_and_billing_summary_xvw.order_status: '-Cancelled'
-    # fields: [ sales_orders__lines.inventory_item_id,
-    #           sales_orders__lines.item_description,
-    #           sales_orders__lines.total_ordered_quantity_by_item_formatted,
-    #           sales_orders__lines.total_fulfilled_quantity_by_item_formatted,
-    #           sales_orders__lines.difference_ordered_fulfilled_quantity_by_item]
-    # sorts: [sales_orders__lines.difference_ordered_fulfilled_quantity_by_item desc]
-    # hidden_fields: [sales_orders__lines.inventory_item_id]
-    # filters:
-    #   sales_orders.order_category_code: '-RETURN'
-    #   sales_orders__lines.line_category_code: 'ORDER'
     limit: 10
     x_axis_gridlines: false
     y_axis_gridlines: true

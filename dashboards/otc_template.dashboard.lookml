@@ -1,23 +1,21 @@
-######################
-# use this template to provide standard navigation and filters for Sales Order to Cash dashboards
-# this template can only be extended into another dashboard
+#########################################################{
+# Use this template to provide common filters and a
+# dashboard navigation viz for related Sales Order to Cash
+# dashboards.
 #
-######################
+# This template can only be extended into another dashboard.
+#########################################################}
 
 - dashboard: otc_template
   extension: required
-
   title: OTC Template with Core Filters and Elements
   description: "Template which defines core filters and elements used in all OTC dashboards. Extendable and customizable."
-
   layout: newspaper
   preferred_viewer: dashboards-next
   crossfilter_enabled: false
   filters_location_top: false
-
-
+#####################################################################################################
   filters:
-
   - name: date
     title: Order Date
     type: date_filter
@@ -25,9 +23,6 @@
     # default_value:  "{% if _user_attributes['cortex_sap_use_test_data'] =='Yes' %}{% assign date_range = '2022' %}
     #                 {% else %} {% assign date_range = 'last 1 year' %}
     #                 {% endif %}{{date_range}}"
-    # default_value: "2022/01/01 to 2022/12/31"
-    # default_value: "last 1 year"
-    # default_value: "@{DEFAULT_DATE_RANGE}"
     allow_multiple_values: true
     required: false
     ui_config:
@@ -138,7 +133,7 @@
   #     options: []
   #   explore: otc_languages_pdt
   #   field: otc_languages_pdt.language_spras
-
+#####################################################################################################
   elements:
     - name: dashboard_navigation
       title: Dashboard Navigation

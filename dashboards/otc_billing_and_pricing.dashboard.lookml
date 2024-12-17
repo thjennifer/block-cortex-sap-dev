@@ -1,14 +1,13 @@
 #########################################################{
 # Billing dashboard provides an overview of
 # invoice volume and amounts including monthly trends.
-# Highlights customers with highest discounts (average
-# discount amount and percentages).
+# Highlights customers with greatest pricing adjustments
+# and products with greatest intercompany pricing adjustments.
 #
 # Extends otc_template and modifies to:
-#   add filters order_source and item_category
+#   label date filter as Billing Date
 #   update dashboard_navigation to:
-#       listen to order_source and item_category
-#       set parameter_navigation_focus_page: '1'
+#       set parameter_navigation_focus_page: '4'
 #
 # Visualization Elements:
 #   invoice_count - single-value viz
@@ -16,32 +15,19 @@
 #   discount_amount - single-value viz
 #   tax_amount - single-value viz
 #   invoices_by_month - area & line chart
-#   customer_discounts - column & line chart
-#
+#   customer_price_adjustments - column
+#   product_intercompany_prices - column
 #########################################################}
 
 - dashboard: otc_billing_and_pricing
   title: Billing and Pricing
   description: "Overview of invoice volume and amounts including monthly trends. Highlights customers with highest discounts (average discount amount and percentages)."
-
   extends: otc_template
-
+#####################################################################################################
   filters:
     - name: date
       title: Billing Date
-
-  #   - name: item_category
-  #     title: Item Category
-  #     type: field_filter
-  #     default_value: ''
-  #     allow_multiple_values: true
-  #     required: false
-  #     ui_config:
-  #       type: checkboxes
-  #       display: popover
-  #     explore: sales_invoices_daily_agg
-  #     field: sales_invoices_daily_agg.category_description
-
+#####################################################################################################
   elements:
     - name: dashboard_navigation
       filters:
@@ -229,7 +215,7 @@
       width: 24
       height: 7
 #####################################################################################################
-    - name: customer_pricing
+    - name: customer_price_adjustments
       title: Customers with Greatest Price Adjustments
       explore: billing
       # type: looker_line
@@ -432,7 +418,7 @@
       width: 24
       height: 7
 #####################################################################################################
-    - name: product_intercompany_price
+    - name: product_intercompany_prices
       title: Products with Greatest Intercompany Pricing Adjustments
       explore: billing
       # type: looker_line

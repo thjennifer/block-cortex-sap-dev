@@ -17,9 +17,9 @@
 #
 # PROCESS
 #   1) Captures inputs from parameters:
-#         balance_sheet.select_fiscal_period -- user selects a single "Reporting" fiscal period
+#         balance_sheet.parameter_fiscal_period -- user selects a single "Reporting" fiscal period
 #         balance_sheet.select_compare_to -- user can compare the Reporting period to either: same period a year ago, the prior fiscal period, a specific fiscal period
-#         balance_sheet.select_custom_comparison_period -- if "Custom" comparison selected, user must select one "Comparison" fiscal period. Year ago used if no period provided
+#         balance_sheet.parameter_custom_comparison_period -- if "Custom" comparison selected, user must select one "Comparison" fiscal period. Year ago used if no period provided
 #
 #   2) Builds SQL statement based on parameter values selected. Returns the fiscal periods
 #      representing the "Reporting" and "Comparison" periods
@@ -45,9 +45,9 @@ view: balance_sheet_fiscal_periods_selected_sdt {
   fields_hidden_by_default: yes
 
   derived_table: {
-    sql:    {% assign comparison_type = balance_sheet.select_comparison_type._parameter_value %}
-            {% assign fp = balance_sheet.select_fiscal_period._parameter_value %}
-            {% assign cp = balance_sheet.select_custom_comparison_period._parameter_value %}
+    sql:    {% assign comparison_type = balance_sheet.parameter_comparison_type._parameter_value %}
+            {% assign fp = balance_sheet.parameter_fiscal_period._parameter_value %}
+            {% assign cp = balance_sheet.parameter_custom_comparison_period._parameter_value %}
             {% if comparison_type == 'custom' %}
                 {% if fp == cp %}{% assign comparison_type = 'none' %}
                 {% elsif cp == '' %}{% assign comparison_type = 'yoy' %}
@@ -140,7 +140,7 @@ view: balance_sheet_fiscal_periods_selected_sdt {
     sql_distinct_key: ${balance_sheet.key} ;;
     hidden: no
     view_label: "Reporting vs. Comparison Period"
-    label_from_parameter: balance_sheet.select_fiscal_period
+    label_from_parameter: balance_sheet.parameter_fiscal_period
     description: "Cumulative Amount in Target Currency for the selected Fiscal Reporting Period"
     sql: ${balance_sheet.cumulative_amount_in_target_currency} ;;
     filters: [fiscal_period_group: "Reporting"]
@@ -153,16 +153,16 @@ view: balance_sheet_fiscal_periods_selected_sdt {
     sql_distinct_key: ${balance_sheet.key} ;;
     hidden: no
     view_label: "Reporting vs. Comparison Period"
-    label: "{% assign compare_to = balance_sheet.select_comparison_type._parameter_value %}
-    {% if balance_sheet.select_fiscal_period._in_query %}
-    {% if compare_to == 'custom' %}{% parameter balance_sheet.select_custom_comparison_period %}
+    label: "{% assign compare_to = balance_sheet.parameter_comparison_type._parameter_value %}
+    {% if balance_sheet.parameter_fiscal_period._in_query %}
+    {% if compare_to == 'custom' %}{% parameter balance_sheet.parameter_custom_comparison_period %}
     {% elsif compare_to == 'prior' %}
-    {% assign fp = balance_sheet.select_fiscal_period._parameter_value | split: '.' %}
+    {% assign fp = balance_sheet.parameter_fiscal_period._parameter_value | split: '.' %}
     {% if fp[1] == '001'%}{% assign cp = 'Previous Fiscal Period'%}
     {% else %}{% assign m = fp[1] | times: 1 | minus: 1 | prepend: '00' | slice: -3, 3 %}{% assign cp = fp[0] | append: '.' | append: m %}
     {% endif %}{{cp}}
     {% elsif compare_to == 'yoy' %}
-    {% assign fp = balance_sheet.select_fiscal_period._parameter_value | split: '.' %}
+    {% assign fp = balance_sheet.parameter_fiscal_period._parameter_value | split: '.' %}
     {% assign yr = fp[0] | times: 1 | minus: 1 %}
     {% assign cp =  yr | append: '.'| append: fp[1] %}{{cp}}
     {% elsif compare_to == 'none' %}
@@ -173,7 +173,7 @@ view: balance_sheet_fiscal_periods_selected_sdt {
     sql: ${balance_sheet.cumulative_amount_in_target_currency} ;;
     filters: [fiscal_period_group: "Comparison"]
     value_format_name: millions_d1
-    html: {% if balance_sheet.select_fiscal_period._in_query and balance_sheet.select_comparison_type._parameter_value == 'none' %}
+    html: {% if balance_sheet.parameter_fiscal_period._in_query and balance_sheet.parameter_comparison_type._parameter_value == 'none' %}
           {% else %}@{html_format_negative}
           {% endif %};;
   }

@@ -1,27 +1,27 @@
 #########################################################{
-# Invoice  Details dashboard provides
+# Billing Details dashboard provides
 # a table of invoices including details like customer, items,
 # invoiced quantities and amounts.
 #
 # This dashboard is accessed through drills from select KPIs.
 #
 # Extends otc_template and modifies to:
+#   label date filter as Billing Date
 #   add filters to support KPI-specific drills
 #   update dashboard_navigation to:
-#       listen to order_source & item_category
-#       set parameter_navigation_focus_page: '6'
+#       set parameter_navigation_subject: 'bdetails'
+#       set parameter_navigation_focus_page: '5'
 #
 # Visualization Elements:
-#   invoice_table
+#   billing_table
 #
 #########################################################}
 
 - dashboard: otc_billing_details
   title: Billing Details
   description: 'Provides a table of billing documents including details like customer, items, invoiced quantities and amounts.'
-
   extends: otc_template
-
+#####################################################################################################
   filters:
   - name: date
     title: Billing Date
@@ -90,13 +90,13 @@
       options: ['Yes','No']
     explore: billing
     field: sales_order_pricing_sdt.is_intercompany_price
-
+#####################################################################################################
   elements:
   - name: dashboard_navigation
     filters:
       otc_dashboard_navigation_ext.parameter_navigation_focus_page: '5'
       otc_dashboard_navigation_ext.parameter_navigation_subject: 'bdetails'
-
+#####################################################################################################
   - name: billing_details
     title: Billing Details
     explore: billing
@@ -154,7 +154,7 @@
     note_display: below
     note_text: |-
       <div style=text-align:left;font-size:11px;color:#808080;">
-      Up to 500 rows displayed. To see more, select Explore From Here and adjust row limit.
+      Up to 200 rows displayed. To see more, select "Explore From Here" option and adjust row limit.
       </div>
     listen:
         date: billing.billing_date_fkdat_date

@@ -13,14 +13,14 @@
 #
 # Visualization Elements:
 #   order_details_table
-#
 #########################################################}
 
 
 - dashboard: otc_order_details
   title: Order Details
+  description: 'Provides a table of orders including details like customer, items, ordered quantities and amounts.'
   extends: otc_template
-
+#####################################################################################################
   filters:
   - name: order_status
     title: Order Status
@@ -111,13 +111,13 @@
     explore: sales_orders_v2
     field: sales_orders_v2.sales_document_vbeln
 
+#####################################################################################################
   elements:
-
   - name: dashboard_navigation
     filters:
       otc_dashboard_navigation_ext.parameter_navigation_focus_page: '5'
       otc_dashboard_navigation_ext.parameter_navigation_subject: 'odetails'
-
+#####################################################################################################
   - name: order_details_table
     title: Order Details
     explore: sales_orders_v2
@@ -143,7 +143,7 @@
              sales_orders_v2.target_currency,
              sales_orders_v2.exchange_rate_ukurs]
     sorts: [sales_orders_v2.sales_document_vbeln, sales_orders_v2.item_posnr]
-    limit: 100
+    limit: 200
     show_view_names: false
     show_row_numbers: false
     truncate_text: true
@@ -160,12 +160,10 @@
     conditional_formatting_include_nulls: false
     show_sql_query_menu_options: false
     truncate_header: false
-
     pinned_columns:
       sales_orders_v2.sales_document_vbeln: left
       sales_orders_v2.item_posnr: left
       sales_orders_v2.material_text_maktx: left
-
     series_labels:
       across_sales_and_billing_summary_xvw.order_status_with_symbols: Order Status
       deliveries.is_blocked_with_symbols: Is Blocked
@@ -179,8 +177,6 @@
       sales_orders_v2.currency_hdr_waerk: Source Currency
       sales_orders_v2.target_currency: Target Currency
       sales_orders_v2.exchange_rate_ukurs: Exchange Rate
-
-
     minimum_column_width: 75
     series_column_widths:
       materials_md.material_text_maktx: 250
@@ -195,7 +191,6 @@
       sales_orders_v2.item_ordered_amount: 100
       sales_orders_v2.item_ordered_amount_target_currency: 100
       sales_orders_v2.exchange_rate_ukurs: 75
-
     series_text_format:
       across_sales_and_billing_summary_xvw.order_status_with_symbols:
         align: center
@@ -215,15 +210,12 @@
         align: right
       sales_orders_v2.exchange_rate_ukurs:
         align: right
-    series_cell_visualizations:
-      sales_orders_v2.total_ordered_quantity:
-        is_active: false
-
-    # note_state: expand
-    # note_display: below
+    note_state: collapsed
+    note_display: below
     note_text: |-
-      <font size="-2">Limited to 100 Order Items. To see more, select "Explore from Here" option and adjust row limit setting.
-      </font>
+      <div style=text-align:left;font-size:11px;color:#808080;">
+      Up to 200 rows displayed. To see more, select "Explore From Here" option and adjust row limit.
+      </div>
     listen:
       date: sales_orders_v2.creation_date_erdat_date
       customer_country: countries_md.country_name_landx

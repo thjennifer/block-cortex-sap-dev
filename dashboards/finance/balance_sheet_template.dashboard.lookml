@@ -37,7 +37,7 @@
       type: dropdown_menu
       display: inline
     explore: balance_sheet
-    field: balance_sheet.select_fiscal_period
+    field: balance_sheet.parameter_fiscal_period
 
   - name: comparison_type
     title: Comparison Type
@@ -49,7 +49,7 @@
       type: dropdown_menu
       display: inline
     explore: balance_sheet
-    field: balance_sheet.select_comparison_type
+    field: balance_sheet.parameter_comparison_type
 
   - name: custom_comparison_period
     title: Custom Comparison Period
@@ -61,7 +61,7 @@
       type: dropdown_menu
       display: inline
     explore: balance_sheet
-    field: balance_sheet.select_custom_comparison_period
+    field: balance_sheet.parameter_custom_comparison_period
 
   - name: target_currency
     title: Target Currency
@@ -148,7 +148,7 @@
     show_single_value_title: false
     show_comparison: false
     listen:
-      fiscal_period: balance_sheet.select_fiscal_period
+      fiscal_period: balance_sheet.parameter_fiscal_period
       target_currency: balance_sheet.target_currency_tcurr
       hierarchy: balance_sheet.hierarchy_name
       chart_of_accounts: balance_sheet.chart_of_accounts
