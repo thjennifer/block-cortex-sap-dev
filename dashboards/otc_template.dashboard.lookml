@@ -118,21 +118,6 @@
       options: []
     explore: otc_target_currencies_pdt
     field: otc_target_currencies_pdt.to_currency_tcurr
-
-  # the other field filters need {{ _user_attributes['cortex_sap_default_language_key'] }} to display properly (parameter won't work)
-  # if include this parameter and selected value differs from user attribute then applied filters may cause 0 rows
-  # - name: language_key_spras
-  #   title: Language
-  #   type: field_filter
-  #   default_value: "{{ _user_attributes['cortex_sap_default_language_key'] }}"
-  #   allow_multiple_values: false
-  #   required: false
-  #   ui_config:
-  #     type: dropdown_menu
-  #     display: inline
-  #     options: []
-  #   explore: otc_languages_pdt
-  #   field: otc_languages_pdt.language_spras
 #####################################################################################################
   elements:
     - name: dashboard_navigation

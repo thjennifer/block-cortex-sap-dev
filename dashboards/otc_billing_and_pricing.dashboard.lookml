@@ -30,8 +30,10 @@
 #####################################################################################################
   elements:
     - name: dashboard_navigation
+      explore: billing
       filters:
-        otc_dashboard_navigation_ext.parameter_navigation_focus_page: '4'
+        otc_dashboard_navigation_ext.parameter_navigation_focus_page: '1'
+        otc_dashboard_navigation_ext.parameter_navigation_subject: 'billing'
 #####################################################################################################
     - name: invoice_count
       title: Total Invoice Count
