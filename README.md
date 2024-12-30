@@ -72,28 +72,36 @@ Forking the repository gives you the greatest flexibility to edit and customize 
 To install Looker blocks by forking the repository, follow these steps:
 
 1. **Fork the GitHub repository**:
-   a. Navigate to the GitHub repository of this block:
+
+   a. Navigate to the GitHub repository of this block.
+   
    b. Click **Fork** in the top-right corner of the repository.
+   
    c. Create a fork with your username. This creates a copy of the repository in your GitHub account.
 
-2. **Create a blank LookML project**:
+3. **Create a blank LookML project**:
+   
    a. Verify that you are in [Development Mode](https://cloud.google.com/looker/docs/dev-mode-prod-mode#switching_in_and_out_of_development_mode).
+   
    b. Select **Manage LookML Projects** from the **Develop** menu.
+   
    c. From the **LookML Projects** page, select **New LookML Project** to open the **New Project** page.
+   
    d. On the **New Project** page, specify the options for your project:
       - **Project Name**: Give your project a name. Choose the project name carefully and consider it a permanent ID for the project, since Looker uses the project name for unique identification in different processes.
       - **Starting Point**: Choose Blank Project.
+   
    e. Select Create Project. Looker creates the project and opens it in the [Looker IDE](https://cloud.google.com/looker/docs/looker-ide).
 
    For more information, see the original Looker documentation for [Creating a blank project](https://cloud.google.com/looker/docs/create-projects#creating_a_blank_project).
 
-3. **Connect the new LookML project to the forked repository**: Follow the steps in the Looker documentation, [Setting up and testing a Git connection](https://cloud.google.com/looker/docs/setting-up-git-connection).
+5. **Connect the new LookML project to the forked repository**: Follow the steps in the Looker documentation, [Setting up and testing a Git connection](https://cloud.google.com/looker/docs/setting-up-git-connection).
 
-4. **Update the values of constants in the manifest.lkml file**:
+6. **Update the values of constants in the manifest.lkml file**:
    a. Open the `manifest.lkml` file in your forked repository in Looker.
    b. Locate the constants section and update the values as described in the Required parameters section.
 
-5. **Commit and deploy changes to production.** With the Looker project based on your forked repository, you can customize the LookML to fit your unique business needs. Follow the steps in [Getting your changes to production](https://cloud.google.com/looker/docs/version-control-and-deploying-changes#getting_your_changes_to_production).
+7. **Commit and deploy changes to production.** With the Looker project based on your forked repository, you can customize the LookML to fit your unique business needs. Follow the steps in [Getting your changes to production](https://cloud.google.com/looker/docs/version-control-and-deploying-changes#getting_your_changes_to_production).
 
 With the Looker project based on your forked repository, you can customize the LookML to fit your unique business needs.
 
@@ -119,10 +127,11 @@ Some dashboards require Looker [user attributes](https://cloud.google.com/looker
 
 For this Looker Block for SAP, a Looker Administrator should create the following user attributes and set the values **exactly** as follows:
 
+
 | **Required User Attribute Name** | **Label**                            | **Description** | **Default Value** |
-|----------------------------------|--------------------------------------|---------------|-----------------|----------------|-------------------|
+|----------------------------------|--------------------------------------|---------------|-----------------|
 | cortex_sap_default_target_currency  | Cortex SAP: Default Target Currency  | Impacts the default target currency to display in dashboards. The provided dashboards allow users to switch currencies. | **USD** or desired currency like EUR, CAD or JPY |
-| cortex_default_language_key                  | Cortex SAP: Default SAP Language Key | Manages the language displayed for descriptions such as customer name, distribution channel names, and product name. | Enter the desired SAP language key or **E** for English if using the provided test data |
+| cortex_default_language_key | Cortex SAP: Default SAP Language Key | Manages the language displayed for descriptions such as customer name, distribution channel names, and product name. | Enter the desired SAP language key or **E** for English if using the provided test data |
 | cortex_use_test_data | Cortex SAP: Use Test Data (Yes or No) | If set to **Yes**, current date is replaced with November 20, 2023 for calculations. This ensures accurate calculations for dimensions like age of receivables. | Enter **Yes** if using Cortex Framework test data. Otherwise, enter **No**. |
 | cortex_sap_show_original_sap_field_name | Cortex SAP: Show original SAP field name in label (Yes or No) | If set to **Yes**, the original SAP code like MANDT or VBELN will be shown in the field label when the constant label_sap_field_name is used. | Enter preferred value, either **Yes** or **No**. |
 
