@@ -1,9 +1,8 @@
 connection: "@{CONNECTION_NAME}"
 
 include: "/components/**/*.lkml"
-include: "/explores/*.explore"
-include: "/dashboards/*.dashboard"
-include: "/dashboards/finance/*.dashboard"
+include: "/explores/**/*.explore"
+include: "/dashboards/**/*.dashboard"
 
 label: "Cortex SAP Operational v2"
 
