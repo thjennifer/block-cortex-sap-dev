@@ -52,8 +52,6 @@
     ui_config:
       type: advanced
       display: popover
-    # explore: customers_md
-    # field: customers_md.customer_name
     explore: countries_md
     field: customers_md.customer_name
     listens_to_filters: [customer_country]
@@ -79,7 +77,7 @@
     ui_config:
       type: checkboxes
       display: popover
-    explore: sales_orders_v2
+    explore: distribution_channels_md
     field: distribution_channels_md.distribution_channel_name_vtext
 
   - name: division

@@ -1,4 +1,21 @@
-# Includes join to Sales Orders to limit to only countries of customers found in that table
+#########################################################{
+# PURPOSE
+# Provides list of customers and countries found in sales_orders_v2.
+# Hidden as only used as source for otc dashboard filters
+# customer_name and customer_country.
+#
+# SOURCES
+# See the "include: " statements below for specifc sources
+#
+# REFERENCED BY
+#   LookML dashboards:
+#     otc_template
+#
+# NOTES
+#   - sql_always_where to limit to single Client MANDT based on CLIENT_ID constant set in manifest file
+#   - sql_always_where to limit to single Language based on user_language constant set in manifest file
+#   - always_join to limit to only those customers and countries found for customers in sales_orders_v2
+#########################################################}
 
 include: "/views/core/countries_md_rfn.view"
 include: "/views/core/sales_orders_v2_rfn.view"
@@ -6,6 +23,7 @@ include: "/views/core/customers_md_rfn.view"
 
 explore: countries_md {
   label: "Countries"
+  hidden: yes
   sql_always_where: ${client_mandt} = '@{CLIENT_ID}' AND ${language_spras} = @{user_language};;
   always_join: [sales_orders_v2]
 

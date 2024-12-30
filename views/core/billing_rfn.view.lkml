@@ -1,3 +1,28 @@
+#########################################################{
+# PURPOSE
+# Provides Billing details
+#
+# SOURCES
+# Refines view billing
+# References that must also be included in the same Explore:
+#    currency_conversion_sdt
+#    customers_md_rfn
+#    materials_md_rfn
+#    divisions_md_rfn
+#
+# REFERENCED BY
+# Explore billing
+#
+#
+# NOTES
+#   - Fields are hidden by default so must change "hidden" property to "no" to include field in an Explore.
+#   - This refinement view only includes fields added or edited. Full list of fields available are found in the base view.
+#   - Header-level dimensions and measures shown in Explore under view label Billing.
+#   - Item-level dimensions and measures shown in Explore under view label Billing Items.
+#   - Includes fields which reference other views as outlined above in SOURCES.
+#
+#########################################################}
+
 include: "/views/base/billing.view"
 
 view: +billing {
@@ -10,8 +35,13 @@ view: +billing {
     sql: CONCAT(${client_mandt},${billing_document_vbeln},${billing_item_posnr});;
   }
 
+
+#########################################################
+# DIMENSIONS: Billing Document Attributes
+#{
+
   dimension: client_mandt {
-    hidden: no
+    hidden: yes
     label: "@{label_field_name}"
   }
 
@@ -39,25 +69,10 @@ view: +billing {
   }
 
   dimension: accounting_document_number_belnr {
-    hidden: no
+    hidden: yes
     label: "@{label_field_name}"
   }
 
-  dimension_group: billing_date_fkdat {
-    hidden: no
-    label: "Billing"
-  }
-
-  dimension: fiscal_year_gjahr {
-    hidden: no
-    label: "@{label_field_name}"
-  }
-
-
-
-#########################################################
-# DIMENSIONS: Billing Document Attributes
-#{
   dimension: sales_organization_vkorg {
     hidden: no
     label: "@{label_field_name}"
@@ -86,6 +101,23 @@ view: +billing {
 
 
 #} end billing document attributes
+
+#########################################################
+# DIMENSIONS: Dates
+#{
+  dimension_group: billing_date_fkdat {
+    hidden: no
+    label: "Billing"
+  }
+
+  dimension: fiscal_year_gjahr {
+    hidden: no
+    label: "@{label_field_name}"
+  }
+
+
+#} end date dimensions
+
 
 #########################################################
 # DIMENSIONS: Customer
@@ -181,24 +213,6 @@ view: +billing {
   }
 
 
-  # dimension: product_hierarchy_prodh {
-  #   hidden: no
-  #   view_label: "Sales Orders Items"
-  #   label: "@{label_field_name}"
-  # }
-
-  # dimension: item_category_pstyv {
-  #   hidden: no
-  #   view_label: "Sales Orders Items"
-  #   label: "@{label_field_name}"
-  # }
-
-  # dimension: item_type_posar {
-  #   hidden: no
-  #   view_label: "Sales Orders Items"
-  #   label: "@{label_field_name}"
-  # }
-
 #} end item attributes
 
 #########################################################
@@ -237,6 +251,7 @@ view: +billing {
 
   dimension: tax_amount_target_currency {
     hidden: no
+    type: number
     view_label: "Billing Items"
     label: "Item Tax Amount (Target Currency)"
     description: "Tax amount applied for item in target currency (MWSBK)"
@@ -251,7 +266,9 @@ view: +billing {
 
 #} end item amount dimensions
 
-
+#########################################################
+# MEASURES: Counts
+#{
   measure: invoice_count {
     hidden: no
     type: count_distinct
@@ -281,7 +298,11 @@ view: +billing {
   measure: invoice_line_count {
     hidden: no
     type: count
+    view_label: "Billing Items"
   }
+
+#} end count measures
+
 
 #########################################################
 # MEASURES: Amounts
@@ -333,7 +354,7 @@ view: +billing {
     }
   }
 
-  measure: total_billed_amount_in_source_currency {
+  measure: total_tax_amount_in_source_currency {
     hidden: no
     type: sum
     view_label: "Billing Items"
