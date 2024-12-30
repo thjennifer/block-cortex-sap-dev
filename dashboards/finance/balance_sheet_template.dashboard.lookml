@@ -90,7 +90,7 @@
   - name: chart_of_accounts
     title: Chart of Accounts
     type: field_filter
-    default_value: "{% if _user_attributes['cortex_sap_sql_flavor']=='S4' %}{% assign coa = 'YCOA'%}{%elsif _user_attributes['cortex_sap_sql_flavor']=='ECC'%}{% assign coa = 'CA01' %}{%else%}{%assign coa = 'something else'%}{% endif %}{{coa}}"
+    default_value: 'CA01'
     allow_multiple_values: false
     required: true
     ui_config:
