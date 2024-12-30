@@ -43,11 +43,12 @@
     listen:
       date: sales_orders_v2.creation_date_erdat_date
       customer_country: countries_md.country_name_landx
+      customer_name: sales_orders_v2.customer_name
       sales_org: sales_organizations_md.sales_org_name_vtext
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
-      product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      customer_name: customers_md.customer_name
+      product: sales_orders_v2.material_text_maktx
+      # target_currency: otc_common_parameters_xvw.parameter_target_currency
     note_state: collapsed
     note_display: hover
     note_text: "The percentage of sales orders delivered completely (for all line items)."

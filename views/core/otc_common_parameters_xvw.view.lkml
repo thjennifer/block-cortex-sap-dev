@@ -51,15 +51,12 @@ view: otc_common_parameters_xvw {
     default_value: "M"
   }
 
-
-  # parameter: parameter_language_key_spras {
+  # filter: filter_date {
   #   hidden: no
-  #   type: string
-  #   label: "SAP Language Key@{label_append_sap_code}"
-  #   description: "Select SAP language key to display for descriptions. Default is 'E'"
-  #   suggest_explore: otc_languages_pdt
-  #   suggest_dimension: otc_languages_pdt.language_spras
-  #   # default_value: "E"
+  #   view_label: "@{label_view_for_filters}"
+  #   type: date
+  #   # for tables partitioned by date capture start and end dates and apply as a templated filter
+  #   # in the Explore's sql_always_where statement or SQL-based derived table
   # }
 
 

@@ -1,10 +1,12 @@
-######################
-# derives list of sold_to, ship_to and bill_to customers for an Order Item
-# and denormalizes
+#########################################################{
+# PURPOSE
+# SQL-based derived table that aggregates a list of sold to, bill to and ship to customers
+# for an order and line item (because an order item can be associated with multiple customers)
 #
-# once finished testing REPLACE references to partner_function_tmp.SQL_TABLE_NAME
-#  with `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.SalesOrderPartnerFunction`
-######################
+# REFERENCED BY
+# None
+#
+#########################################################}
 
 view: sales_order_item_partner_function_sdt {
 
@@ -35,17 +37,17 @@ view: sales_order_item_partner_function_sdt {
             ARRAY_AGG(DISTINCT pf.Customer_KUNNR) AS array_customer_kunnr,
             ARRAY_AGG(DISTINCT COALESCE(c.name1_name1,pf.Customer_KUNNR)) AS array_customer_name
           FROM
-            ${partner_function_tmp.SQL_TABLE_NAME} pf
+            `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.SalesOrderPartnerFunction` pf
           JOIN
             `@{GCP_PROJECT_ID}.@{REPORTING_DATASET}.CustomersMD` c
           ON
             pf.Client_MANDT = c.client_MANDT
             AND pf.Customer_KUNNR = c.CustomerNumber_KUNNR
           GROUP BY
-            1,
-            2,
-            3,
-            4 ) t ) c PIVOT(MAX(customer_names) customer_names FOR PartnerFunction_Label IN ('sold_to',
+            pf.client_MANDT,
+            pf.SalesDocument_VBELN,
+            pf.Item_POSNR,
+            PartnerFunction_PARVW ) t ) c PIVOT(MAX(customer_names) customer_names FOR PartnerFunction_Label IN ('sold_to',
             'bill_to',
             'ship_to'))
       ;;
@@ -75,22 +77,22 @@ view: sales_order_item_partner_function_sdt {
   dimension: customer_names_sold_to {
     hidden: no
     type: string
-    label: "Sold To"
-    sql: coalesce(${TABLE}.customer_names_sold_to,${sales_order_partner_function_sdt.customer_names_sold_to}) ;;
+    label: "Sold To Customer Names"
+    sql: COALESCE(${TABLE}.customer_names_sold_to,${sales_order_partner_function_sdt.customer_names_sold_to}) ;;
   }
 
   dimension: customer_names_bill_to {
     hidden: no
     type: string
-    label: "Bill To"
-    sql: coalesce(${TABLE}.customer_names_bill_to,${sales_order_partner_function_sdt.customer_names_bill_to}) ;;
+    label: "Bill To Customer Names"
+    sql: COALESCE(${TABLE}.customer_names_bill_to,${sales_order_partner_function_sdt.customer_names_bill_to}) ;;
   }
 
   dimension: customer_names_ship_to {
     hidden: no
     type: string
-    label: "Ship To"
-    sql: coalesce(${TABLE}.customer_names_ship_to,${sales_order_partner_function_sdt.customer_names_ship_to}) ;;
+    label: "Ship To Customer Names"
+    sql: COALESCE(${TABLE}.customer_names_ship_to,${sales_order_partner_function_sdt.customer_names_ship_to}) ;;
   }
 
 

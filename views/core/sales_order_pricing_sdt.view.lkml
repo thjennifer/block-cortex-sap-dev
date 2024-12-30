@@ -1,3 +1,20 @@
+#########################################################{
+# PURPOSE
+# SQL-based derived table that replaces the SalesOrderPricing view
+# found in the Reporting Layer in order to correct for IntercompanyPrice
+# logic
+#
+# Generates Adjusted, List and Intercompany Prices and Discount Amount
+#
+# REFERENCED BY
+# Explore billing
+#
+# NOTES
+#   - Fields are hidden by default so must change "hidden" property to "no" to include field in an Explore.
+#   - Fields are shown in Billing Explore as part of Billing Items
+#
+#########################################################}
+
 # Replaces view SalesOrderPricing found in reporting later to correct IntercompanyPrice logic
 view: sales_order_pricing_sdt {
 
@@ -105,15 +122,19 @@ view: sales_order_pricing_sdt {
 #}
 
   dimension: list_price {
+    hidden: no
     type: number
+    group_label: "Item Prices & Discounts"
     label: "List Price (Source Currency)"
     description: "Standard price at which product is typically sold (Source Currency)"
     sql: ${TABLE}.ListPrice ;;
+    value_format_name: decimal_2
   }
 
   dimension: list_price_target_currency {
     hidden: no
     type: number
+    group_label: "Item Prices & Discounts"
     label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     description: "Standard price at which product is typically sold (Target Currency)"
     sql: ${list_price} * ${exchange_rate_ukurs} ;;
@@ -121,20 +142,26 @@ view: sales_order_pricing_sdt {
   }
 
   dimension: adjusted_price {
+    hidden: no
     type: number
+    group_label: "Item Prices & Discounts"
+    label: "Adjusted Price (Source Currency)"
     description: "Price after applying discounts, rebates and/or promotions (Local Currency)"
     sql: ${TABLE}.AdjustedPrice ;;
+    value_format_name: decimal_2
   }
 
   dimension: is_adjusted_price {
     hidden: no
     type: yesno
+    group_label: "Item Prices & Discounts"
     sql: ${adjusted_price} <> 0 ;;
   }
 
   dimension: adjusted_price_target_currency {
     hidden: no
     type: number
+    group_label: "Item Prices & Discounts"
     label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     description: "Price after applying discounts, rebates and/or promotions (Target Currency)"
     sql: ${adjusted_price} * ${exchange_rate_ukurs} ;;
@@ -152,7 +179,9 @@ view: sales_order_pricing_sdt {
   }
 
   dimension: intercompany_price {
+    hidden: no
     type: number
+    group_label: "Item Prices & Discounts"
     label: "Intercompany Price (Source Currency)"
     description: "Price at which goods are transferred between different company codes (Source Currency)"
     sql: ${TABLE}.IntercompanyPrice ;;
@@ -162,12 +191,14 @@ view: sales_order_pricing_sdt {
   dimension: is_intercompany_price {
     hidden: no
     type: yesno
+    group_label: "Item Prices & Discounts"
     sql: ${intercompany_price} <> 0 ;;
   }
 
   dimension: intercompany_price_target_currency {
     hidden: no
     type: number
+    group_label: "Item Prices & Discounts"
     label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     description: "Price at which goods are transferred between different company codes (Target Currency)"
     sql: ${intercompany_price} * ${exchange_rate_ukurs} ;;
@@ -185,8 +216,10 @@ view: sales_order_pricing_sdt {
   }
 
   dimension: discount_amount {
+    hidden: no
     type: number
-    label: "Discount Amount"
+    group_label: "Item Prices & Discounts"
+    label: "Discount Amount (Source Currency)"
     description: "Discount amount taken off of list price (Source Currency)"
     sql: ${TABLE}.DiscountAmount ;;
     value_format_name: decimal_2
@@ -195,6 +228,7 @@ view: sales_order_pricing_sdt {
   dimension: discount_amount_target_currency {
     hidden: no
     type: number
+    group_label: "Item Prices & Discounts"
     label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     description: "Discount amount taken off of list price (Target Currency)"
     sql: ${discount_amount} * ${exchange_rate_ukurs} ;;
@@ -203,12 +237,14 @@ view: sales_order_pricing_sdt {
 
   dimension: is_discount {
     type: yesno
+    group_label: "Item Prices & Discounts"
     sql: ${discount_amount} <> 0 ;;
   }
 
   measure: average_list_price_target_currency {
     hidden: no
     type: average
+    group_label: "Prices & Discounts"
     label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     sql: ${list_price_target_currency} ;;
     value_format_name: decimal_0
@@ -247,6 +283,7 @@ view: sales_order_pricing_sdt {
   measure: average_adjusted_price_target_currency {
     hidden: no
     type: average
+    group_label: "Prices & Discounts"
     label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     sql: ${adjusted_price_target_currency} ;;
     value_format_name: decimal_0
@@ -282,6 +319,7 @@ view: sales_order_pricing_sdt {
   measure: difference_list_and_adjusted_price_target_currency {
     hidden: no
     type: number
+    group_label: "Prices & Discounts"
     label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     description: "Difference between average list price and average adjusted price in target currency"
     sql: ${average_list_price_target_currency} - ${average_adjusted_price_target_currency};;
@@ -300,6 +338,7 @@ view: sales_order_pricing_sdt {
   measure: average_intercompany_price_target_currency {
     hidden: no
     type: average
+    group_label: "Prices & Discounts"
     label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     sql: ${intercompany_price_target_currency} ;;
     value_format_name: decimal_0
@@ -335,6 +374,7 @@ view: sales_order_pricing_sdt {
   measure: difference_list_and_intercompany_price_target_currency {
     hidden: no
     type: number
+    group_label: "Prices & Discounts"
     label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     description: "Difference between average list price and average intercompany price in target currency"
     sql: ${average_list_price_target_currency} - ${average_intercompany_price_target_currency};;
@@ -344,6 +384,7 @@ view: sales_order_pricing_sdt {
   measure: absolute_difference_list_and_intercompany_price_target_currency {
     hidden: yes
     type: number
+    group_label: "Prices & Discounts"
     label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     description: "Absolute value of difference between average list price and average intercompany price"
     sql: ABS(${difference_list_and_intercompany_price_target_currency});;
@@ -353,6 +394,7 @@ view: sales_order_pricing_sdt {
   measure: total_discount_amount_target_currency {
     hidden: no
     type: sum
+    group_label: "Prices & Discounts"
     label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     description: "Sum of Condition Value (KWERT) when Condition Class (KOAID) = 'A'. Value reported as a positive value"
     sql: ${discount_amount_target_currency} * -1 ;;
@@ -362,6 +404,7 @@ view: sales_order_pricing_sdt {
   measure: total_discount_amount_target_currency_formatted {
     hidden: no
     type: number
+    group_label: "Prices & Discounts"
     label: "@{label_currency_defaults}{%- assign add_formatted = true  -%}@{label_currency_field_name}@{label_currency_if_selected}"
     description: "Sum of Condition Value (KWERT) when Condition Class (KOAID) = 'A'. Value reported as a positive value and formatted for large numbers"
     sql: ${total_discount_amount_target_currency} ;;

@@ -128,14 +128,14 @@
              sales_orders_v2.material_text_maktx,
              across_sales_and_billing_summary_xvw.order_status_with_symbols,
              deliveries.is_blocked_with_symbols,
-             sales_order_item_partner_function_sdt.customer_names_sold_to,
-             sales_order_item_partner_function_sdt.customer_names_ship_to,
-             sales_order_item_partner_function_sdt.customer_names_bill_to,
+             sales_order_partner_function_sdt.customer_names_sold_to,
+             sales_order_partner_function_sdt.customer_names_ship_to,
+             sales_order_partner_function_sdt.customer_names_bill_to,
              sales_orders_v2.creation_date_erdat_date,
              sales_orders_v2.requested_delivery_date_vdatu_date,
              sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat,
              sales_orders_v2.base_unit_of_measure_meins,
-             sales_orders_v2.item_ordered_quantity_kwmeng,
+             sales_orders_v2.ordered_quantity_kwmeng,
              sales_order_item_delivery_summary_ndt.item_delivered_quantity,
              sales_orders_v2.item_ordered_amount,
              sales_orders_v2.currency_hdr_waerk,
@@ -184,7 +184,7 @@
       sales_orders_v2.requested_delivery_date_vdatu_date: 100
       sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_podat: 100
       sales_orders_v2.base_unit_of_measure_meins: 75
-      sales_orders_v2.item_ordered_quantity_kwmeng: 100
+      sales_orders_v2.ordered_quantity_kwmeng: 100
       sales_order_item_delivery_summary_ndt.item_delivered_quantity: 100
       sales_orders_v2.currency_hdr_waerk: 75
       sales_orders_v2.target_currency: 75
@@ -196,7 +196,7 @@
         align: center
       deliveries.is_blocked_with_symbols:
         align: center
-      sales_orders_v2.item_ordered_quantity_kwmeng:
+      sales_orders_v2.ordered_quantity_kwmeng:
         align: right
       sales_order_item_delivery_summary_ndt.item_delivered_quantity:
         align: right
@@ -223,7 +223,7 @@
       distribution_channel: distribution_channels_md.distribution_channel_name_vtext
       product: sales_orders_v2.material_text_maktx
       division: sales_orders_v2.division_name_vtext
-      customer_name: customers_md.customer_name
+      customer_name: sales_orders_v2.customer_name
       target_currency: otc_common_parameters_xvw.parameter_target_currency
       order_status: across_sales_and_billing_summary_xvw.order_status
       is_blocked: deliveries.is_blocked

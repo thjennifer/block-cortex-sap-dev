@@ -2,20 +2,25 @@
 # PURPOSE
 # provides Sales Order Line Items (both Header and Line Items)
 #
-# SOURCE
+# SOURCES
 # Refines view sales_orders_v2
+# References that must also be included in the same Explore:
+#    currency_conversion_sdt
+#    customers_md_rfn
+#    materials_md_rfn
+#    divisions_md_rfn
 #
 # REFERENCED BY
 # Explore sales_orders_v2
 #
-# DERIVED DIMENSIONS
-# creation_timestamp
 #
-# KEYS TO USING
-#   - Fields are hidden by default so must change "hidden" property to "no" to include field in an Explore
-#   - This refinement view only includes fields added or edited. Full list of fields available are found in the base view
-#   - Header-level dimensions and measures shown in Explore under view Label Sales Orders
-#   - Item-level dimensions and measures shown in Explore under view label Sales Orders Items
+# NOTES
+#   - Fields are hidden by default so must change "hidden" property to "no" to include field in an Explore.
+#   - This refinement view only includes fields added or edited. Full list of fields available are found in the base view.
+#   - Header-level dimensions and measures shown in Explore under view label Sales Orders.
+#   - Item-level dimensions and measures shown in Explore under view label Sales Orders Items.
+#   - Includes fields which reference other views as outlined above in SOURCES.
+#   - This view includes both Orders and Returns. Use document_category_vbtyp to pick which type to include.
 #
 #########################################################}
 
@@ -35,7 +40,7 @@ view: +sales_orders_v2 {
 #########################################################
 # PARAMETERS & FILTERS
 #{
-# parameter_display_product_level to show either Item or Categories in visualization
+# parameter_display_product_level to show either Item or Sales Divisions in visualization
 #    used in dimensions selected_product_dimension_id and selected_product_dimension_description
 
   parameter: parameter_display_product_level {
@@ -47,14 +52,6 @@ view: +sales_orders_v2 {
     allowed_value: {label: "Division" value: "Division"}
     allowed_value: {label: "Item" value: "Item"}
     default_value: "Item"
-  }
-
-  filter: date_filter {
-    hidden: no
-    view_label: "@{label_view_for_filters}"
-    type: date
-    # for tables partitioned by date capture start and end dates and apply as a templated filter
-    # in the Explore's sql_always_where statement
   }
 
 #} end parameters & filters
@@ -119,7 +116,7 @@ view: +sales_orders_v2 {
 
   dimension: sold_to_party_kunnr {
     hidden: no
-    label: "@{label_field_name}"
+    label: "Sold to Party ID@{label_append_sap_code}"
   }
 
 #--> cross references customers_md
@@ -166,7 +163,7 @@ view: +sales_orders_v2 {
     hidden: no
     label: "Order"
     description: "Sales Order Creation Date ERDAT"
-    sql: ${TABLE}.CreationDate_ERDAT ;;
+    timeframes: [raw, date, week, week_of_year, month, quarter, year]
   }
 
   dimension: day_of_sales_order_creation_date_erdat {
@@ -174,13 +171,6 @@ view: +sales_orders_v2 {
     group_label: "Order Date"
     group_item_label: "Day of Month"
     description: "Day of month of sales order creation date ERDAT"
-  }
-
-  dimension: week_of_sales_order_creation_date_erdat {
-    hidden: no
-    group_label: "Order Date"
-    group_item_label: "Week Number"
-    description: "Week number of sales order creation date ERDAT"
   }
 
   dimension: month_of_sales_order_creation_date_erdat {
@@ -213,21 +203,27 @@ view: +sales_orders_v2 {
   }
 
   dimension: creation_time_erzet {
-    hidden: no
+    hidden: yes
     group_label: "Order Date"
     group_item_label: "Time"
     sql: FORMAT_TIME('%H:%M:%S',${TABLE}.CreationTime_ERZET) ;;
   }
 
   dimension: creation_timestamp {
-    hidden: yes
+    hidden: no
+    type: date_time
+    group_label: "Order Date"
+    group_item_label: "Time"
+    description: "Sales Order Creation Date & Time"
     sql: TIMESTAMP(CONCAT(${creation_date_erdat_raw},' ',${creation_time_erzet})) ;;
+    convert_tz: no
   }
 
   dimension_group: requested_delivery_date_vdatu {
     hidden: no
     label: "Requested Delivery"
     description: "Requested Delivery Date VDATU"
+    timeframes: [raw, date, week, week_of_year, month, quarter, year]
   }
 
   dimension: day_of_requested_delivery_date_vdatu {
@@ -235,13 +231,6 @@ view: +sales_orders_v2 {
     group_label: "Requested Delivery Date"
     group_item_label: "Day of Month"
     description: "Day of month of requested delivery date VDATU"
-  }
-
-  dimension: week_of_requested_delivery_date_vdatu {
-    hidden: no
-    group_label: "Requested Delivery Date"
-    group_item_label: "Week Number"
-    description: "Week number of requested delivery date VDATU"
   }
 
   dimension: month_of_requested_delivery_date_vdatu {
@@ -349,11 +338,6 @@ view: +sales_orders_v2 {
     label: "@{label_field_name}"
   }
 
-  dimension: item_type_posar {
-    hidden: no
-    view_label: "Sales Orders Items"
-    label: "@{label_field_name}"
-  }
 
 #} end item attributes
 
@@ -385,10 +369,13 @@ view: +sales_orders_v2 {
   #   label: "Item Ordered Quantity@{label_append_sap_code}"
   # }
 
-  dimension: item_ordered_quantity_kwmeng {
+  dimension: ordered_quantity_kwmeng {
     hidden: no
+    type: number
     view_label: "Sales Orders Items"
+    group_label: "Item Quantities"
     label: "@{label_field_name}"
+    description: "Ordered quantity of item in sale unit of measure (KWMENG)"
     sql: ${cumulative_order_quantity_kwmeng} ;;
     value_format_name: decimal_0
   }
@@ -396,20 +383,33 @@ view: +sales_orders_v2 {
   dimension: cumulative_confirmed_quantity_kbmeng {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "Item Confirmed Quantity@{label_append_sap_code}"
-    description: "Confirmed Quantity of Item in Sale Unit of Measure"
+    group_label: "Item Quantities"
+    label: "Confirmed Quantity@{label_append_sap_code}"
+    description: "Cumulative confirmed quantity of item in sale unit of measure (KBMENG)"
+  }
+
+  dimension: cumulative_confirmed_quantity_klmeng {
+    hidden: no
+    type: number
+    view_label: "Sales Orders Items"
+    group_label: "Item Quantities"
+    label: "Confirmed Quantity (Base Units)@{label_append_sap_code}"
+    description: "Cumulative confirmed quantity of item in base unit of measure (KLMENG)"
+    sql: ${cumulative_confirmed_quantity_in_base_uo_m_klmeng} ;;
   }
 
   dimension: base_unit_of_measure_meins {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "Base UoM"
+    group_label: "Item Quantities"
+    label: "Base UoM@{label_append_sap_code}"
     description: "Base Unit of Measure (MEINS)"
   }
 
   dimension: sales_unit_vrkme {
     hidden: no
     view_label: "Sales Orders Items"
+    group_label: "Item Quantities"
     label: "@{label_field_name}"
     }
 
@@ -422,6 +422,7 @@ view: +sales_orders_v2 {
   dimension: net_price_netpr {
     hidden: no
     view_label: "Sales Orders Items"
+    group_label: "Item Prices & Discounts"
     label: "Item Price (Source Currency)@{label_append_sap_code}"
     description: "Net Price of Item (Source Currency)"
     value_format_name: decimal_2
@@ -431,6 +432,7 @@ view: +sales_orders_v2 {
     hidden: no
     type: number
     view_label: "Sales Orders Items"
+    group_label: "Item Prices & Discounts"
     label: "Item Price (Target Currency)@{label_append_sap_code}"
     description: "Net Price of Item (Target Currency)"
     sql: ${sales_orders_v2.net_price_netpr} * ${currency_conversion_sdt.exchange_rate_ukurs} ;;
@@ -441,7 +443,8 @@ view: +sales_orders_v2 {
     hidden: no
     type: number
     view_label: "Sales Orders Items"
-    label: "Item Ordered Amount (Source Currency)"
+    group_label: "Item Amounts"
+    label: "Ordered Amount (Source Currency)"
     description: "Item Qty * Net Price (Source Currency)"
     sql: ${sales_order_value_line_item_source_currency} ;;
     value_format_name: decimal_2
@@ -451,8 +454,9 @@ view: +sales_orders_v2 {
     hidden: no
     type: number
     view_label: "Sales Orders Items"
-    label: "Item Ordered Amount (Target Currency)"
-    # label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
+    group_label: "Item Amounts"
+    # label: "Item Ordered Amount (Target Currency)"
+    label: "@{label_currency_defaults}{%- assign field_name = 'Ordered Amount' -%}@{label_currency_if_selected}"
     description: "Item Quantity * Net Price (Target Currency)"
     sql:  ${item_net_price_target_currency_netpr} * ${cumulative_order_quantity_kwmeng};;
     value_format_name: decimal_2
@@ -470,14 +474,6 @@ view: +sales_orders_v2 {
     view_label: "Sales Orders Items"
     description: "Count of order lines"
     }
-
-  measure: cancelled_order_line_count {
-    hidden: no
-    type: count
-    view_label: "Sales Orders Items"
-    description: "Count of order items that have been cancelled"
-    filters: [is_item_cancelled: "Yes"]
-  }
 
   measure: order_count {
     hidden: no
@@ -521,7 +517,7 @@ view: +sales_orders_v2 {
     hidden: no
     type: number
     description: "Percent of orders with at least 1 item cancelled"
-    sql: safe_divide(${cancelled_order_count}, ${order_count});;
+    sql: SAFE_DIVIDE(${cancelled_order_count}, ${order_count});;
     value_format_name: percent_1
   }
 
@@ -633,7 +629,7 @@ view: +sales_orders_v2 {
   measure: cumulative_sales_amount_target_currency {
     hidden: no
     type: running_total
-    group_label: "Sales Orders Items"
+    view_label: "Sales Orders Items"
     label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
     description: "Cumulative sum of sales amount in target currency"
     sql: ${total_sales_amount_target_currency} ;;
@@ -644,10 +640,10 @@ view: +sales_orders_v2 {
   measure: average_ordered_amount_per_order_target_currency {
     hidden: no
     type: number
-    group_label: "Amounts"
+    view_label: "Sales Orders"
     label: "@{label_currency_defaults}{%- assign field_name = 'Average Amount per Order' -%}@{label_currency_if_selected}"
     description: "Average amount per order in target currency"
-    sql: safe_divide(${total_ordered_amount_target_currency},${sales_orders_v2.order_count});;
+    sql: SAFE_DIVIDE(${total_ordered_amount_target_currency},${order_count});;
     value_format_name: decimal_2
   }
 
@@ -676,6 +672,7 @@ view: +sales_orders_v2 {
     view_label: "Sales Orders Items"
     group_label: "Amounts Formatted as Large Numbers"
     label: "@{label_currency_defaults}{%- assign add_formatted = true -%}@{label_currency_field_name}@{label_currency_if_selected}"
+    description: "Sum of ordered amounts across sales orders (document category VBTYP = 'C') converted to target currency and formatted for large values (e.g., 2.3M or 75.2K)"
     sql: ${total_sales_amount_target_currency} ;;
     value_format_name: format_large_numbers_d1
 #-->  opens modal showing sales by month
@@ -717,7 +714,6 @@ view: +sales_orders_v2 {
     hidden: no
     type: number
     view_label: "Sales Orders"
-    group_label: "Amounts Formatted as Large Numbers"
     label: "@{label_currency_defaults}{%- assign add_formatted = true -%}{%- assign field_name = 'Average Amount per Order' -%}@{label_currency_if_selected}"
     description: "Average amount per order in target currency and formatted for large values (e.g., 2.3M or 75.2K)"
     # label: "@{label_currency}Average Sales per Order ({{currency}}) Formatted"
@@ -759,21 +755,20 @@ view: +sales_orders_v2 {
 #{
   measure: percent_of_total_sales_amount_target_currency {
     hidden: no
-    view_label: "Sales Orders"
-    label: "Percent of Total Sales (Target Currency)"
     type: percent_of_total
+    view_label: "Sales Orders Items"
+    label: "Percent of Total Sales (Target Currency)"
     sql: ${total_sales_amount_target_currency} ;;
-    # sql_distinct_key: ${sales_orders_v2.key};;
   }
 
   measure: total_ordered_quantity {
     hidden: no
     type: sum
-    sql: ${item_ordered_quantity_kwmeng} ;;
+    view_label: "Sales Orders Items"
+    sql: ${ordered_quantity_kwmeng} ;;
   }
 
 #} end misc measures
-
 
 #########################################################
 # MEASURES: Helper
@@ -788,24 +783,4 @@ view: +sales_orders_v2 {
 #} end helper measures
 
 
-# link: {
-  #   label: "Show Orders"
-  #   url: "{{ dummy_set_details_sales_performance._link}}"
-  #   # &f[sales_order_item_delivery_summary_ndt.is_order_late]=Yes"
-  # }
-
-  ## dynamic capture of filters with link
-  # link: {
-  #   label: "Open Order Details Dashboard"
-  #   icon_url: "/favicon.ico"
-  #   url: "
-  #   @{link_build_variable_defaults}
-  #   {% assign link = link_generator._link %}
-  #   {% assign filters_mapping = '@{link_map_otc_sales_orders_to_order_details}' | append: '||across_sales_and_billing_summary_xvw.order_status|Order Status||deliveries.is_blocked|Is Blocked' %}
-  #   {% assign target_dashboard = _model._name | append: '::otc_order_details' %}
-  #   @{link_build_dashboard_url}
-  #   "
-  # }
-
-
-  }
+}

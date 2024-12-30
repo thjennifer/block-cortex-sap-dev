@@ -1,22 +1,21 @@
 #########################################################{
 # PURPOSE
-# Aggregate Sales Orders and Deliveries to the Sales Document, Item level and dervies
-# Order-level status for delivery completeness across all items in order
+# Native derived table that aggregates Delivery details to the Sales Document, Item level and derive
+# Order-level delivery status based delivery completeness for all items in order
 #
 # SOURCE
 # Explore sales_orders_v2
+# References that must also be included in the same Explore:
+#    sales_orders_v2
 #
 # REFERENCED BY
 # Explore sales_orders_v2
+# View across_sales_and_billing_summary_xvw
 #
-# DERIVED DIMENSIONS
-# creation_timestamp
-#
-# KEYS TO USING
+# NOTES
 #   - Fields are hidden by default so must change "hidden" property to "no" to include field in an Explore
-#   - This refinement view only includes fields added or edited. Full list of fields available are found in the base view
-#   - Header-level dimensions and measures shown in Explore under view Label Sales Orders
-#   - Item-level dimensions and measures shown in Explore under view label Sales Orders Items
+#   - Fields are shown in sales_orders_v2 explore as part of Sales Orders or Sales Orders Items depending on level of detail
+#   - Includes fields which reference the sales_orders_v2 view.
 #
 #########################################################}
 
@@ -24,7 +23,7 @@ include: "/explores/sales_orders_v2.explore.lkml"
 
 
 view: sales_order_item_delivery_summary_ndt {
-
+  view_label: "Delivery Summary"
   fields_hidden_by_default: yes
 
   derived_table: {
@@ -86,7 +85,7 @@ view: sales_order_item_delivery_summary_ndt {
   dimension: key {
     primary_key: yes
     type: string
-    sql: concat(${client_mandt},${sales_document_vbeln},${item_posnr}) ;;
+    sql: CONCAT(${client_mandt},${sales_document_vbeln},${item_posnr}) ;;
   }
 
 #########################################################
@@ -109,38 +108,38 @@ view: sales_order_item_delivery_summary_ndt {
   }
 
   dimension: creation_timestamp {
-    hidden: no
+    hidden: yes
   }
 
   dimension: is_order_delivered_in_full {
     hidden: no
     type: yesno
-    view_label: "Deliveries"
-    group_label: "Order Status"
-    description: "Delivered Quantity equals Ordered Quantity for all items in order"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
+    group_label: "Order Delivery Status"
+    description: "Delivered quantity equals ordered quantity for all items in order"
     sql: ${TABLE}.is_order_delivered_in_full ;;
   }
 
   dimension: is_order_on_time {
     hidden: no
     type: string
-    view_label: "Deliveries"
-    group_label: "Order Status"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
+    group_label: "Order Delivery Status"
     label: "Is Order On Time (Yes / No)"
     description: "All items in order have been delivered on time (Proof of Delivery before or on Requested Delivery Date)"
     sql: CASE ${TABLE}.is_order_on_time
             WHEN TRUE then 'Yes'
             WHEN FALSE then 'No'
             WHEN NULL then NULL
-        end
+         END
     ;;
   }
 
   dimension: is_order_on_time_and_in_full {
     hidden: no
     type: string
-    view_label: "Deliveries"
-    group_label: "Order Status"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
+    group_label: "Order Delivery Status"
     label: "Is Order On Time & In Full (OTIF) (Yes / No)"
     sql: CASE WHEN ${TABLE}.is_order_on_time is NULL THEN NULL
               WHEN ${TABLE}.is_order_delivered_in_full = TRUE AND ${TABLE}.is_order_on_time = TRUE THEN 'Yes'
@@ -152,23 +151,23 @@ view: sales_order_item_delivery_summary_ndt {
   dimension: is_order_late {
     hidden: no
     type: string
-    view_label: "Deliveries"
-    group_label: "Order Status"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
+    group_label: "Order Delivery Status"
     label: "Is Order Late (Yes / No)"
     description: "At least 1 item in order has been delivered late (Proof of Delivery after Requested Delivery Date)"
     sql: CASE ${TABLE}.is_order_late
             WHEN TRUE THEN 'Yes'
             WHEN FALSE THEN 'No'
             WHEN NULL THEN NULL
-        end
+         END
       ;;
   }
 
   dimension: is_order_delivered {
     hidden: no
     type: yesno
-    view_label: "Deliveries"
-    group_label: "Order Status"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
+    group_label: "Order Delivery Status"
     description: "All items in order have been delivered with valid Proof of Delivery Date"
     sql: ${TABLE}.is_order_delivered ;;
   }
@@ -176,17 +175,17 @@ view: sales_order_item_delivery_summary_ndt {
   dimension: is_order_any_item_delivered {
     hidden: no
     type: yesno
-    view_label: "Deliveries"
-    group_label: "Order Status"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
+    group_label: "Order Delivery Status"
+    label: "Has a Delivered Item"
     description: "At least 1 item in order has been delivered with valid Proof of Delivery Date"
-
     sql: ${TABLE}.is_order_any_item_delivered ;;
   }
 
   dimension: is_order_any_item_cancelled {
     hidden: no
     type: yesno
-    view_label: "Deliveries"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
     group_label: "Order Status"
     description: "At least 1 item in order has been cancelled"
     sql: ${TABLE}.is_order_any_item_cancelled ;;
@@ -195,7 +194,7 @@ view: sales_order_item_delivery_summary_ndt {
   dimension: is_order_cancelled {
     hidden: no
     type: yesno
-    view_label: "Deliveries"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
     group_label: "Order Status"
     description: "All items in order have been cancelled"
     sql: ${TABLE}.is_order_cancelled ;;
@@ -217,14 +216,20 @@ view: sales_order_item_delivery_summary_ndt {
   }
 
   dimension: item_delivered_quantity {
+    hidden: no
     type: number
-    description: "Total quantity delivered for the line item"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "{%- if _explore._name == 'sales_orders_v2' -%}Item Quantities{%- endif -%}"
+    label: "Delivered Quantity"
+    description: "Quantity delivered for the line item"
     value_format_name: decimal_0
   }
 
   dimension: min_delivery_date_lfdat {
     hidden: no
     type: date
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "Item Delivery Status"
     label: "Earliest Delivery Date of Line Item @{label_append_sap_code}"
     description: "Line Item's Minimum Delivery Date (LFDAT)"
   }
@@ -232,12 +237,16 @@ view: sales_order_item_delivery_summary_ndt {
   dimension: max_proof_of_delivery_date_podat {
     hidden: no
     type: date
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "Item Delivery Status"
     label: "Latest Proof of Delivery Date of Line Item @{label_append_sap_code}"
     description: "Line Item's Maximum Proof of Delivery Date (PODAT)"
   }
 
   dimension: max_proof_of_delivery_date_as_string {
     hidden: yes
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "Item Delivery Status"
     label: "Latest Proof of Delivery Date of Line Item (String) "
     sql: STRING(${max_proof_of_delivery_date_podat}) ;;
   }
@@ -245,14 +254,18 @@ view: sales_order_item_delivery_summary_ndt {
   dimension: max_proof_of_delivery_timestamp {
     hidden: no
     type: date_time
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "Item Delivery Status"
     label: "Latest Proof of Delivery Timestamp of Line Item"
     description: "Line Item's Latest Proof of Delivery Date & Time PODAT"
-    sql: timestamp(${TABLE}.max_proof_of_delivery_timestamp) ;;
+    sql: TIMESTAMP(${TABLE}.max_proof_of_delivery_timestamp) ;;
   }
 
   dimension: min_actual_goods_movement_date_wadat_ist {
     hidden: no
     type: date
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "Item Delivery Status"
     label: "Earliest Actual Goods Movement Date of Line Item"
     description: "Line Item's First Goods Movement Date (WADAT IST)"
     sql: ${TABLE}.min_actual_goods_movement_date_wadat_ist ;;
@@ -261,39 +274,40 @@ view: sales_order_item_delivery_summary_ndt {
   dimension: is_item_delivered {
     hidden: no
     type: yesno
-    view_label: "Delivery Items"
-    group_label: "Item Status"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "Item Delivery Status"
     sql: ${max_proof_of_delivery_date_podat} is not null ;;
   }
 
   dimension: is_item_in_full {
     hidden: no
     type: yesno
-    view_label: "Delivery Items"
-    group_label: "Item Status"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "Item Delivery Status"
     sql: ${item_delivered_quantity} = ${item_ordered_quantity} ;;
   }
 
   dimension: is_item_on_time {
     hidden: no
     type: yesno
-    view_label: "Delivery Items"
-    group_label: "Item Status"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "Item Delivery Status"
     sql: ${max_proof_of_delivery_date_podat} <= ${min_delivery_date_lfdat} ;;
   }
 
   dimension: is_item_late {
     hidden: no
     type: yesno
-    view_label: "Delivery Items"
-    group_label: "Item Status"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "Item Delivery Status"
     sql: ${max_proof_of_delivery_date_podat} > ${min_delivery_date_lfdat} ;;
   }
 
   dimension: item_cycle_time_days {
     hidden: no
     type: number
-    view_label: "Delivery Items"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "Cycle Time"
     label: "Order Cycle Time (Days)"
     sql: CASE WHEN ${min_actual_goods_movement_date_wadat_ist} IS NOT NULL THEN
          TIMESTAMP_DIFF(TIMESTAMP(${max_proof_of_delivery_timestamp}),TIMESTAMP(${creation_timestamp}),DAY)
@@ -303,12 +317,41 @@ view: sales_order_item_delivery_summary_ndt {
   dimension: item_days_late {
     hidden: no
     type: number
-    view_label: "Delivery Items"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "Cycle Time"
     description: "Number of days between actual delivery date and requested delivery date. Positive value indicates item arrived late"
     sql: DATE_DIFF(${max_proof_of_delivery_date_podat},${requested_delivery_date_vdatu},DAY) ;;
   }
 
 #} end item-level dimensions
+
+#########################################################
+# DIMENSIONS: Item Amounts
+#{
+#--> cross-reference of sales_orders_v2 fields
+  dimension: item_delivered_amount {
+    hidden: no
+    type: number
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "{%- if _explore._name == 'sales_orders_v2' -%}Item Amounts{%- endif -%}"
+    label: "Delivered Amount (Source Currency)"
+    description: "Item Delivered Quantity * Net Price (Source Currency)"
+    sql:  ${sales_orders_v2.net_price_netpr} * ${sales_order_item_delivery_summary_ndt.item_delivered_quantity};;
+    value_format_name: decimal_2
+  }
+
+  dimension: item_delivered_amount_target_currency {
+    hidden: no
+    type: number
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "{%- if _explore._name == 'sales_orders_v2' -%}Item Amounts{%- endif -%}"
+    label: "@{label_currency_defaults}{%- assign field_name = 'Delivered Amount' -%}@{label_currency_if_selected}"
+    description: "Item Delivered Quantity * Net Price (Target Currency)"
+    sql:  ${sales_orders_v2.item_net_price_target_currency_netpr} * ${sales_order_item_delivery_summary_ndt.item_delivered_quantity};;
+    value_format_name: decimal_2
+  }
+
+#} end item amount dimensions
 
 #########################################################
 # MEASURES: Delivery Order Counts
@@ -317,7 +360,7 @@ view: sales_order_item_delivery_summary_ndt {
   measure: delivered_order_count {
     hidden: no
     type: count_distinct
-    view_label: "Deliveries"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
     sql: ${sales_document_vbeln} ;;
     filters: [is_order_delivered: "Yes"]
   }
@@ -325,7 +368,7 @@ view: sales_order_item_delivery_summary_ndt {
   measure: on_time_order_count {
     hidden: no
     type: count_distinct
-    view_label: "Deliveries"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
     sql: ${sales_document_vbeln} ;;
     filters: [is_order_delivered: "Yes",is_order_on_time: "Yes"]
   }
@@ -333,21 +376,23 @@ view: sales_order_item_delivery_summary_ndt {
   measure: late_order_count {
     hidden: no
     type: count_distinct
-    view_label: "Deliveries"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
     sql: ${sales_document_vbeln} ;;
     filters: [is_order_delivered: "Yes",is_order_late: "Yes"]
   }
 
   measure: in_full_order_count {
+    hidden: no
     type: count_distinct
-    view_label: "Deliveries"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
     sql: ${sales_document_vbeln} ;;
     filters: [is_order_delivered: "Yes",is_order_delivered_in_full: "Yes"]
   }
 
   measure: on_time_and_in_full_order_count {
+    hidden: no
     type: count_distinct
-    view_label: "Deliveries"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
     label: "On Time & In Full (OTIF) Order Count"
     sql: ${sales_document_vbeln} ;;
     filters: [is_order_delivered: "Yes",is_order_on_time_and_in_full: "Yes"]
@@ -360,12 +405,21 @@ view: sales_order_item_delivery_summary_ndt {
 # MEASURES: Delivery Counts as Percent of Orders
 #{
 
+  measure: delivered_percent {
+    hidden: no
+    type: number
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
+    description: "% of orders delivered"
+    sql: SAFE_DIVIDE(${delivered_order_count}, ${sales_orders_v2.order_count}) ;;
+    value_format_name: percent_1
+  }
+
   measure: on_time_order_percent {
     hidden: no
-    view_label: "Deliveries"
-    description: "% of orders delivered on time"
     type: number
-    sql: safe_divide(${on_time_order_count}, ${sales_orders_v2.order_count}) ;;
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
+    description: "% of orders delivered on time"
+    sql: SAFE_DIVIDE(${on_time_order_count}, ${sales_orders_v2.order_count}) ;;
     value_format_name: percent_1
 #--> link to order line details dashboards with filter for is_order_on_time = Yes
     link: {
@@ -385,10 +439,10 @@ view: sales_order_item_delivery_summary_ndt {
 
   measure: late_order_percent {
     hidden: no
-    view_label: "Deliveries"
-    description: "% of orders with at least 1 item delivered late (Proof of Delivery after Requested Delivery Date)"
     type: number
-    sql: safe_divide(${late_order_count}, ${sales_orders_v2.order_count}) ;;
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
+    description: "% of orders with at least 1 item delivered late (Proof of Delivery after Requested Delivery Date)"
+    sql: SAFE_DIVIDE(${late_order_count}, ${sales_orders_v2.order_count}) ;;
     value_format_name: percent_1
 #-->  returns table of 50 items sorted in descending order of late order percent
     link: {
@@ -450,10 +504,10 @@ view: sales_order_item_delivery_summary_ndt {
 
   measure: in_full_order_percent {
     hidden: no
-    view_label: "Deliveries"
-    description: "% of orders delivered in full (delivered quantity equals ordered quantity for all items in order)"
     type: number
-    sql: safe_divide(${in_full_order_count}, ${sales_orders_v2.order_count}) ;;
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
+    description: "% of orders delivered in full (delivered quantity equals ordered quantity for all items in order)"
+    sql: SAFE_DIVIDE(${in_full_order_count}, ${sales_orders_v2.order_count}) ;;
     value_format_name: percent_1
 #--> link to order line details dashboards with filter for is_order_delivered_in_full = Yes
     link: {
@@ -473,11 +527,11 @@ view: sales_order_item_delivery_summary_ndt {
 
   measure: on_time_and_in_full_order_percent {
     hidden: no
-    view_label: "Deliveries"
+    type: number
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
     label: "On Time & In Full (OTIF) Order Percent"
     description: "% of orders delivered on time and in full (delivered quantity equals ordered quantity for all items in order)"
-    type: number
-    sql: safe_divide(${on_time_and_in_full_order_count}, ${sales_orders_v2.order_count}) ;;
+    sql: SAFE_DIVIDE(${on_time_and_in_full_order_count}, ${sales_orders_v2.order_count}) ;;
     value_format_name: percent_1
 #--> link to order line details dashboards with filter for is_order_on_time_and_in_full = Yes
     link: {
@@ -504,9 +558,9 @@ view: sales_order_item_delivery_summary_ndt {
 
   measure: on_time_order_percent_formatted {
     hidden: yes
-    view_label: "Deliveries"
-    description: "% of orders delivered on time"
     type: number
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
+    description: "% of orders delivered on time"
     sql: ${on_time_order_percent} * 100 ;;
     value_format_name: decimal_1
     link: {
@@ -527,9 +581,9 @@ view: sales_order_item_delivery_summary_ndt {
 
   measure: in_full_order_percent_formatted {
     hidden: yes
-    view_label: "Deliveries"
-    description: "% of orders delivered in full (delivered quantity equals ordered quantity for all items in order)"
     type: number
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
+    description: "% of orders delivered in full (delivered quantity equals ordered quantity for all items in order)"
     sql: ${in_full_order_percent} * 100 ;;
     value_format_name: decimal_1
 #--> link to order line details dashboards with filter for is_delivered_in_full = Yes
@@ -550,7 +604,7 @@ view: sales_order_item_delivery_summary_ndt {
 
   measure: on_time_and_in_full_order_percent_formatted {
     hidden: yes
-    view_label: "Deliveries"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders{%- endif -%}"
     description: "% of orders delivered in full (delivered quantity equals ordered quantity for all items in order)"
     type: number
     sql: ${on_time_and_in_full_order_percent} * 100 ;;
@@ -574,10 +628,52 @@ view: sales_order_item_delivery_summary_ndt {
 
 #} end delivery percents formatted
 
+#########################################################
+# MEASURES: Delivery Amounts
+#{
+
+  measure: total_delivered_amount_in_source_currency {
+    hidden: no
+    type: sum
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "Amounts in Source Currency"
+    label: "Total Delivered Amount in Source Currency"
+    description: "Sum of delivered amount in source currency. Currency (Source) is required field to avoid summing across multiple currencies. If currency not included, a warning message is returned"
+    sql: {%- if sales_orders_v2.currency_hdr_waerk._is_selected -%}${item_delivered_amount}{%- else -%}NULL{%- endif -%} ;;
+    value_format_name: decimal_2
+    html: {%- if sales_orders_v2.currency_hdr_waerk._is_selected -%}{{rendered_value}}{%- else -%}Add Currency (Source) to query as dimension{%- endif -%} ;;
+  }
+
+  measure: total_delivered_amount_target_currency {
+    hidden: no
+    type: sum
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    label: "@{label_currency_defaults}@{label_currency_field_name}@{label_currency_if_selected}"
+    description: "Total delivered amount converted to target currency"
+    sql: ${item_delivered_amount_target_currency} ;;
+    value_format_name: decimal_2
+  }
+
+  measure: total_delivered_amount_target_currency_formatted {
+    hidden: no
+    type: number
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "{%- if _explore._name == 'sales_orders_v2' -%}Amounts Formatted as Large Numbers{%- endif -%}"
+    label: "@{label_currency_defaults}{%- assign add_formatted = true  -%}@{label_currency_field_name}@{label_currency_if_selected}"
+    description: "Sum of delivered amount in target currency and formatted for large values (e.g., 2.3M or 75.2K)"
+    sql: ${total_delivered_amount_target_currency} ;;
+    value_format_name: format_large_numbers_d1
+  }
+
+#} end delivery amount measures
+
+#########################################################
+# MEASURES: Misc
+#{
   measure: avg_order_cycle_time {
     hidden: no
     type: average
-    view_label: "Delivery Items"
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
     label: "Item Average Cycle Time per Order (Days)"
     description: "Item's Average Cycle Time per Order (Days between Order and Delivery). Must always include Item Number or Name with this measure."
     sql: ${item_cycle_time_days} ;;
@@ -600,15 +696,7 @@ view: sales_order_item_delivery_summary_ndt {
       @{link_build_explore_url}
       "
     }
-
-    # {% assign header_drill = 'sales_orders_v2.sales_document_vbeln, sales_orders_v2.document_category_vbtyp, across_sales_and_billing_summary_xvw.order_status_with_symbols, sales_orders_v2.creation_date_erdat_date, sales_orders_v2.customer_name' %}
-    #   {% assign line_drill = 'sales_orders_v2.item_posnr, sales_orders_v2.material_text_maktx,sales_order_item_delivery_summary_ndt.item_ordered_quantity, sales_order_item_delivery_summary_ndt.requested_delivery_date_as_string, sales_order_item_delivery_summary_ndt.max_proof_of_delivery_date_as_string,sales_order_item_delivery_summary_ndt.max_days_late, sales_order_item_delivery_summary_ndt.item_delivery_quantity' %}
-    #   {% assign drill_fields = header_drill | append: ',' | append: line_drill | append: ',' %}
-    #   {% assign default_filters = 'sales_order_item_delivery_summary_ndt.is_order_late=Yes' %}
-    #   {% assign cell_visualization = '\"sales_order_item_delivery_summary_ndt.max_days_late\":{\"is_active\":true}' %}
-    #   {% assign sorts='sales_order_item_delivery_summary_ndt.max_days_late+desc,sales_orders_v2.sales_document_vbeln, sales_orders_v2.item_posnr' %}
-    #   @{link_vis_table_assign_cell_visualization}
-    ## dynamic capture of filters with link
+#--> opens Orders Details dashboard
     link: {
       label: "Show Order Details"
       icon_url: "/favicon.ico"
@@ -623,50 +711,25 @@ view: sales_order_item_delivery_summary_ndt {
   }
 
   measure: total_delivered_quantity {
-    hidden: yes
-    view_label: "Deliveries"
-    # label: "Total Quantity Delivered"
+    hidden: no
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
     type: sum
     sql: ${item_delivered_quantity} ;;
   }
 
-  measure: max_days_late {
-    type: max
-    sql: ${item_days_late} ;;
-  }
+#} end misc measures
 
-  set: set_details_late_deliveries {
-    fields: [sales_document_vbeln,  sales_order_item_partner_function_sdt.customer_names_ship_to, set_product*, is_order_late, requested_delivery_date_as_string, max_proof_of_delivery_date_as_string, max_days_late, total_delivered_quantity]
-  }
-
-  set: set_product {
-    fields: [material_number_matnr, materials_md.material_text_maktx]
-  }
-
-  measure: dummy_set_details_late_deliveries {
-    hidden:yes
-    drill_fields: [set_details_late_deliveries*]
-    sql: 1=1 ;;
-  }
-
-  measure: dummy_set_product {
-    hidden:yes
-    drill_fields: [set_product*]
-    sql: 1=1 ;;
-  }
-
-  measure: dummy_set_product_with_late {
-    hidden:yes
-    drill_fields: [set_product*,late_order_percent]
-    sql: 1=1 ;;
-  }
-
+#########################################################
+# MEASURES: Helper
+#{
+# Hidden measures used to support url link generation
   measure: link_generator {
     hidden: yes
     type: number
     sql: 1 ;;
     drill_fields: [link_generator]
   }
+#} end helper measures
 
 
 }

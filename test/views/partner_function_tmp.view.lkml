@@ -31,6 +31,12 @@ view: partner_function_tmp {
                'AG' as PartnerFunction_PARVW,
                '0001000040' as Customer_KUNNOR
       union all
+      select '100',
+              '0000006550',
+              '000000' as Item_POSNR,
+               'AG' as PartnerFunction_PARVW,
+               '0001000000' as Customer_KUNNOR
+      union all
       select '100' as client_MANDT,
              '0000006550' as SalesDocument_VBELN,
              '000020' as Item_POSNR,

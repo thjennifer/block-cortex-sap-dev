@@ -147,7 +147,7 @@
     explore: sales_orders_v2
     type: looker_funnel
     fields: [sales_orders_v2.total_sales_amount_target_currency_formatted,
-            across_sales_and_billing_summary_xvw.total_delivered_amount_target_currency_formatted,
+            sales_order_item_delivery_summary_ndt.total_delivered_amount_target_currency_formatted,
             across_sales_and_billing_summary_xvw.total_billed_amount_target_currency_formatted]
     filters:
       sales_orders_v2.document_category_vbtyp: 'C'

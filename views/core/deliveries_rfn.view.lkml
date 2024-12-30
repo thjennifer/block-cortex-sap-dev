@@ -1,3 +1,21 @@
+#########################################################{
+# PURPOSE
+# Provides Delivery details. Note a sales order may have one or more deliveries
+#
+# SOURCES
+# Refines view deliveries
+#
+# REFERENCED BY
+# Explore sales_orders_v2
+# View sales_order_item_delivery_summary_ndt
+# View across_sales_and_deliveries_xvw
+#
+# NOTES
+#   - Fields are hidden by default so must change "hidden" property to "no" to include field in an Explore.
+#   - This refinement view only includes fields added or edited. Full list of fields available are found in the base view.
+#   - Additional fields that require Sales Orders are found in field-only view across_sales_and_deliveries_xvw
+#########################################################}
+
 include: "/views/base/deliveries.view"
 
 view: +deliveries {
@@ -9,132 +27,111 @@ view: +deliveries {
     sql: concat(${client_mandt},${delivery_vbeln},${delivery_item_posnr}) ;;
   }
 
-#### ID fields
+#########################################################
+# DIMENSIONS: ID fields
 #{
   dimension: client_mandt {
     hidden: yes
-    label: "Client MANDT"
+    label: "@{label_field_name}"
   }
 
   dimension: delivery_vbeln {
     hidden: no
-    label: "Delivery VBELN"
+    label: "Delivery ID@{label_append_sap_code}"
   }
 
   dimension: delivery_item_posnr {
     hidden: no
-    view_label: "Delivery Items"
-    label: "Delivery Item POSNR"
+    label: "@{label_field_name}"
   }
 
   dimension: material_number_matnr {
     hidden: no
-    view_label: "Delivery Items"
-    label: "Material Number MATNR"
+    label: "@{label_field_name}"
   }
 
   dimension: sales_order_number_vgbel {
     hidden: no
+    label: "@{label_field_name}"
     }
 
   dimension: sales_order_item_vgpos {
     hidden: no
+    label: "@{label_field_name}"
     }
-# } end ID fields
+# } end ID dimensions
 
-#### Create and Delivery Dates
+#########################################################
+# DIMENSIONS: Dates
 #{
   dimension_group: date_created_erdat {
     hidden: no
-    label: "Creation ERDAT"
-    description: "Creation Date ERDAT"
+    label: "Creation"
+    description: "Creation Date (ERDAT)"
   }
 
   dimension: create_time_erzet {
-    hidden: no
+    hidden: yes
     label: "Creation Time ERZET"
   }
 
   dimension: create_timestamp {
-    hidden: yes
+    hidden: no
     type: date_time
+    group_label: "Creation Date"
+    group_item_label: "Time"
     label: "Delivery Create Timestamp"
-    sql: timestamp(concat(${date_created_erdat_raw},' ',${create_time_erzet})) ;;
+    sql: TIMESTAMP(concat(${date_created_erdat_raw},' ',${create_time_erzet})) ;;
   }
 
   dimension_group: delivery_date_lfdat {
     hidden: no
-    label: "Delivery LFDAT"
+    label: "Delivery"
+    description: "Delivery date (LFDAT)"
   }
 
-  dimension: delivery_time_lfuhr {
+  dimension_group: proof_of_delivery {
     hidden: no
-    label: "Delivery Time LFUHR"
+    type: time
+    timeframes: [raw, date, week, month, quarter, year]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.Date__proofOfDelivery___PODAT ;;
   }
-
-  dimension_group: date__proof_of_delivery___podat {
-    hidden: no
-    label: "Proof of Delivery PODAT"
-    }
 
   dimension: proof_of_delivery_timestamp {
     type: date_time
     hidden: no
-    sql: timestamp(concat(${date__proof_of_delivery___podat_raw},' ',${confirmation_time_potim})) ;;
+    group_label: "Proof of Delivery Date"
+    group_item_label: "Time"
+    sql: timestamp(concat(${proof_of_delivery_raw},' ',${confirmation_time_potim})) ;;
   }
 
   dimension_group: planned_goods_movement_date_wadat {
     hidden: no
-    label: "Goods Movement (Planned) WADAT"
-    }
+    label: "Goods Movement Planned"
+    description: "Planned goods movement date (WADAT)"
+  }
 
   dimension_group: actual_goods_movement_date_wadat_ist {
-    label: "Goods Movement (Actual) WADAT IST"
     hidden: no
-    }
+    label: "Goods Movement Actual"
+    description: "Actual goods movement date (WADAT_IST)"
+  }
 
 #} end dates
 
-#### Delivery Statuses: OnTime, Late
+#########################################################
+# DIMENSIONS: Status
 #{
   dimension: delivery_type_lfart {
     hidden: no
-    label: "Delivery Type LFART"
+    label: "@{label_field_name}"
   }
-
-  # dimension: is_delivered {
-  #   hidden: no
-  #   type: yesno
-  #   sql: ${date__proof_of_delivery___podat_raw} is not null  ;;
-  # }
-
-  # dimension: is_on_time {
-  #   hidden: no
-  #   type: yesno
-  #   sql: ${date__proof_of_delivery___podat_raw} <= ${delivery_date_lfdat_raw} and
-  #       ${is_delivered};;
-  # }
-
-  # dimension: is_late {
-  #   hidden: no
-  #   type: yesno
-  #   sql: ${date__proof_of_delivery___podat_raw} > ${delivery_date_lfdat_raw} and
-  #       ${is_delivered};;
-  # }
-
-  # dimension: is_return {
-  #   #logic in deliveries table/view:
-  #   #  IF(likp.VBTYP IN ('H', 'K', 'N', 'O', 'T', '6') OR lips.SHKZG IN ('B', 'S', 'X'), 'X', '')
-  #   # replace 'X' with Yes else No
-  #   hidden: no
-  #   type: yesno
-  #   sql: ${TABLE}.IS_RETURN = 'X';;
-  # }
 
   dimension: is_blocked {
     hidden: no
     type: yesno
-    group_label: "Status"
     sql: (${delivery_block_document_header_lifsk} is not null or
          ${billing_block_in_sd_document_faksk} is not null)
     ;;
@@ -143,7 +140,6 @@ view: +deliveries {
   dimension: is_blocked_with_symbols {
     hidden: no
     type: string
-    group_label: "Status"
     sql: if(${is_blocked},"Blocked","");;
     html: {% if value == "Blocked" %}{%assign sym = "⏹" %}{% assign color = "#D22B2B" %}
             {% else %}
@@ -176,148 +172,80 @@ view: +deliveries {
 
   dimension: sd_document_currency_waerk {
     hidden: no
-    label: "Currency (Document) WAERK"
+    label: "Currency (Source)@{label_append_sap_code}"
   }
 
   dimension: actual_quantity_delivered_in_sales_units_lfimg {
     hidden: no
-    view_label: "Delivery Items"
-    label: "Quantity Delivered LFIMG"
-    description: "Actual Quantity Delivered in Sales Units LFMIG"
+    label: "Delivered Quantity@{label_append_sap_code}"
+    description: "Actual quantity delivered in sales units (LFMIG)"
     }
 
   dimension: net_price_netpr {
     hidden: no
-    view_label: "Delivery Items"
-    label: "Net Price of Item NETPR"
-    description: "Net Price of Item (Document Currency)"
+    label: "Net Price (Source Currency)@{label_append_sap_code}"
+    description: "Net price of item in source currency (NETPR)"
     value_format_name: decimal_2
   }
 
   dimension: net_value_in_document_currency_netwr {
     hidden: no
-    view_label: "Delivery Items"
-    label: "Net Value of Item NETWR"
-    description: "Net Value of Item (Document Currency)"
+    label: "Net Value (Source Currency)@{label_append_sap_code}"
+    description: "Net Price * Quantity Delivered in source currency (NETWR)"
   }
 
 
 #}
 
-  measure: count_delivery_line_items {
+  measure: delivery_line_item_count {
     type: count
     hidden: no
-    label: "Count of Delivery Line Items"
-    description: "Count of Orders & Items"
+    description: "Count of delivery line items"
   }
 
-  measure: count_delivery_vbeln {
+  measure: delivery_count {
     hidden: no
-    label: "Count Delivery VBELN"
-    description: "Count of Orders (complete and in-progress)"
+    description: "Distinct count of delivery VBELN ids (complete and in-progress)"
     type: count_distinct
     sql: ${delivery_vbeln} ;;
   }
 
-  # measure: count_deliveries {
-  #   hidden: no
-  #   description: "Count of Completed Deliveries"
-  #   type: count_distinct
-  #   sql: ${delivery_vbeln} ;;
-  #   filters: [is_delivered: "Yes"]
-  # }
-
-  # measure: count_on_time_deliveries {
-  #   hidden: no
-  #   type: count_distinct
-  #   sql: ${delivery_vbeln} ;;
-  #   filters: [is_delivered: "Yes",is_on_time: "Yes"]
-  # }
-
-  # measure: count_late_deliveries {
-  #   hidden: no
-  #   type: count_distinct
-  #   sql: ${delivery_vbeln} ;;
-  #   filters: [is_delivered: "Yes",is_late: "Yes"]
-  # }
-
-
-  # measure: percent_on_time_deliveries {
-  #   hidden: no
-  #   label: "Percent On Time Deliveries"
-  #   type: number
-  #   sql: safe_divide(${count_on_time_deliveries},${count_deliveries}) ;;
-  #   value_format_name: percent_1
-  # }
-
-  # measure: percent_late_deliveries {
-  #   hidden: no
-  #   type: number
-  #   sql: safe_divide(${count_late_deliveries},${count_deliveries}) ;;
-  #   value_format_name: percent_1
-  # }
-
   measure: total_delivered_quantity {
     hidden: no
     type: sum
+    description: "Sum of delivered quantity in sales units (LFIMG)"
     sql: ${actual_quantity_delivered_in_sales_units_lfimg} ;;
   }
 
   measure: min_delivery_date_lfdat {
-    hidden: no
+    hidden: yes
     type: date
     sql: min(${delivery_date_lfdat_raw}) ;;
   }
 
   measure: max_delivery_date_lfdat {
-    hidden: no
+    hidden: yes
     type: date
     sql: max(${delivery_date_lfdat_raw}) ;;
   }
 
   measure: max_proof_of_delivery_date_podat  {
-    hidden: no
+    hidden: yes
     type: date_time
-    sql: max(${date__proof_of_delivery___podat_raw}) ;;
+    sql: max(${proof_of_delivery_raw}) ;;
   }
 
   measure: max_proof_of_delivery_timestamp  {
-    hidden: no
+    hidden: yes
     type: date_time
     sql: max(${proof_of_delivery_timestamp}) ;;
   }
 
   measure: min_actual_goods_movement_date_wadat_ist {
-    hidden: no
+    hidden: yes
     type: date_time
     sql: min(${actual_goods_movement_date_wadat_ist_raw}) ;;
   }
 
-  # measure: test_min_on_time {
-  #   hidden: no
-  #   type: min
-  #   sql: ${is_on_time} ;;
-  # }
-
-  # set: fields_for_sales {
-  #   fields: [ is_delivered,
-  #             is_on_time,
-  #             is_late,
-  #             is_return,
-  #             is_blocked,
-  #             count_delivery_vbeln,
-  #             count_delivery_line_items,
-  #             count_deliveries,
-  #             count_on_time_deliveries,
-  #             count_late_deliveries,
-  #             percent_on_time_deliveries,
-  #             percent_late_deliveries,
-  #             total_delivered_quantity,
-  #             date__proof_of_delivery___podat_date,
-  #             proof_of_delivery_timestamp,
-  #             delivery_date_lfdat_date,
-  #             test_min_on_time
-  #             ]
-  # }
 
 }

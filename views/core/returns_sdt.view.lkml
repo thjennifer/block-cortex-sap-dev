@@ -1,4 +1,23 @@
+#########################################################{
+# PURPOSE
+# SQL-based derived table that provides list of Returned Orders (both Header and Line Items)
+#
+# REFERENCED BY
+# Explore sales_orders_v2
+# View across_sales_and_returns_xvw
+#
+# NOTES
+#   - Fields are hidden by default so must change "hidden" property to "no" to include field in an Explore.
+#   - Shown in sales_orders_v2 explore as part of Sales Orders or Sales Orders Items depending on level of detail
+#   - Additional fields that require Sales Orders found in field-only view across_sales_and_returns_xvw
+#   - ReferenceDocument_VGBEL equals SalesDocument_VBELN when PrecedingDocCategory_VGTYP = C
+#   - ReferenceDocument_VGBEL equals BillingDocument when PrecedingDocCategory_VGTYP = M
+#
+#########################################################}
+
 view: returns_sdt {
+
+  view_label: "Returns"
 
   fields_hidden_by_default: yes
 
@@ -41,13 +60,15 @@ view: returns_sdt {
           'F2')
         AND b.BillingDocumentIsCancelled_FKSTO IS NULL
       WHERE
-        sv2.DocumentCategory_VBTYP = 'H' ;;
+        sv2.DocumentCategory_VBTYP = 'H'
+        AND sv2.Client_MANDT = '@{CLIENT_ID}'
+        ;;
   }
 
   dimension: key {
     type: string
     primary_key: yes
-    sql: concat(${client_mandt},${return_sales_document_vbeln},${return_item_posnr},${reference_sales_document_vbeln},${reference_item_posnr}) ;;
+    sql: CONCAT(${client_mandt},${return_sales_document_vbeln},${return_item_posnr},${reference_sales_document_vbeln},${reference_item_posnr}) ;;
   }
 
   dimension: client_mandt {
@@ -55,14 +76,24 @@ view: returns_sdt {
     sql: ${TABLE}.Client_Mandt ;;
   }
 
+#########################################################
+# DIMENSIONS: Return Order Attributes
+#{
+
   dimension: return_sales_document_vbeln {
     type: string
     hidden: no
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "{%- if _explore._name == 'sales_orders_v2' -%}Returns{%- endif -%}"
+    label: "@{label_field_name}"
+    description: "Sales Document ID of Return (VBELN)"
     sql: ${TABLE}.Return_SalesDocument_VBELN ;;
   }
 
   dimension: return_item_posnr {
     type: string
+    label: "Return Item ID@{label_append_sap_code}"
+    description: "Return Item ID (POSNR)"
     sql: ${TABLE}.Return_Item_POSNR ;;
   }
 
@@ -72,8 +103,13 @@ view: returns_sdt {
   }
 
   dimension: return_creation_date_erdat {
+    hidden: no
     type: date
     datatype: date
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "{%- if _explore._name == 'sales_orders_v2' -%}Returns{%- endif -%}"
+    label: "Return Creation Date@{label_append_sap_code}"
+    description: "Date the return order was created"
     sql: ${TABLE}.Return_CreationDate_ERDAT ;;
   }
 
@@ -88,8 +124,13 @@ view: returns_sdt {
     sql: ${TABLE}.Return_CreationTime_ERZET ;;
   }
 
-  dimension: return_item_quantity {
+  dimension: item_return_quantity {
+    hidden: no
     type: number
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "{%- if _explore._name == 'sales_orders_v2' -%}Item Quantities{%- endif -%}"
+    label: "Returned Quantity"
+    description: "Quantity returned"
     sql: ${TABLE}.Return_ItemQuantity ;;
   }
 
@@ -129,20 +170,37 @@ view: returns_sdt {
   }
 
   dimension: is_return {
+    hidden: no
     type: yesno
-    sql: ${reference_sales_document_vbeln} is not null;;
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    group_label: "{%- if _explore._name == 'sales_orders_v2' -%}Returns{%- endif -%}"
+    sql: ${reference_sales_document_vbeln} IS NOT NULL ;;
   }
+#} end order attribute dimensions
 
-  # measure: has_return_sales_order_count {
-  #   type: count_distinct
-  #   sql: ${reference_sales_document_vbeln} ;;
-  # }
-
+#########################################################
+# MEASURES: Quantity
+#{
   measure: total_returned_quantity {
     hidden: no
     type: sum
-    sql: ${return_item_quantity} ;;
+    view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
+    sql: ${item_return_quantity} ;;
   }
 
+#} end quantity measures
 
+#########################################################
+# SETS
+#{
+  set: fields_in_sales_orders {
+    fields: [return_sales_document_vbeln,
+            is_return,
+            return_creation_date_erdat,
+            return_order_date_as_string,
+            item_return_quantity,
+            total_returned_quantity
+            ]
+  }
+#}
 }

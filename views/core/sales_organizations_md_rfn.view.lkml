@@ -16,7 +16,7 @@ view: +sales_organizations_md {
 
   dimension: sales_org_vkorg {
     hidden: no
-    label: "@{label_field_name}"
+    label: "Sales Organization@{label_append_sap_code}"
   }
 
   dimension: language_spras {
@@ -26,7 +26,7 @@ view: +sales_organizations_md {
 
   dimension: sales_org_name_vtext {
     hidden: no
-    label: "@{label_field_name}"
+    label: "Sales Organization Name@{label_append_sap_code}"
   }
 
  }
