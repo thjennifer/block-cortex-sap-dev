@@ -1,4 +1,4 @@
-include: "/views/core/accounting_documents_receivable_pdt.view"
+include: "/test/views/accounting_documents_receivable_pdt.view"
 include: "/views/core/otc_common_parameters_xvw.view"
 include: "/views/core/currency_conversion_sdt.view"
 # include: "/views/core/language_map_sdt.view"

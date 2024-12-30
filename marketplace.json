@@ -1,9 +1,9 @@
 {
-  "label": "Google Cloud Cortex Framework for SAP - Operational Dashboards",
+  "label": "Google Cloud Cortex Framework for SAP v2 - Operational Dashboards",
   "category_label": "Models",
   "branding": {
     "image_uri": "https://marketplace-api.looker.com/block-icons/cortex_icon.png",
-    "tagline": "Common operational analytics dashboarding templates for data replicated from SAP S/4 or ERP into BigQuery leveraging Cortex Data Foundation content."
+    "tagline": "Common operational analytics dashboards for data replicated from SAP S/4 or ERP into BigQuery leveraging Cortex Framework content."
   },
 
   "constants": {
