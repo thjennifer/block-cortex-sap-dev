@@ -1338,25 +1338,3 @@ constant: link_build_explore_url {
 #} end constants for link build
 
 #} end constants for links
-
-###### TO REMOVE
-#### testing
-# liquid camelcase and capitalize doesn't work
-# {% assign fn = _field._name | split:'.' %} {% assign field_name = fn[1] | split:'_' %}{% assign word_cnt = field_name.size %}
-#             {% assign label_name = '' %}
-#             {% for word in field_name %} {% assign label_name = label_name | append: ' ' | append: word | camelcase %}{%endfor%}
-#             Sales Document {{label_name}}
-
-###### TO REMOVE
-###### used in zBlock_v1 and will be remove:
-constant: GCP_PROJECT {
-  value: "thjennifer1"
-  export: override_required
-}
-
-###### TO REMOVE
-###### used in zBlock_v1 and will be remove:
-constant: CLIENT {
-  value: "100"
-  export: override_required
-}
