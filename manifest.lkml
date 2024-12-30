@@ -286,7 +286,7 @@ constant: label_view_for_dashboard_navigation {
 #   }
 # If sap_show_labels = Yes, then Field Name appears as Sales Document VBELN
 #}
-constant: label_field_name {
+constant: label_sap_field_name {
   value: "{%- assign show = _user_attributes['cortex_sap_show_original_sap_field_name'] | upcase -%}
   {%- assign sap_code = _field._name | split:'_' | last -%}
   {%- assign fname = _field._name | split: '.' | last | remove: sap_code -%}
@@ -589,7 +589,7 @@ constant: link_map_otc_billing_to_order_details {
 }
 
 #--> link_map_otc_dash_bindings_*
-#{ For the dash_bindings dimension defined in the otc_dashboard_navigation_ext.view
+#{ For the dash_bindings dimension defined in the otc_dashboard_navigation_xvw.view
 #  these constants provided the dashboard name/id, link text and numeric filters to be passed between dashboards in
 #  separated by '|'. For example:
 #   id | link text | filter set

@@ -25,7 +25,7 @@
   elements:
   - name: dashboard_navigation
     filters:
-      otc_dashboard_navigation_ext.parameter_navigation_focus_page: '3'
+      otc_dashboard_navigation_xvw.parameter_navigation_focus_page: '3'
 #####################################################################################################
   - name: in_full
     title: In Full %

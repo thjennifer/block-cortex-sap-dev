@@ -62,44 +62,44 @@ view: +sales_orders_v2 {
 
   dimension: client_mandt {
     hidden: yes
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: sales_document_vbeln {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     description: "Sales Order Number"
   }
 
   dimension: sales_document_type_auart {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: document_category_vbtyp {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     description: "Document Category (C, M, J, etc)"
   }
 
   dimension: sales_organization_vkorg {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: distribution_channel_vtweg {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: sales_group_vkgrp {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: sales_office_vkbur {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: cost_center_hdr_kostl {
@@ -149,7 +149,7 @@ view: +sales_orders_v2 {
 
   dimension: exchange_rate_ukurs {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     sql: ${currency_conversion_sdt.exchange_rate_ukurs} ;;
     value_format_name: decimal_4
   }
@@ -265,7 +265,7 @@ view: +sales_orders_v2 {
   dimension: item_posnr {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     description: "Item Number"
   }
 
@@ -273,14 +273,14 @@ view: +sales_orders_v2 {
     hidden: no
     view_label: "Sales Orders Items"
     description: "Material number"
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
 #--> cross references materials_md
   dimension: material_text_maktx {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     sql: COALESCE(${materials_md.material_text_maktx},${sales_orders_v2.material_number_matnr}) ;;
   }
 
@@ -294,7 +294,7 @@ view: +sales_orders_v2 {
   dimension: division_name_vtext {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     sql: COALESCE(${divisions_md.division_name_vtext},${division_hdr_spart});;
   }
 
@@ -329,13 +329,13 @@ view: +sales_orders_v2 {
   dimension: product_hierarchy_prodh {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: item_category_pstyv {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
 
@@ -348,7 +348,7 @@ view: +sales_orders_v2 {
   dimension: rejection_reason_abgru {
     hidden: no
     view_label: "Sales Orders Items"
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: is_item_cancelled {
@@ -374,7 +374,7 @@ view: +sales_orders_v2 {
     type: number
     view_label: "Sales Orders Items"
     group_label: "Item Quantities"
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     description: "Ordered quantity of item in sale unit of measure (KWMENG)"
     sql: ${cumulative_order_quantity_kwmeng} ;;
     value_format_name: decimal_0
@@ -410,7 +410,7 @@ view: +sales_orders_v2 {
     hidden: no
     view_label: "Sales Orders Items"
     group_label: "Item Quantities"
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     }
 
 # } end item quantity dimensions

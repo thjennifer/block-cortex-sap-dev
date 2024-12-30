@@ -12,7 +12,7 @@
 
   - name: dashboard_navigation
     filters:
-      otc_dashboard_navigation_ext.parameter_navigation_focus_page: '3'
+      otc_dashboard_navigation_xvw.parameter_navigation_focus_page: '3'
 
   - title: In Full %
     name: In Full %

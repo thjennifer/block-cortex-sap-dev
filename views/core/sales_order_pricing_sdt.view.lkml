@@ -95,7 +95,7 @@ view: sales_order_pricing_sdt {
 
   dimension: condition_item_number_kposn {
     type: string
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     description: "Condition item number (KPOSN)"
     sql: ${TABLE}.ConditionItemNumber_KPOSN ;;
   }
@@ -115,7 +115,7 @@ view: sales_order_pricing_sdt {
 
   dimension: exchange_rate_ukurs {
     hidden: yes
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     sql: ${currency_conversion_sdt.exchange_rate_ukurs} ;;
   }
 

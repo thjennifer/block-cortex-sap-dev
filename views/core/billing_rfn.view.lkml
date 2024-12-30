@@ -42,17 +42,17 @@ view: +billing {
 
   dimension: client_mandt {
     hidden: yes
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: billing_document_vbeln {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: sales_document_aubel {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
 #--> opens Order Line Details dashboard for given Order Number
     link: {
       label: "Order Line Details"
@@ -70,22 +70,22 @@ view: +billing {
 
   dimension: accounting_document_number_belnr {
     hidden: yes
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: sales_organization_vkorg {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: distribution_channel_vtweg {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: billing_category_fktyp {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: is_cancelled {
@@ -96,7 +96,7 @@ view: +billing {
 
   dimension: cost_center_kostl {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
 
@@ -112,7 +112,7 @@ view: +billing {
 
   dimension: fiscal_year_gjahr {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
 
@@ -126,7 +126,7 @@ view: +billing {
 
   dimension: sold_to_party_kunag {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
 #--> cross references customers_md
@@ -160,7 +160,7 @@ view: +billing {
 
   dimension: exchange_rate_ukurs {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     sql: ${currency_conversion_sdt.exchange_rate_ukurs} ;;
   }
 
@@ -174,27 +174,27 @@ view: +billing {
   dimension: billing_item_posnr {
     hidden: no
     view_label: "Billing Items"
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: sales_document_item_aupos {
     hidden: no
     view_label: "Billing Items"
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: material_number_matnr {
     hidden: no
     view_label: "Billing Items"
     description: "Material number"
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
 #--> cross references materials_md
   dimension: material_text_maktx {
     hidden: no
     view_label: "Billing Items"
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     sql: COALESCE(${materials_md.material_text_maktx},${material_number_matnr}) ;;
   }
 
@@ -208,7 +208,7 @@ view: +billing {
   dimension: division_name_vtext {
     hidden: no
     view_label: "Billing Items"
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     sql: COALESCE(${divisions_md.division_name_vtext},${division_spart});;
   }
 

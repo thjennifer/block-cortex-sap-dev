@@ -13,16 +13,16 @@ view: +distribution_channels_md {
 
   dimension: client_mandt {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: distribution_channel_vtweg {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: distribution_channel_name_vtext {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     }
   }

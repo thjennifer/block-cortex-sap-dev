@@ -24,7 +24,7 @@
   elements:
   - name: dashboard_navigation
     filters:
-      otc_dashboard_navigation_ext.parameter_navigation_focus_page: '1'
+      otc_dashboard_navigation_xvw.parameter_navigation_focus_page: '1'
 #####################################################################################################
   - name: total_sales_orders
     title: Total Sales Orders

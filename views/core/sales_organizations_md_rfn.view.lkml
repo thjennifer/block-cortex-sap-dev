@@ -11,7 +11,7 @@ view: +sales_organizations_md {
 
   dimension: client_mandt {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: sales_org_vkorg {
@@ -21,7 +21,7 @@ view: +sales_organizations_md {
 
   dimension: language_spras {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: sales_org_name_vtext {

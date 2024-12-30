@@ -18,19 +18,19 @@ view: +divisions_md {
 
   dimension: division_spart {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   #rename language_key_spras to language_spras
   dimension: language_spras {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     sql: ${language_key_spras} ;;
   }
 
   dimension: division_name_vtext {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   }

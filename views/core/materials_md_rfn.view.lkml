@@ -41,22 +41,22 @@ view: +materials_md {
 
   dimension: client_mandt {
     hidden: yes
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: material_number_matnr {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: language_spras {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: material_text_maktx {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     # sql: COALESCE(${TABLE}.MaterialText_MAKTX,${material_number_matnr}) ;;
   }
 

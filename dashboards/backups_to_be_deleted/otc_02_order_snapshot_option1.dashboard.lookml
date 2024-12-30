@@ -13,7 +13,7 @@
   - title: navigation
     name: dashboard_navigation
     filters:
-      otc_dashboard_navigation_ext.parameter_navigation_focus_page: '2'
+      otc_dashboard_navigation_xvw.parameter_navigation_focus_page: '2'
 
   - title: One Touch Orders
     name: One Touch Orders

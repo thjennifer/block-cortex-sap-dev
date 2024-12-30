@@ -75,7 +75,7 @@
 # USING IN A DASHBOARD {
 # 1. Once the extending view has been created and modified, add to an Explore using a bare join:
 #       explore: sales_orders {
-#           join: otc_dashboard_navigation_ext {
+#           join: otc_dashboard_navigation_xvw {
 #           view_label: "🛠 Dashboard Navigation"
 #           relationship: one_to_one
 #           sql:  ;;
@@ -94,19 +94,19 @@
 #       - name: navigation
 #         explore: sales_orders
 #         type: single_value
-#         fields: [otc_dashboard_navigation_ext.navigation_links]
+#         fields: [otc_dashboard_navigation_xvw.navigation_links]
 #         filters:
-#           otc_dashboard_navigation_ext.parameter_navigation_focus_page: '1'
-#           otc_dashboard_navigation_ext.parameter_navigation_style: 'buttons'
+#           otc_dashboard_navigation_xvw.parameter_navigation_focus_page: '1'
+#           otc_dashboard_navigation_xvw.parameter_navigation_style: 'buttons'
 #         show_single_value_title: false
 #         show_comparison: false
 #         listen:
-#           date: otc_dashboard_navigation_ext.filter1
-#           business_unit: otc_dashboard_navigation_ext.filter2
-#           customer_type: otc_dashboard_navigation_ext.filter3
-#           customer_customer_country: otc_dashboard_navigation_ext.filter4
-#           customer_name: otc_dashboard_navigation_ext.filter5
-#           target_currency: otc_dashboard_navigation_ext.filter6
+#           date: otc_dashboard_navigation_xvw.filter1
+#           business_unit: otc_dashboard_navigation_xvw.filter2
+#           customer_type: otc_dashboard_navigation_xvw.filter3
+#           customer_customer_country: otc_dashboard_navigation_xvw.filter4
+#           customer_name: otc_dashboard_navigation_xvw.filter5
+#           target_currency: otc_dashboard_navigation_xvw.filter6
 #}
 #########################################################}
 

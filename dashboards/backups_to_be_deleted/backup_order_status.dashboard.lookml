@@ -12,7 +12,7 @@
 
   - name: dashboard_navigation
     filters:
-      otc_dashboard_navigation_ext.parameter_navigation_focus_page: '1'
+      otc_dashboard_navigation_xvw.parameter_navigation_focus_page: '1'
 
   - title: Total Orders
     name: Total Orders

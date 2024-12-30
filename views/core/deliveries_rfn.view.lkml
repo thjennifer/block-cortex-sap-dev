@@ -32,7 +32,7 @@ view: +deliveries {
 #{
   dimension: client_mandt {
     hidden: yes
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: delivery_vbeln {
@@ -42,22 +42,22 @@ view: +deliveries {
 
   dimension: delivery_item_posnr {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: material_number_matnr {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: sales_order_number_vgbel {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     }
 
   dimension: sales_order_item_vgpos {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     }
 # } end ID dimensions
 
@@ -126,7 +126,7 @@ view: +deliveries {
 #{
   dimension: delivery_type_lfart {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: is_blocked {

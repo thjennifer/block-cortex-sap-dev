@@ -95,8 +95,8 @@
   - name: dashboard_navigation
     explore: billing
     filters:
-      otc_dashboard_navigation_ext.parameter_navigation_focus_page: '2'
-      otc_dashboard_navigation_ext.parameter_navigation_subject: 'bdetails'
+      otc_dashboard_navigation_xvw.parameter_navigation_focus_page: '2'
+      otc_dashboard_navigation_xvw.parameter_navigation_subject: 'bdetails'
 #####################################################################################################
   - name: billing_details
     title: Billing Details

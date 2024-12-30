@@ -12,18 +12,18 @@ view: +customers_md {
 
   dimension: client_mandt {
     hidden:  yes
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: customer_number_kunnr {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
   }
 
   dimension: language_spras {
     type: string
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     sql: COALESCE(${language_key_spras},'NA') ;;
   }
 

@@ -16,7 +16,7 @@ view: +countries_md {
 
   dimension: country_key_land1 {
     hidden: no
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     description: "Country (2-character abbreviation)"
   }
 

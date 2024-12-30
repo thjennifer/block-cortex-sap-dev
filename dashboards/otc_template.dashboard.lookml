@@ -122,22 +122,22 @@
       title: Dashboard Navigation
       explore: sales_orders_v2
       type: single_value
-      fields: [otc_dashboard_navigation_ext.navigation_links]
+      fields: [otc_dashboard_navigation_xvw.navigation_links]
       filters:
-        otc_dashboard_navigation_ext.parameter_navigation_focus_page: '1'
-        otc_dashboard_navigation_ext.parameter_navigation_style: 'buttons'
-        otc_dashboard_navigation_ext.parameter_navigation_subject: 'orders'
+        otc_dashboard_navigation_xvw.parameter_navigation_focus_page: '1'
+        otc_dashboard_navigation_xvw.parameter_navigation_style: 'buttons'
+        otc_dashboard_navigation_xvw.parameter_navigation_subject: 'orders'
       show_single_value_title: false
       show_comparison: false
       listen:
-        date: otc_dashboard_navigation_ext.filter1
-        customer_country: otc_dashboard_navigation_ext.filter2
-        customer_name: otc_dashboard_navigation_ext.filter3
-        sales_org: otc_dashboard_navigation_ext.filter4
-        distribution_channel: otc_dashboard_navigation_ext.filter5
-        division: otc_dashboard_navigation_ext.filter6
-        product: otc_dashboard_navigation_ext.filter7
-        target_currency: otc_dashboard_navigation_ext.filter8
+        date: otc_dashboard_navigation_xvw.filter1
+        customer_country: otc_dashboard_navigation_xvw.filter2
+        customer_name: otc_dashboard_navigation_xvw.filter3
+        sales_org: otc_dashboard_navigation_xvw.filter4
+        distribution_channel: otc_dashboard_navigation_xvw.filter5
+        division: otc_dashboard_navigation_xvw.filter6
+        product: otc_dashboard_navigation_xvw.filter7
+        target_currency: otc_dashboard_navigation_xvw.filter8
       row: 0
       col: 0
       width: 24

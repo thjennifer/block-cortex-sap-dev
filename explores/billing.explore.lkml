@@ -34,7 +34,7 @@ include: "/views/core/distribution_channels_md_rfn.view"
 #--> field-only
 include: "/views/core/otc_common_parameters_xvw.view"
 #--> dashboard navigation
-include: "/views/core/otc_dashboard_navigation_ext.view"
+include: "/views/core/otc_dashboard_navigation_xvw.view"
 
 explore: billing {
   description: "Billing documents including both document and line item details."
@@ -127,7 +127,7 @@ explore: billing {
     sql:  ;;
   }
 
-  join: otc_dashboard_navigation_ext {
+  join: otc_dashboard_navigation_xvw {
     relationship: one_to_one
     sql:  ;;
   }

@@ -85,7 +85,7 @@ view: returns_sdt {
     hidden: no
     view_label: "{%- if _explore._name == 'sales_orders_v2' -%}Sales Orders Items{%- endif -%}"
     group_label: "{%- if _explore._name == 'sales_orders_v2' -%}Returns{%- endif -%}"
-    label: "@{label_field_name}"
+    label: "@{label_sap_field_name}"
     description: "Sales Document ID of Return (VBELN)"
     sql: ${TABLE}.Return_SalesDocument_VBELN ;;
   }

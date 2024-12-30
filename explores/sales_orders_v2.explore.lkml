@@ -46,7 +46,7 @@ include: "/views/core/across_sales_and_returns_xvw.view"
 include: "/views/core/across_sales_and_billing_summary_xvw.view"
 
 #--> dashboard navigation
-include: "/views/core/otc_dashboard_navigation_ext.view"
+include: "/views/core/otc_dashboard_navigation_xvw.view"
 
 explore: sales_orders_v2 {
   label: "Sales Orders"
@@ -62,7 +62,7 @@ explore: sales_orders_v2 {
 --      {% endif %}
 ;;
 
-  join: otc_dashboard_navigation_ext {
+  join: otc_dashboard_navigation_xvw {
     relationship: one_to_one
     sql:  ;;
   }
