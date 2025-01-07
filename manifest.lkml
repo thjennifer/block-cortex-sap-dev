@@ -1,20 +1,20 @@
 constant: CONNECTION_NAME {
-  value: "connection name"
+  value: "qa-thjennifer1"
   export: override_required
 }
 
 constant: GCP_PROJECT_ID {
-  value: "gcp project id"
+  value: "thjennifer1"
   export: override_required
 }
 
 constant: REPORTING_DATASET {
-  value: "reporting dataset"
+  value: "CORTEX_ECC_REPORTING"
   export: override_required
 }
 
 constant: CLIENT_ID {
-  value: "client id"
+  value: "100"
   export: override_required
 }
 
